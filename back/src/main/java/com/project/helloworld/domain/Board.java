@@ -1,16 +1,17 @@
 package com.project.helloworld.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.helloworld.util.BaseTimeEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -36,7 +37,15 @@ public class Board extends BaseTimeEntity{
   private String imageUrl;
 
   @Column(name = "likes")
+
   private int likes;
 
+  @JoinColumn(name = "user_seq", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private User user;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "board")
+  List<Comment> comments = new ArrayList<>();
 
 }

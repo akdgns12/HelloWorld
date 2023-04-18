@@ -2,12 +2,8 @@ package com.project.helloworld.domain;
 
 import com.project.helloworld.util.BaseTimeEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +22,7 @@ public class Family extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "family_seq")
-  private Long avatarSeq;
+  private Long familySeq;
 
   @Column(name = "relation_name")
   private String relationName;
@@ -43,7 +39,9 @@ public class Family extends BaseTimeEntity {
   @Column(name = "family_user_nickname")
   private String familyUserNickname;
 
-
+  @JoinColumn(name = "user_seq", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private User user;
 
 
 

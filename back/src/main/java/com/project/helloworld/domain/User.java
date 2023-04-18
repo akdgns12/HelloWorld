@@ -1,16 +1,17 @@
 package com.project.helloworld.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.helloworld.util.BaseTimeEntity;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -57,4 +58,22 @@ public class User extends BaseTimeEntity {
   @Column(name = "refresh_token")
   private String refreshToken;
 
+  @Column(name = "background_url")
+  private String backgroundUrl;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<Board> boards = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<Guestbook> guestbooks = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<Family> families = new ArrayList<>();
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "avatar_seq")
+  private Avatar avatar;
 }
