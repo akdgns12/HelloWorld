@@ -4,10 +4,7 @@ import com.project.helloworld.util.BaseTimeEntity;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Entity
@@ -24,6 +21,7 @@ public class Guestbook extends BaseTimeEntity {
   private Long guestbookSeq;
 
   @Column(name = "content")
+  @Setter
   private String content;
 
   @Column(name = "guestbook_user_seq")
