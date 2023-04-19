@@ -14,9 +14,10 @@ export default {
 
 <style scoped>
 #leftFrame {
-    width: 18vw;
-    height: 78vh;
+    width: 16vw;
+    height: 72vh;
     border-style : solid;
+    border-width : 0.2vh;
     border-radius : 2vh;
     border-color: black;
     background-color: white;

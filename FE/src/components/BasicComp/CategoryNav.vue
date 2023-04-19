@@ -23,7 +23,7 @@
 
 <style scoped>
     #category {
-        height: 78vh;
+        height: 72vh;
     }
 
     ul {
@@ -32,29 +32,26 @@
     }
     #category .navitem .nav-link {
         text-decoration: none;
-        height : 6vh;
+        height : 5.5vh;
         width : 4.5vw;
         border-style: solid;
         border-radius : 0 1vw 1vw 0;
+        border-color : black;
+        border-width : 0.2vh;
+        border-left : 0;
         margin-bottom : 1.5vh;
         background-color: #499DC6;
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    #category .navitem .nav-link .router-link {
+        font-size: 1vw;
         color : white;
-    } 
-    .navitem .nav-link a.router-link-exact-active {
-        height : 6vh;
-        width : 4.5vw;
-        border-style: solid;
-        border-radius : 0 1vw 1vw 0;
-        margin-bottom : 1.5vh;
-        background-color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    }
+
+    #category .navitem .router-link-exact-active {
+        background-color: white ;
         color : black !important;
+        font-size : 1vw;
+        font-weight: bold;
     }
 </style>

@@ -3,7 +3,7 @@
         <div id = "Board">
             <div>
                 <TodayCnt />
-                <ProfileNav />
+                <BoardNav />
             </div>
             <div>
                 <div id = "boardheader">
@@ -11,7 +11,7 @@
                     <BGMComp />
                 </div>
                 <div id = "MainBoard">
-                <MainComp/>
+                <BoardListComp/>
                 <CategoryNav/>
             </div>
             </div>
@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import ProfileNav from "@/components/BasicComp/ProfileNav.vue";
-import MainComp from "@/components/BasicComp/MainComp.vue";
+import BoardNav from "@/components/BoardComp/BoardNav.vue";
+import BoardListComp from "@/components/BoardComp/BoardListComp.vue";
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue";
 import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue";
 import BGMComp from "@/components/BasicComp/BGMComp.vue";
 export default {
-    components : { ProfileNav, MainComp, CategoryNav, TodayCnt, UserTitleComp, BGMComp },
+    components : { BoardNav, BoardListComp, CategoryNav, TodayCnt, UserTitleComp, BGMComp },
 };
 </script>
 
@@ -38,7 +38,8 @@ export default {
         border-style: dashed;
         border-color: black;
         margin : 4vh 3vw 4vh 3vw;
-        padding : 1.5vh 0 1.5vh 0;
+        padding : 2vh 0 2vh 0;
+        height: 90vh;
     }
 
     #Board {
@@ -49,6 +50,7 @@ export default {
         padding : 4vh 0.5vw 4vh 0.5vw;
         margin : 0 1vw 0 1vw;
         border-radius : 2vh;
+        height : 82vh;
     }
 
     #boardheader {

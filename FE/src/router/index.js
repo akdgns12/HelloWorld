@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-
 import BoardListView from "../views/BoardList.vue";
 import GuestBookListView from "../views/GuestBookList.vue";
 import LogIn from '@/components/user/login/LogIn.vue'

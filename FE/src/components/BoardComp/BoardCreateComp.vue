@@ -1,5 +1,8 @@
 <template>
-    <div id = "main">
+    <div id = "boardmain">
+        <VMarkdownEditor 
+            v-model="content"
+            />
     </div>
 </template>
 
@@ -7,7 +10,7 @@
 </script>
 
 <style scoped>
-    #main {
+#boardmain {
         height: 72vh;
         width : 60vw;
         border-style : solid;
