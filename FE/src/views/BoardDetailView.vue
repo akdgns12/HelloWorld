@@ -11,7 +11,7 @@
                     <BGMComp />
                 </div>
                 <div id = "MainBoard">
-                    <BoardCreateComp/>
+                    <BoardDetailComp/>
                     <CategoryNav/>
                 </div>
             </div>
@@ -21,13 +21,13 @@
 
 <script>
 import BoardNav from "@/components/BoardComp/BoardNav.vue";
-import BoardCreateComp from "@/components/BoardComp/BoardCreateComp.vue";
+import BoardDetailComp from "@/components/BoardComp/BoardDetailComp.vue";
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue";
 import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue";
 import BGMComp from "@/components/BasicComp/BGMComp.vue";
 export default {
-    components : { BoardNav, BoardCreateComp, CategoryNav, TodayCnt, UserTitleComp, BGMComp },
+    components : { BoardNav, BoardDetailComp, CategoryNav, TodayCnt, UserTitleComp, BGMComp },
 };
 </script>
 

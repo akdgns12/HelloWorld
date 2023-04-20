@@ -5,7 +5,7 @@
                 <router-link to="/mainpage" class="nav-link">홈</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/boardlist" class="nav-link">게시글</router-link>
+                <router-link to="/board" class="nav-link">게시글</router-link>
             </li>
             <li class="navitem">
                 <router-link to="/guestbook" class="nav-link">방명록</router-link>
@@ -19,6 +19,7 @@
 
 
 <script>
+
 </script>
 
 <style scoped>
@@ -54,7 +55,7 @@ a {
         color : white;
     }
 
-    #category .navitem .router-link-exact-active {
+    #category .navitem .router-link-active {
         background-color: white ;
         color : black !important;
         font-size : 1vw;

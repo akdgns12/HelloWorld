@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import BoardListView from "../views/BoardList.vue";
+import BoardCreateView from "../views/BoardCreateView.vue";
+import BoardDetailView from "../views/BoardDetailView.vue";
 import GuestBookListView from "../views/GuestBookList.vue";
 import LogIn from '@/views/UserView/login/LogIn.vue'
 import LoginOption from '@/views/UserView/login/LoginOption.vue'
@@ -41,8 +43,16 @@ const routes = [
     component: MainPage,
   },
   {
-    path: "/boardlist",
-    component: BoardListView,
+    path: "/board",
+    component: BoardListView
+  },
+  {
+    path : "/board/create",
+    component : BoardCreateView,
+  },
+  {
+    path : '/board/detail',
+    component : BoardDetailView,
   },
   {
     path: "/guestbook",

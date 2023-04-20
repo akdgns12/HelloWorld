@@ -19,7 +19,7 @@
                 <tbody>
                     <tr>
                         <td id = "boardNum">10</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
+                        <td id = "boardTitle" @click="goDetail()">Git 이슈 정리</td>
                         <td id = "boardWriter">김싸피</td>
                         <td id = "boardDate">2023.04.19</td>
                         <td id = "boardCnt">5</td>
@@ -89,22 +89,31 @@
                     </tr>
                 </tbody>
             </table>
-            <div id = "boardwrite">
-                <button>글쓰기</button>
+            <div id = "writeboard">
+                <button @click="WriteBoard()">글쓰기</button>
             </div>
             <div id = "searchboard">
                 <p>검색</p>
                 <input type="search">
-                <button v-on:click="searchBoard">확인</button>
+                <button @click="searchBoard">확인</button>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    components : {},
-    
+<script setup>
+import { useRouter } from "vue-router";
+const router = useRouter();
+const WriteBoard = () => {
+    router.push({
+        path: "/board/create",
+    });
+}
+
+const goDetail = () => {
+    router.push({
+        path:"/board/detail",
+    })
 }
 </script>
 
@@ -160,7 +169,7 @@ export default {
         padding : 0.6vh 0 0.6vh 0;
     }
 
-    #boardwrite{
+    #writeboard{
         width : 80%;
         display: flex;
         justify-content: right;

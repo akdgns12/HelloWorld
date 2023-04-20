@@ -11,9 +11,9 @@
                     <BGMComp />
                 </div>
                 <div id = "MainBoard">
-                <BoardListComp/>
-                <CategoryNav/>
-            </div>
+                    <BoardListComp/>
+                    <CategoryNav/>
+                </div>
             </div>
         </div>
     </div>
