@@ -1,27 +1,58 @@
 <template>
-    <div>
-        <p id = "username">김싸피</p>
-        <p>님의 미니홈피</p>
+    <div class="wrap">
+        <div id="username">김싸피 님의 미니홈피</div>
+        <div class="follow-request-btn" id="show-modal" @click="showModal = true">
+            일촌 신청
+        </div>
     </div>
+    <Teleport to="body">
+        <modal :show="showModal" @close="showModal = false">
+            <template #header>
+                <h3>custom header</h3>
+            </template>
+        </modal>
+    </Teleport>
 </template>
 
 <script>
+import Modal from '@/components/FollowComp/FollowRequestModal.vue'
+export default {
+    components: { Modal },
+    data() {
+        return {
+            showModal: false
+        }
+    }
+}
 </script>
 
 <style scoped>
-    div {
-        font-size : 1.4rem;
-        font-weight : normal;
-        color : #82ACC1;
-        display: flex;
-        margin: 0 0 0 1vw;
-    }
-    p {
-        margin: 0;
-        padding : 0 0 1vh 0.5vw;
-    }
-    #username {
-        padding-left : 1vw;
-        font-weight:bolder;
-    }
+.wrap {
+    display: flex;
+}
+
+#username {
+    padding-left: 1vw;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 25px;
+    color: #499DC6;
+}
+
+.follow-request-btn {
+    cursor: pointer;
+    font-size: 10px;
+    background-color: #82ACC1;
+    color: #FFFFFF;
+    width: 50px;
+    height: 15px;
+    padding: 2px 4px;
+    text-align: center;
+    zoom: 0.8;
+    font-weight: bold;
+    border-radius: 20px;
+    margin-left: 10px;
+    line-height: 15px;
+    margin-top: 6px;
+}
 </style>

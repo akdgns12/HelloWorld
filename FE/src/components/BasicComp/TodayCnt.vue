@@ -1,10 +1,11 @@
 <template>
-    <div>
-        <p style="font-size:0.5rem">TODAY</p>
-        <p id="today">1234</p>
-        <p style="font-size:0.5rem; padding-right : 0.5vw"> | </p>
-        <p style="font-size:0.5rem">TOTAL</p>
-        <p id="total">123123</p>
+    <div class="wrap">
+        <div style="font-size:10px">TODAY</div>
+        <div id="today">1234</div>
+        <div style="font-size:10px; padding-right : 0.5vw"> | </div>
+        <div style="font-size:10px">TOTAL</div>
+        <div id="total">123123</div>
+
     </div>
 </template>
 
@@ -12,21 +13,22 @@
 </script>
 
 <style scoped>
-    div{
-        display : flex;
+    .wrap {
+        width: 20vw;
+        display: flex;
+        text-align: center;
         justify-content: center;
-        align-items: center;
     }
 
     #today {
-        font-size : 0.7rem;
-        color : red;
+        font-size : 10px;
+        color : #AE4B59;
         font-weight: bold;
         padding: 0 0.5vw 0 0.5vw;
     }
     #total {
-        font-size: 0.7rem;
-        font-weight: bold;
+        font-size: 10px;
+        /* font-weight: bold; */
         padding: 0 0.5vw 0 0.5vw;
     }
 </style>

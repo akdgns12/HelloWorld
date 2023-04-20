@@ -104,6 +104,11 @@ a {
     font-weight: 500;
 }
 
+.get-new-pw-btn:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+
 .other-option {
     justify-content: center;
     margin-top: 20px;

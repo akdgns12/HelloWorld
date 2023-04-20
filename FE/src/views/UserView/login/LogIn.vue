@@ -132,6 +132,12 @@ a {
     border-radius: 4px;
     color: white;
     font-weight: 500;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
 }
 
 .other-option {

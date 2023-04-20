@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import BoardListView from "../views/BoardList.vue";
 import GuestBookListView from "../views/GuestBookList.vue";
-import LogIn from '@/components/user/login/LogIn.vue'
-import LoginOption from '@/components/user/login/LoginOption.vue'
-import RegisterUser from '@/components/user/register/RegisterUser.vue'
-import PasswordSearch from '@/components/user/findpw/FindPassword.vue'
-import MainPage from '@/components/mainpage/MainPage.vue'
-import RegisterCharacter from '@/components/user/register/RegisterCharacter.vue'
+import LogIn from '@/views/UserView/login/LogIn.vue'
+import LoginOption from '@/views/UserView/login/LoginOption.vue'
+import RegisterUser from '@/views/UserView/register/RegisterUser.vue'
+import PasswordSearch from '@/views/UserView/findpw/FindPassword.vue'
+import MainPage from '@/views/MainPage.vue'
+import RegisterCharacter from '@/views/UserView/register/RegisterCharacter.vue'
+import ModifyUser from '@/views/UserView/modify/ModifyUser.vue'
 
 const routes = [
   {
@@ -47,6 +48,11 @@ const routes = [
     path: "/guestbook",
     component: GuestBookListView,
   },
+  {
+    path: "/modify-user",
+    name: "modify-user",
+    component: ModifyUser,
+  }
 ];
 
 const router = createRouter({

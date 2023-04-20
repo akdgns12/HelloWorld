@@ -224,6 +224,11 @@ a {
     text-decoration: none;
 }
 
+.cancel-btn:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+
 .next-btn {
     width: 49%;
     padding-top: 6px;
@@ -234,6 +239,11 @@ a {
     color: white;
     font-weight: 500;
     cursor: pointer;
+}
+
+.next-btn:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
 }
 
 .logos {

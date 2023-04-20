@@ -106,6 +106,15 @@ a {
     cursor: pointer;
 }
 
+.login-btn:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+}
+
+.login-with-github-btn:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+}
 .github-icon-container {
     width: 30px;
     height: 20px;
@@ -139,4 +148,5 @@ a {
     text-decoration: underline;
     cursor: pointer;
 }
+
 </style>
