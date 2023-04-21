@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.helloworld.util.BaseTimeEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -78,6 +77,22 @@ public class User extends BaseTimeEntity implements UserDetails {
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "avatar_seq")
   private Avatar avatar;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<Grass> grasses = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<Badge> badges = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<BookMark> bookMarks = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<Sticker> stickers = new ArrayList<>();
 
   /**
    * Security 관련 메소드

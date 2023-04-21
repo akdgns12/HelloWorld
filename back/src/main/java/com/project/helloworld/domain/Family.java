@@ -43,6 +43,4 @@ public class Family extends BaseTimeEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   private User user;
 
-
-
 }

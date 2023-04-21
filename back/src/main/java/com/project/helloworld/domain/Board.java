@@ -33,12 +33,17 @@ public class Board extends BaseTimeEntity{
   @Column(name = "content")
   private String content;
 
-  @Column(name = "image_url")
-  private String imageUrl;
+  @Column(name = "img_url")
+  private String imgUrl;
 
-  @Column(name = "likes")
+  @Column(name = "like_cnt")
+  private int likeCnt;
 
-  private int likes;
+  @Column(name = "helpful_cnt")
+  private int helpfulCnt;
+
+  @Column(name = "understand_cnt")
+  private int understandCnt;
 
   @JoinColumn(name = "user_seq", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
@@ -48,4 +53,15 @@ public class Board extends BaseTimeEntity{
   @OneToMany(mappedBy = "board")
   List<Comment> comments = new ArrayList<>();
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "board")
+  List<Grass> grasses = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "board")
+  List<Sticker> stickers = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "board")
+  List<BookMark> bookMarks = new ArrayList<>();
 }

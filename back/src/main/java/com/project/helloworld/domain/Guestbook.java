@@ -37,4 +37,8 @@ public class Guestbook extends BaseTimeEntity {
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "avatar_seq")
   private Avatar avatar;
+
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "guestbook_comment_seq")
+  private Guestbook_Comment guestbook_comment;
 }
