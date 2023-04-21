@@ -16,8 +16,8 @@ export default {
     <div class="wrap">
         <form>
             <div class="id-container">
-                <div class="id">아이디</div>
-                <input class="id-input" />
+                <div class="id">이메일</div>
+                <input class="id-input" type="email"/>
             </div>
             <div class="pw-container">
                 <div class="pw">비밀번호</div>
@@ -27,10 +27,10 @@ export default {
                 <div class="pw-check">비밀번호 확인</div>
                 <input class="pw-check-input" type="password" />
             </div>
-            <div class="email-container">
+            <!-- <div class="email-container">
                 <div class="email">이메일</div>
                 <input class="email-input" type="email" />
-            </div>
+            </div> -->
             <div class="name-container">
                 <div class="name">이름</div>
                 <input class="name-input" type="text" />
@@ -80,12 +80,13 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .pw-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .pw {
@@ -104,12 +105,13 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .pw-check-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .pw-check {
@@ -128,12 +130,13 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .email-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .email {
@@ -152,12 +155,13 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .name-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .name {
@@ -176,12 +180,13 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .nickname-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .nickname {
@@ -200,13 +205,14 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .button-group {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
-    margin-top: 25px;
+    margin-top: 40px;
     width: 30%;
 }
 

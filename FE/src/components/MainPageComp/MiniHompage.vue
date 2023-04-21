@@ -54,7 +54,21 @@
                 </div>
             </div>
             <div class="grass-container">
-                <img class="grass" src="https://ghchart.rshah.org/songheewon" />
+                <svg class="grass" style="direction: ltr; margin-top: 4px;">
+                    <!-- 여기 잔디 for문 돌리면 되겠다~ -->
+                    <rect width="8" height="8" x="0" y="0" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="0" y="10" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="0" y="20" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="0" y="30" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="0" y="40" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="0" y="50" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="0" y="60" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="10" y="0" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="10" y="10" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                    <rect width="8" height="8" x="10" y="20" fill="#000000" rx="2.5" stroke-width="2.5"></rect>
+                </svg>
+                
+                <!-- <img class="grass" src="https://ghchart.rshah.org/songheewon" /> -->
             </div>
             <div class="family-comment-container">
                 <div class="family-comment-title">일촌평</div>
@@ -160,7 +174,7 @@ export default {
 
 <style scoped>
 .blank {
-    height: 23px;
+    height: 21px;
 }
 
 .right-body {

@@ -16,8 +16,8 @@ export default {
         </div>
         <form>
             <div class="id-container">
-                <div class="id">아이디</div>
-                <input class="id-input" />
+                <div class="id">이메일</div>
+                <input class="id-input" type="email"/>
             </div>
             <div class="pw-container">
                 <div class="pw">비밀번호</div>
@@ -94,6 +94,7 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .pw-container {
@@ -118,6 +119,7 @@ a {
     font-size: 12px;
     height: 27px;
     box-shadow: 1px 2px #8C8C8C;
+    padding-left: 5px;
 }
 
 .login-btn {

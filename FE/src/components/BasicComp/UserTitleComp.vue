@@ -1,6 +1,8 @@
 <template>
     <div class="wrap">
-        <div id="username">김싸피 님의 미니홈피</div>
+        <router-link to="/mainpage">
+            <div id="username">김싸피 님의 미니홈피</div>
+        </router-link>
         <div class="follow-request-btn" id="show-modal" @click="showModal = true">
             일촌 신청
         </div>
@@ -20,13 +22,22 @@ export default {
     components: { Modal },
     data() {
         return {
-            showModal: false
+            showModal: false,
         }
     }
 }
 </script>
 
 <style scoped>
+a {
+    text-decoration: none;
+    color: #499DC6;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .wrap {
     display: flex;
 }
@@ -54,5 +65,4 @@ export default {
     margin-left: 10px;
     line-height: 15px;
     margin-top: 6px;
-}
-</style>
+}</style>
