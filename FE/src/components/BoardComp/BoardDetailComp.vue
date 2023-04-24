@@ -53,6 +53,7 @@ export default {
         height: 90%;
         width : 90%;
         overflow : scroll;
+        overflow-x: hidden;
         padding : 0 2% 0 2%;
     }
     #boardTitle {

@@ -33,7 +33,7 @@
 
     #GBContent {
         resize:none;
-        height: 15%;
+        height: 11vh;
         border : solid;
         border-width: 1px;
     }
@@ -41,6 +41,7 @@
         display: flex;
         margin : 1vh 2.5vw 1.2vh 3.7vw;
         justify-content: space-between;
+        font-size : 1vw;
     }
     .minime-link {
         text-decoration: none;
@@ -48,7 +49,7 @@
 
     #GBCheck {
         background-color: white;
-        border-radius:13%;
-        font-size: 90%;
+        border-radius : 5px;
+        font-weight: bold;
     }
 </style>

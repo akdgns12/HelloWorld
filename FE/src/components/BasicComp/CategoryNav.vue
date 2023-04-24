@@ -11,7 +11,7 @@
                 <router-link to="/guestbook" class="nav-link">방명록</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/user/notify" class="nav-link">알림</router-link>
+                <router-link to="/statistics" class="nav-link">통계</router-link>
             </li>
         </ul>
     </nav>

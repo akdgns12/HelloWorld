@@ -51,7 +51,10 @@ export default {
         height : 82vh;
     }
     #boardheader {
-        display: flex; 
+        display: flex;
+        justify-content: space-between;
+        margin : 0 10vw 0 3vw;
+        align-items: center; 
     }
     #MainBoard{
         display : flex;
