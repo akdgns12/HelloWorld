@@ -19,4 +19,5 @@ public class Notify  {
   private boolean readState = false;
   private Long receiveUserSeq;
   private LocalDateTime createdTime;
+  private boolean deleted = false;
 }
