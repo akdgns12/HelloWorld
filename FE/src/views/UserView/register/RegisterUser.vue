@@ -55,7 +55,7 @@ a {
 }
 
 .wrap {
-    margin-top: 3%;
+    margin-top: 7%;
 
 }
 
@@ -66,7 +66,7 @@ a {
 
 .id {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -77,8 +77,8 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
@@ -86,12 +86,12 @@ a {
 .pw-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .pw {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -102,8 +102,8 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
@@ -111,12 +111,12 @@ a {
 .pw-check-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .pw-check {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -127,8 +127,8 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
@@ -136,12 +136,12 @@ a {
 .email-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .email {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -152,8 +152,8 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
@@ -161,12 +161,12 @@ a {
 .name-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .name {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -177,8 +177,8 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
@@ -186,12 +186,12 @@ a {
 .nickname-container {
     width: 30%;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .nickname {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -202,8 +202,8 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
@@ -212,14 +212,14 @@ a {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: 60px;
     width: 30%;
 }
 
 .cancel-btn {
     width: 49%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: #D24646;
     opacity: 78%;
     border: none;
@@ -228,6 +228,7 @@ a {
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
+    font-size: 15px;
 }
 
 .cancel-btn:hover {
@@ -237,14 +238,15 @@ a {
 
 .next-btn {
     width: 49%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: #82ACC1;
     border: none;
     border-radius: 4px;
     color: white;
     font-weight: 500;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .next-btn:hover {

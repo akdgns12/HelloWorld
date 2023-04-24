@@ -90,18 +90,18 @@ a {
 .one-line-desc {
     margin-top: 3vh;
     color: #499DC6;
-    font-size: 10px;
-    zoom: 0.8;
+    font-size: 12px;
+    /* zoom: 0.8; */
     font-weight: bold;
 }
 
 .wave {
-    font-size: 10px;
+    font-size: 12px;
     width: 16vw;
     margin-top: 50%;
     border: 1px solid #6A6A6A;
     border-radius: 3px;
-    padding: 1px;
+    padding: 3px;
     /* zoom: 0.8; */
 }
 
@@ -125,7 +125,7 @@ a {
 
 .blue-arrow {
     font-size: 10px;
-    zoom: 0.7;
+    /* zoom: 0.7; */
     color: #499DC6;
     line-height: 10px;
     margin-right: 1px;
@@ -133,13 +133,13 @@ a {
 
 .edit {
     font-size: 10px;
-    zoom: 0.8;
+    /* zoom: 0.8; */
     font-weight: 600;
 }
 
 .history {
     font-size: 10px;
-    zoom: 0.8;
+    /* zoom: 0.8; */
     font-weight: 600;
 }
 

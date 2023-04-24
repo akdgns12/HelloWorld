@@ -80,7 +80,7 @@ a {
 
 .id {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -91,8 +91,8 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
@@ -105,7 +105,7 @@ a {
 
 .pw {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -116,16 +116,16 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
     padding-left: 5px;
 }
 
 .login-btn {
     width: 30%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     margin: 0 auto;
     margin-top: 25px;
     background-color: #D24646;
@@ -135,6 +135,7 @@ a {
     color: white;
     font-weight: 500;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .login-btn:hover {
@@ -147,7 +148,7 @@ a {
     margin-top: 20px;
     display: flex;
     color: #8C8C8C;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .pw-search {

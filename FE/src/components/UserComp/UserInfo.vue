@@ -82,7 +82,7 @@ export default {
 
 <style scoped>
 .blank {
-    height: 23px;
+    height: 40px;
 }
 
 .right-body {
@@ -114,7 +114,7 @@ export default {
 }
 
 .user-info-container {
-    margin-top: 20px;
+    margin-top: 30px;
     margin-left: 50px;
     display: flex;
 }
@@ -122,26 +122,24 @@ export default {
 .user-info-title {
     color: #82ACC1;
     font-weight: bold;
-    font-size: 10px;
+    font-size: 12px;
     text-align: start;
-    zoom: 0.9;
     width: 10vw;
 }
 
 .user-info-content {
     color: #6A6A6A;
-    font-size: 10px;
+    font-size: 12px;
     margin-left: 30px;
 }
 
 .select-bgm-btn {
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     background-color: #82ACC1;
     color: #FFFFFF;
     padding: 2px 10px;
     text-align: end;
-    zoom: 0.8;
     margin-left: 1vw;
     font-weight: bold;
     border-radius: 20px;
@@ -149,12 +147,11 @@ export default {
 
 .select-profile-img-btn {
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     background-color: #82ACC1;
     color: #FFFFFF;
     padding: 3px 1px;
     text-align: center;
-    zoom: 0.8;
     /* margin-left: 27vw; */
     font-weight: bold;
     border-radius: 20px;
@@ -162,23 +159,21 @@ export default {
 
 .delete-user-btn {
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     color: #CC0000;
     text-decoration: underline;
     text-align: start;
-    zoom: 0.8;
     width: 10vw;
     font-weight: bold;
 }
 
 .modify-user-btn {
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     background-color: #82ACC1;
     color: #FFFFFF;
     padding: 3px 10px;
     text-align: end;
-    zoom: 0.8;
     margin-left: 27vw;
     font-weight: bold;
     border-radius: 20px;

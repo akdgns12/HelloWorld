@@ -12,7 +12,7 @@
         <div class="my-character-img" style="position: absolute; top: -2.5px; left: 0px; z-index: 100;">
             <img class="my-character-hair" id="hair" :src="hairSrc" v-if="hairSrc" />
         </div>
-        <div class="my-character-img" style="position: absolute; top: 40px; left: 5px; z-index: 100; transform: scale(1.5)">
+        <div class="my-character-img" style="position: absolute; top: -2.5px; left: 0px; z-index: 100;">
             <img class="my-character-pet" id="pet" :src="petSrc" v-if="petSrc" />
         </div>
         <div class="my-character-img" style="position: absolute; top: -2.5px; left: 0px; z-index: 100;">
@@ -636,27 +636,52 @@ export default {
         changeHair: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/hair/pixil-layer-" + e.target.id + ".png");
-            this.hairSrc = path;
+            if(this.hairSrc==path) {
+                this.hairSrc=null;
+            }
+            else {
+                this.hairSrc = path;
+            }
         },
         changePet: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/pet/pixil-layer-" + e.target.id + ".png");
-            this.petSrc = path;
+            if(this.petSrc==path) {
+                this.petSrc=null;
+            }
+            else {
+                this.petSrc = path;
+            }
         },
         changeEmotion: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/emotion/pixil-layer-" + e.target.id + ".png");
-            this.emotionSrc = path;
+            if(this.emotionSrc==path) {
+                this.emotionSrc=null;
+            }
+            else {
+                this.emotionSrc = path;
+            }
         },
         changeShirt: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/shirt/pixil-layer-" + e.target.id + ".png");
-            this.shirtSrc = path;
+            if(this.shirtSrc==path) {
+                this.shirtSrc=null;
+            }
+            else {
+                this.shirtSrc = path;
+            }
         },
         changePants: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/pants/pixil-layer-" + e.target.id + ".png");
-            this.pantsSrc = path;
+            if(this.pantsSrc==path) {
+                this.pantsSrc=null;
+            }
+            else {
+                this.pantsSrc = path;
+            }
         },
         saveAvatar: function () {
             html2canvas(document.querySelector("#my-character-container")).then(canvas => {
@@ -676,7 +701,7 @@ a {
 
 .splide-slide {
     display: flex;
-    height: 50px;
+    height: 90px;
 }
 
 .one-slide {
@@ -686,14 +711,15 @@ a {
 }
 
 .hair-element-container {
-    width: 80px;
-    height: 45px;
+    width: 100px;
+    height: 80px;
     border: 1px solid #D9D9D9;
     border-radius: 5px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 5%;
     cursor: pointer;
+
 }
 
 .hair-element {
@@ -704,12 +730,12 @@ a {
 }
 
 .pet-element-container {
-    width: 80px;
-    height: 45px;
+    width: 100px;
+    height: 80px;
     border: 1px solid #D9D9D9;
     border-radius: 5px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 5%;
     cursor: pointer;
 }
@@ -722,12 +748,12 @@ a {
 }
 
 .emotion-element-container {
-    width: 80px;
-    height: 45px;
+    width: 100px;
+    height: 80px;
     border: 1px solid #D9D9D9;
     border-radius: 5px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 5%;
     cursor: pointer;
 }
@@ -740,12 +766,12 @@ a {
 }
 
 .shirt-element-container {
-    width: 80px;
-    height: 45px;
+    width: 100px;
+    height: 80px;
     border: 1px solid #D9D9D9;
     border-radius: 5px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 5%;
     cursor: pointer;
 }
@@ -758,12 +784,12 @@ a {
 }
 
 .pants-element-container {
-    width: 80px;
-    height: 45px;
+    width: 100px;
+    height: 80px;
     border: 1px solid #D9D9D9;
     border-radius: 5px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 5%;
     cursor: pointer;
 }
@@ -809,7 +835,7 @@ a {
     object-fit: fill;
 }
 
-.my-chacracter-pet {
+.my-character-pet {
     width: 100%;
     height: 100%;
     object-fit: fill;
@@ -871,7 +897,7 @@ a {
 
 .hair {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 5px;
 }
@@ -887,7 +913,7 @@ a {
 
 .pet {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 5px;
 }
@@ -907,7 +933,7 @@ a {
 
 .emotion {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 5px;
 }
@@ -923,7 +949,7 @@ a {
 
 .shirt {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 5px;
 }
@@ -939,7 +965,7 @@ a {
 
 .pants {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 5px;
 }
@@ -948,14 +974,14 @@ a {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
-    margin-top: 140px;
+    margin-top: 220px;
     width: 30%;
 }
 
 .cancel-btn {
     width: 49%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: #D24646;
     opacity: 78%;
     border: none;
@@ -964,6 +990,7 @@ a {
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
+    font-size: 15px;
 }
 
 .cancel-btn:hover {
@@ -974,14 +1001,15 @@ a {
 
 .next-btn {
     width: 49%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: #82ACC1;
     border: none;
     border-radius: 4px;
     color: white;
     font-weight: 500;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .next-btn:hover {

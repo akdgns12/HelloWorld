@@ -44,9 +44,9 @@ a:hover {
 
 #username {
     padding-left: 1vw;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: bold;
-    line-height: 25px;
+    /* line-height: 25px; */
     color: #499DC6;
 }
 
@@ -55,14 +55,15 @@ a:hover {
     font-size: 10px;
     background-color: #82ACC1;
     color: #FFFFFF;
-    width: 50px;
-    height: 15px;
+    width: 60px;
+    /* height: 20px; */
     padding: 2px 4px;
     text-align: center;
-    zoom: 0.8;
+    /* zoom: 0.8; */
     font-weight: bold;
     border-radius: 20px;
-    margin-left: 10px;
-    line-height: 15px;
-    margin-top: 6px;
+    margin-left: 15px;
+    /* line-height: 20px; */
+    /* margin-top: 6px; */
+    margin-bottom: 5px;
 }</style>

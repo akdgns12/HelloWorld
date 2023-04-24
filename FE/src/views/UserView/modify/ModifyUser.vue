@@ -5,7 +5,6 @@
             <UserInfo />
             <CategoryNav />
         </div>
-
     </div>
 </template>
 

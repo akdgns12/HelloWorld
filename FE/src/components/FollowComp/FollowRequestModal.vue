@@ -73,15 +73,15 @@ export default {
 
 .user-name {
     color: #82ACC1;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
-    zoom: 0.8;
+    /* zoom: 0.8; */
 }
 
 .request-msg {
     color: #6A6A6A;
-    font-size: 10px;
-    zoom: 0.8;
+    font-size: 12px;
+    /* zoom: 0.8; */
 }
 
 .profile-img-container {
@@ -100,16 +100,16 @@ export default {
 
 .select-name {
     display: flex;
-    margin-top: 5px;
+    margin-top: 10px;
     /* justify-content: center; */
     width: 90%;
 }
 
 .family-name-input {
-    width: 10vw;
-    height: 10px;
-    font-size: 10px;
-    zoom: 0.8;
+    width: 8vw;
+    height: 12px;
+    font-size: 12px;
+    /* zoom: 0.8; */
     margin-left: 5px;
     border-radius: 3px;
     border: 1px solid #6A6A6A;
@@ -132,8 +132,7 @@ export default {
     border-radius: 0px;
     height: 100px;
     resize: none;
-    font-size: 10px;
-    zoom: 0.8;
+    font-size: 12px;
     padding: 10px;
     color: #6A6A6A;
 }
@@ -148,7 +147,7 @@ export default {
     text-align: center;
     font-size: 10px;
     margin-top: 8px;
-    zoom: 0.7;
+    /* zoom: 0.7; */
 }
 
 .btn-list {
@@ -161,24 +160,24 @@ export default {
     margin-right: 10px;
     background-color: #82ACC1;
     color: white;
-    font-size: 10px;
+    font-size: 12px;
     height: 20px;
     padding: 2px 10px 2px 10px;
     line-height: 20px;
     cursor: pointer;
-    zoom: 0.9;
+    /* zoom: 0.9; */
     border-radius: 5px;
 }
 
 .close-btn {
     background-color: #D9D9D9;
     color: #6A6A6A;
-    font-size: 10px;
+    font-size: 12px;
     height: 20px;
     padding: 2px 15px 2px 15px;
     line-height: 20px;
     cursor: pointer;
-    zoom: 0.9;
+    /* zoom: 0.9; */
     border-radius: 5px;
 }
 
@@ -195,7 +194,7 @@ export default {
 }
 
 .modal-container {
-    width: 250px;
+    width: 380px;
     margin: auto;
     padding: 20px 30px;
     background-color: #fff;

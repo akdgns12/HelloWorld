@@ -77,8 +77,8 @@ a {
 
 .login-btn {
     width: 30%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     margin: 0 auto;
     margin-top: 25px;
     background-color: #D24646;
@@ -88,14 +88,15 @@ a {
     color: white;
     font-weight: 500;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .login-with-github-btn {
     display: flex;
     justify-content: center;
     width: 30%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     margin: 0 auto;
     margin-top: 20px;
     background-color: black;
@@ -104,6 +105,7 @@ a {
     color: white;
     font-weight: 500;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .login-btn:hover {
@@ -131,7 +133,7 @@ a {
     margin-top: 20px;
     display: flex;
     color: #8C8C8C;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .pw-search {

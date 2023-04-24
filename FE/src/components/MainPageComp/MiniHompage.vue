@@ -97,7 +97,7 @@ export default {
 
 <style scoped>
 .blank {
-    height: 21px;
+    height: 40px;
 }
 
 .right-body {
@@ -129,16 +129,16 @@ export default {
 }
 
 .story-element-container {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     border: 1px solid #6A6A6A;
-    margin: 0 3px;
+    margin: 0 8px;
 }
 
 .story-element {
-    width: 50px;
-    height: 50px;
+    width: 100%;
+    height: 100%;
     object-fit: fill;
     cursor: pointer;
 }

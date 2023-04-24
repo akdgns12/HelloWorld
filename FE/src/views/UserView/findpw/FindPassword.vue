@@ -74,7 +74,7 @@ a {
 
 .email {
     color: #82ACC1;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     text-align: start;
     margin-bottom: 5px;
@@ -85,15 +85,15 @@ a {
     border: 1px solid #9A9A9A;
     border-radius: 3px;
     width: 100%;
-    font-size: 12px;
-    height: 27px;
+    font-size: 15px;
+    height: 30px;
     box-shadow: 1px 2px #8C8C8C;
 }
 
 .get-new-pw-btn {
     width: 30%;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     margin: 0 auto;
     margin-top: 25px;
     background-color: #D24646;
@@ -102,6 +102,7 @@ a {
     border-radius: 4px;
     color: white;
     font-weight: 500;
+    font-size: 15px;
 }
 
 .get-new-pw-btn:hover {

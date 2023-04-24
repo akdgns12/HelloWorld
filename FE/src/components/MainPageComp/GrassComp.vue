@@ -1,11 +1,11 @@
 <template>
     <svg class="grass" style="direction: ltr; margin-top: 4px;">
-        <rect width="8" height="8" v-for="(grass, i) in grassInfo" :key="i" :x=10*parseInt(i/7) :y=10*(i%7) rx="2.5"
+        <rect width="12" height="12" v-for="(grass, i) in grassInfo" :key="i" :x=17*parseInt(i/7) :y=15*(i%7) rx="2.5"
             stroke-width="0.5" fill="#82ACC1" :fill-opacity=0.25*(grass.boardList.length) 
             stroke="#D9D9D9" class="grass-element" :id=grass.createDate @mouseover="grassHovered">
+            <title>HI</title>
         </rect>
     </svg>
-    <!-- <div class="temp-element">HI</div> -->
 </template>
 
 <script>
@@ -29,7 +29,9 @@ export default {
     methods: {
         grassHovered: function(e) {
             e.preventDefault();
+            
             console.log(e.target.id);
+            document.getElementById(e.target.id)
         }
     }
 }

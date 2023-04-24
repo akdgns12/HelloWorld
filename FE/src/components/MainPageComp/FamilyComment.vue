@@ -76,14 +76,29 @@
     overflow-y: scroll;
 }
 
+.comments::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
+}
+
+.comments::-webkit-scrollbar-thumb {
+    height: 20%; /* 스크롤바의 길이 */
+    background: #6A6A6A; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+.comments::-webkit-scrollbar-track {
+    background: #D9D9D9;  /*스크롤바 뒷 배경 색상*/
+}
+
 .family-comment-title {
     text-align: start;
     color: #6A6A6A;
-    font-size: 10px;
+    font-size: 13px;
     margin-left: 5px;
     margin-top: 3px;
     font-weight: bold;
-    zoom: 0.9;
+    /* zoom: 0.9; */
 }
 
 .comment {
@@ -92,7 +107,7 @@
     width: 100%;
     text-align: start;
     display: flex;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .comment-author {
@@ -102,7 +117,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    zoom: 0.8;
+    /* zoom: 0.8; */
     font-weight: bold;
     cursor: pointer;
 }
@@ -116,18 +131,18 @@
     width: 70%;
     color: #6A6A6A;
     margin-left: 7px;
-    zoom: 0.8;
+    /* zoom: 0.8; */
 }
 
 .comment-created-time {
     color: #6A6A6A;
     margin-left: 10px;
-    zoom: 0.8;
+    /* zoom: 0.8; */
 }
 
 .comment-input-container {
     display: flex;
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 3px;
     margin-bottom: 5px;
     width: 100%;
@@ -140,25 +155,26 @@
 .author-name {
     width: 11%;
     color: #82ACC1;
-    margin-left: 5px;
+    /* margin-left: 5px; */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    zoom: 0.8;
+    /* zoom: 0.8; */
     font-weight: bold;
     text-align: end;
     margin-right: 5px;
 }
 
 .comment-input {
-    font-size: 10px;
-    zoom: 0.7;
-    width: 69%;
+    font-size: 12px;
+    /* zoom: 0.7; */
+    width: 68%;
     box-sizing: border-box;
     border: 1px solid #9A9A9A;
     background-color: #F5F5F5;
     box-shadow: 0.2px 0.4px #8C8C8C;
     border-radius: 3px;
+    padding: 3px;
 }
 
 .comment-post-btn {
@@ -167,7 +183,7 @@
     color: #6A6A6A;
     font-size: 10px;
     padding: 1px 6px;
-    zoom: 0.8;
+    /* zoom: 0.8; */
     border-radius: 3px;
     font-weight: 600;
     box-shadow: 1px 0.8px #8C8C8C;
