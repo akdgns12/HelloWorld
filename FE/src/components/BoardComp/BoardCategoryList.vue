@@ -7,15 +7,15 @@
                 전체보기
             </div>
             <div>
-                <img src="../../assets/folder.png" alt="">
+                <img src="../../assets/icon/folder.png" alt="">
                 <p>CS</p>
             </div>
             <div>
-                <img src="../../assets/folder.png" alt="">
+                <img src="../../assets/icon/folder.png" alt="">
                 <p>Algorithm</p>
             </div>
             <div>
-                <img src="../../assets/folder.png" alt="">
+                <img src="../../assets/icon/folder.png" alt="">
                 <p>Project</p>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <template>
     <div id = "createComments">
-        <p>댓글</p>
+        <p style="font-weight:bold">댓글</p>
         <input type="search">
         <button @click="createComment">확인</button>
     </div>
@@ -12,7 +12,7 @@
 <style scoped>
     #createComments {
         display: flex;
-        width : 90%;
+        width : 94%;
         justify-content: space-between;
         align-items: center;
         margin : 1%;

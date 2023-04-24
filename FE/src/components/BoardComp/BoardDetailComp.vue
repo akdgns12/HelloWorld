@@ -4,7 +4,7 @@
             <div id = "boardTitle">Git 이슈 정리</div>
             <div id = "boardInfo">
                 <p id="author">김싸피</p>
-                <p id="createdDate">2023.04.13 09:29</p>
+                <p id="createdDate">2023.04.19 09:29</p>
             </div>
             <div id="boardContent">
                 <img src="../../assets/boardboard.png" alt="">
@@ -117,5 +117,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align :justify;
+        padding : 1% 0 1% 0;
     }
 </style>
