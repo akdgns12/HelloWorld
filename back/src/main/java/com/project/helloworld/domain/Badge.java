@@ -19,7 +19,7 @@ public class Badge extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "badge_seq")
-    private String badgeSeq;
+    private Long badgeSeq;
 
     @Column(name = "img_url")
     private String imgUrl;
