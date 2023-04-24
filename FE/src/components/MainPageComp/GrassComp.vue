@@ -2,7 +2,7 @@
     <svg class="grass" style="direction: ltr; margin-top: 4px;">
         <rect width="8" height="8" v-for="(grass, i) in grassInfo" :key="i" :x=10*parseInt(i/7) :y=10*(i%7) rx="2.5"
             stroke-width="0.5" fill="#82ACC1" :fill-opacity=0.25*(grass.boardList.length) 
-            stroke="#D9D9D9" class="grass-element">
+            stroke="#D9D9D9" class="grass-element" :id=grass.createDate @mouseover="grassHovered">
         </rect>
     </svg>
     <!-- <div class="temp-element">HI</div> -->
@@ -26,9 +26,13 @@ export default {
             msg: "HI",
         }
     },
+    methods: {
+        grassHovered: function(e) {
+            e.preventDefault();
+            console.log(e.target.id);
+        }
+    }
 }
-
-
 </script>
 
 
@@ -38,5 +42,4 @@ export default {
     height: 100%;
     margin: 0 auto;
 }
-
 </style>
