@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -22,7 +23,7 @@ public class Grass extends BaseTimeEntity {
     @Column(name = "grass_seq")
     private Long grassSeq;
 
-    private Date grassDate;
+    private LocalDate grassDate;
 
     @JoinColumn(name = "user_seq", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)

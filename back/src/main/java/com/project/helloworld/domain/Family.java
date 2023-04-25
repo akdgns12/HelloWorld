@@ -34,10 +34,13 @@ public class Family extends BaseTimeEntity {
   private Long familyUserSeq;
 
   @Column(name = "accept")
-  private boolean isAccepted;
+  private Integer isAccepted;
 
   @Column(name = "family_user_nickname")
   private String familyUserNickname;
+
+  @Column(name="request_message")
+  private String requestMessage;
 
   @JoinColumn(name = "user_seq", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
