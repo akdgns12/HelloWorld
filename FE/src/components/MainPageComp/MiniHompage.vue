@@ -126,6 +126,8 @@ export default {
     display: flex;
     justify-content: space-evenly;
     margin-top: 2.25vh;
+    width: 90%;
+    overflow: hidden;
 }
 
 .story-element-container {

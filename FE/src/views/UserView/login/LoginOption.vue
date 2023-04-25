@@ -1,6 +1,18 @@
 <script>
+// import axios from "axios";
 export default {
     name: 'LoginOption',
+    methods: {loginWithGithub: function() {
+    //     try {
+    //     var response = await axios.get("/github.com/login/oauth/authorize?client_id=67e5f9075db550de602e");
+    //     console.log(response);
+    // } catch (error) {
+    //   console.error(error);
+
+    // }
+    window.location.assign("https://github.com/login/oauth/authorize?client_id=67e5f9075db550de602e");
+    }
+}
 }
 </script>
 
@@ -20,7 +32,7 @@ export default {
             </router-link>
         </div>
         <div>
-            <button class="login-with-github-btn">
+            <button class="login-with-github-btn" @click="loginWithGithub">
                 <div class="github-icon-container"><img class="github-icon" src="../../../assets/image/GithubLogo.png" />
                 </div>
                 github으로 로그인
@@ -37,6 +49,11 @@ export default {
 </template>
 
 <style scoped>
+.login-with-github-btn {
+    text-decoration: none;
+    color: white;
+}
+
 a {
     text-decoration: underline;
     color: #8C8C8C;

@@ -124,7 +124,7 @@
 
 .comment-author:hover {
     text-decoration: underline;
-    text-decoration-color: #D9D9D9;
+    text-decoration-color: #82ACC1;
 }
 
 .comment-content {
