@@ -5,10 +5,7 @@ import com.project.helloworld.util.BaseTimeEntity;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +19,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "user")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -44,7 +42,7 @@ public class User extends BaseTimeEntity implements UserDetails {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "phone_number")
+  @Column(name = "phone_number", unique = true)
   private String phoneNumber;
 
   @Column(name = "bgm_url")

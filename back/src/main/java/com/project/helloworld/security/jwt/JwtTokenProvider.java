@@ -1,12 +1,9 @@
 package com.project.helloworld.security.jwt;
 
 import com.project.helloworld.dto.UserResponseDto;
-import com.project.helloworld.repository.UserRepository;
-import com.project.helloworld.security.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,13 +27,7 @@ public class JwtTokenProvider {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    public JwtTokenProvider(@Value("${app.auth.token.secret-key}")String secretKey) {
+    public JwtTokenProvider(@Value("${app.auth.token.secret-key}") String secretKey) {
         this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
@@ -71,8 +62,8 @@ public class JwtTokenProvider {
         return UserResponseDto.TokenInfo.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
-                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
+                .refreshTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
                 .build();
     }
 
@@ -96,6 +87,13 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
+    // token으로 userSeq 얻는 메소드
+    public Long getUserSeq(String token){
+        Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(getSignKey(SECRET_KEY)).build().parseClaimsJws(token);
+        String user_seq = String.valueOf(claims.getBody().get("userSeq"));
+        return Long.parseLong(user_seq);
+    }
+
     // 토큰 유효성, 만료시간 검사
     public Boolean validateToken(String token) {
         try {
@@ -111,6 +109,15 @@ public class JwtTokenProvider {
             log.info("JWT claims String is empty", e);
         }
         return false;
+    }
+
+    public Long getExpiration(String accessToken){
+        // accessToken 남은 시간
+        Date expiration = Jwts.parserBuilder().setSigningKey(getSignKey(SECRET_KEY)).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        
+        // 현재시간
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
     }
 
     // Access Token 만료시 갱신때 사용할 정보를 얻기 위해 Claim 리턴
