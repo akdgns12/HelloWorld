@@ -7,7 +7,6 @@
                 <img class="profile-img" src="@/assets/image/Person.png" alt="프로필 사진" />
                 <div class="select-profile-img-btn" for="file">사진 변경하기
                     <input type="file" style="display: none;" id="file" />
-
                 </div>
             </div>
             <ModalView>

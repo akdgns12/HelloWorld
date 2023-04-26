@@ -1,11 +1,29 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import {router} from './router/index.js'
+import { createApp } from 'vue';
+import App from './App.vue';
+import {router} from './router/index.js';
 import VueSplide from '@splidejs/vue-splide';
+import VueApexCharts from "vue3-apexcharts";
+import { plugin as VueTippy } from 'vue-tippy'
+import 'tippy.js/dist/tippy.css'
 
 //createApp(App).mount('#app')
 
 const app = createApp(App);
 app.use(router)
 app.use(VueSplide)
+app.use(VueApexCharts)
+app.use(
+    VueTippy,
+    // optional
+    {
+      directive: 'tippy', // => v-tippy
+      component: 'tippy', // => <tippy/>
+      componentSingleton: 'tippy-singleton', // => <tippy-singleton/>,
+      defaultProps: {
+        placement: 'auto-end',
+        allowHTML: true,
+      }, // => Global default options * see all props
+    }
+  )
+// app.component('apexChart', VueApexChart)
 app.mount("#app")

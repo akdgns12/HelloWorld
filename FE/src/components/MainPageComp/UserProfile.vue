@@ -90,8 +90,7 @@ a {
 .one-line-desc {
     margin-top: 3vh;
     color: #499DC6;
-    font-size: 12px;
-    /* zoom: 0.8; */
+    font-size: 13px;
     font-weight: bold;
 }
 
@@ -102,7 +101,6 @@ a {
     border: 1px solid #6A6A6A;
     border-radius: 3px;
     padding: 3px;
-    /* zoom: 0.8; */
 }
 
 .edit-and-history {

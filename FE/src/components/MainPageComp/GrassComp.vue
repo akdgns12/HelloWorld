@@ -2,7 +2,8 @@
     <svg class="grass" style="direction: ltr; margin-top: 4px;">
         <rect width="12" height="12" v-for="(grass, i) in grassInfo" :key="i" :x=17*parseInt(i/7) :y=15*(i%7) rx="2.5"
             stroke-width="0.5" fill="#82ACC1" :fill-opacity=0.25*(grass.boardList.length) 
-            stroke="#D9D9D9" class="grass-element" :id=grass.createDate @click="dateDetail" :boardList=grass.boardList>
+            stroke="#D9D9D9" class="grass-element" :id=grass.createDate @click="dateDetail" :boardList=grass.boardList
+            v-tippy="{ content: `${grass.createDate} 게시글 ${grass.boardList.length}개`, arrow: false, placement: 'right', }">
         </rect>
     </svg>
     <Teleport to="body">
@@ -37,10 +38,10 @@ export default {
         }
     },
     methods: {
-        dateDetail: function(e) {
+        dateDetail: async function(e) {
             e.preventDefault();
             this.date = e.target.id;
-            this.detailBoardList = e.target.getAttribute("boardList").split(",");
+            this.detailBoardList = await e.target.getAttribute("boardList").split(",");
             console.log(this.detailBoardList);
             this.showModal = true;
         }

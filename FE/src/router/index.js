@@ -10,6 +10,7 @@ import PasswordSearch from '@/views/UserView/findpw/FindPassword.vue'
 import MainPage from '@/views/MainPage.vue'
 import RegisterCharacter from '@/views/UserView/register/RegisterCharacter.vue'
 import ModifyUser from '@/views/UserView/modify/ModifyUser.vue'
+import Statistic from '@/views/StatisticView.vue'
 
 const routes = [
   {
@@ -62,6 +63,11 @@ const routes = [
     path: "/modify-user",
     name: "modify-user",
     component: ModifyUser,
+  },
+  {
+    path: "/statistic",
+    name: "statistic",
+    component: Statistic,
   }
 ];
 

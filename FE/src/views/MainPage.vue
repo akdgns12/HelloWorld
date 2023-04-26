@@ -25,7 +25,7 @@ export default {
         isLogined: async function () {
             const url = new URL(window.location.href)
             const authorizationCode = url.searchParams.get('code');
-            console.log(authorizationCode);
+            // console.log(authorizationCode);
             // var ret;
             var params = new URLSearchParams();
             params.append("client_id", "67e5f9075db550de602e");
