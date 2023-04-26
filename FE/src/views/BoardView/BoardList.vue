@@ -3,7 +3,7 @@
         <div id = "Board">
             <div>
                 <TodayCnt />
-                <BoardNav />
+                <BoardNav @categorySelected="onCategorySelected"/>
             </div>
             <div>
                 <div id = "boardheader">
@@ -11,7 +11,7 @@
                     <BGMComp />
                 </div>
                 <div id = "MainBoard">
-                    <BoardDetailComp/>
+                    <BoardListComp/>
                     <CategoryNav/>
                 </div>
             </div>
@@ -21,13 +21,18 @@
 
 <script>
 import BoardNav from "@/components/BoardComp/BoardNav.vue";
-import BoardDetailComp from "@/components/BoardComp/BoardDetailComp.vue";
+import BoardListComp from "@/components/BoardComp/BoardListComp.vue";
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue";
 import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue";
 import BGMComp from "@/components/BasicComp/BGMComp.vue";
 export default {
-    components : { BoardNav, BoardDetailComp, CategoryNav, TodayCnt, UserTitleComp, BGMComp },
+    components : { BoardNav, BoardListComp, CategoryNav, TodayCnt, UserTitleComp, BGMComp },
+    methods : {
+        onCateogrySelected(category) {
+            console.log('Selected category: ', category);
+        }
+    }
 };
 </script>
 
