@@ -4,6 +4,7 @@ import com.project.notify.domain.Notify;
 import com.project.notify.dto.NotifyDto;
 import com.project.notify.repository.NotifyRepository;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -40,7 +41,6 @@ public class NotifyController {
   }
 
   // 알림 버튼 눌렀을 때 알림 리스트들.
-  //@CrossOrigin
   @GetMapping(value = "/{userSeq}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<Notify> findByUser(@PathVariable Long userSeq) {
 
@@ -51,8 +51,7 @@ public class NotifyController {
   // 특정 이벤트에 따른 알림 메세지 데이터 추가
   @PostMapping("/post")
   public Mono<Notify> setMsg(@RequestBody Notify notify){
-    log.info("여기왔어");
-    notify.setCreatedTime(LocalDateTime.now());
+    notify.setCreatedTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
     return notifyRepository.save(notify).log(); //Object를 리턴하면 자동으로 JSON 변환 (MessageConverter)가 해줌
   }
 
