@@ -22,7 +22,7 @@ import reactor.core.scheduler.Schedulers;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/message")
 @Slf4j
 public class NotifyController {
   private final NotifyRepository notifyRepository;
@@ -50,7 +50,6 @@ public class NotifyController {
 
   // 특정 이벤트에 따른 알림 메세지 데이터 추가
   @PostMapping
-  @CrossOrigin
   public Mono<Notify> setMsg(@RequestBody Notify notify){
     notify.setCreatedTime(LocalDateTime.now());
     return notifyRepository.save(notify).log(); //Object를 리턴하면 자동으로 JSON 변환 (MessageConverter)가 해줌
