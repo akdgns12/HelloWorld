@@ -3,9 +3,7 @@
         <div class="grey-bg">
             <UserProfile />
             <MiniHomepage />
-            <div style="margin-top: 80px;">
                 <CategoryNav />
-            </div>
         </div>
 
     </div>
@@ -84,5 +82,7 @@ export default {
     background-color: #F0F0F0;
     border-radius: 10px;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

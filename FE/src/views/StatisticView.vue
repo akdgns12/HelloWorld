@@ -3,9 +3,7 @@
         <div class="grey-bg">
             <UserProfile />
             <StatisticPage />
-            <div style="margin-top: 80px;">
-                <CategoryNav />
-            </div>
+            <CategoryNav />
         </div>
 
     </div>

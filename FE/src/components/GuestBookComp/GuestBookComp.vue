@@ -1,62 +1,65 @@
 <template>
-    <div id = "guestBookWrapper">
-        <div id = "guestBook">
-            <GuestBookCreateComp/>
-            <div id = "guestBookList">
-                <div id="guestBookOne">
-                    <div id="guestBookHeader">
-                        <p class="GBWrite">
-                            <span class="GBWriter">이싸피</span>
-                            <img src="@/assets/icon/laptop.png" alt="laptop">
-                            <span class="GBCreatedDate">[2023.04.23 14:15]</span>
-                        </p>
-                        <p class="GBEditor">
-                            <span class="secret" style="font-weight: bold;">비밀로 하기</span>
-                            <span style="padding: 0 0.5vw 0 0.5vw;" class="secret">|</span>
-                            <span class="modify" style="font-weight: bold;">수정</span>
-                            <span style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
-                            <span class="delete" style="font-weight: bold;">삭제</span>
-                        </p>
-                    </div>
-                    <div id="guestBookMain">
-                        <img src="@/assets/minimi_temp/minime_1.png" alt="" class="guestMinime">
-                        <div class="guestBookContent">
-                            <span class="content">김싸피님 안녕하세요 일촌일촌!저희 일촌이예요! 안녕하세요!!! 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요</span>
-                        </div>
-                    </div>
-                    <div id = "guestBookComment">
-                        <input type="text" class="comment">
-                        <button class="commentCreate">확인</button>
-                    </div>
-                </div>
-                <div id="guestBookOne">
-                    <div id="guestBookHeader" style="background-color : #FFEFD3; border-top : solid 1px #E29714;">
-                        <p class="GBWrite">
-                            <span class="GBWriter">choi싸피</span>
-                            <img src="@/assets/icon/laptop.png" alt="laptop">
-                            <span class="GBCreatedDate">[2023.04.23 14:15]</span>
-                        </p>
-                        <p class="GBEditor">
-                            <span class="modify" style="font-weight: bold;">수정</span>
-                            <span style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
-                            <span class="delete" style="font-weight: bold;">삭제</span>
-                        </p>
-                    </div>
-                    <div id="guestBookMain">
-                        <img src="@/assets/minimi_temp/minime_2.png" alt="" class="guestMinime">
-                        <div class="guestBookContent">
-                            <p class="isSecret">
-                                <img src="@/assets/icon/lock.png" alt="" class="lock_icon">
-                                <span style="color : #AC6B19; padding : 0 0.3vw 0 0.3vw;">비밀이야</span>
-                                <span style="color : #D7AA71">(이 글은 홈 주인과 작성자만 볼 수 있어요)</span>
+    <div id = "Wrapper">
+        <UserTitleComp />
+        <div id = guestBookWrapper>
+            <div id = "guestBook">
+                <GuestBookCreateComp/>
+                <div id = "guestBookList">
+                    <div id="guestBookOne">
+                        <div id="guestBookHeader">
+                            <p class="GBWrite">
+                                <span class="GBWriter">이싸피</span>
+                                <img src="@/assets/icon/laptop.png" alt="laptop">
+                                <span class="GBCreatedDate">[2023.04.23 14:15]</span>
                             </p>
-                            <span class="content">
-                                김ᄊトㅍı님 생일 축㈛합LI⊂ト! ㄴr중øłl 口ざㄴr요!</span>
+                            <p class="GBEditor">
+                                <span class="secret" style="font-weight: bold;">비밀로 하기</span>
+                                <span style="padding: 0 0.5vw 0 0.5vw;" class="secret">|</span>
+                                <span class="modify" style="font-weight: bold;">수정</span>
+                                <span style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
+                                <span class="delete" style="font-weight: bold;">삭제</span>
+                            </p>
+                        </div>
+                        <div id="guestBookMain">
+                            <img src="@/assets/minimi_temp/minime_1.png" alt="" class="guestMinime">
+                            <div class="guestBookContent">
+                                <span class="content">김싸피님 안녕하세요 일촌일촌!저희 일촌이예요! 안녕하세요!!! 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요</span>
+                            </div>
+                        </div>
+                        <div id = "guestBookComment">
+                            <input type="text" class="comment">
+                            <button class="commentCreate">확인</button>
                         </div>
                     </div>
-                    <div id = "guestBookComment" style = "background-color: #FFEFD3;">
-                        <input type="text" class="comment">
-                        <button class="commentCreate">확인</button>
+                    <div id="guestBookOne">
+                        <div id="guestBookHeader" style="background-color : #FFEFD3; border-top : solid 1px #E29714;">
+                            <p class="GBWrite">
+                                <span class="GBWriter">choi싸피</span>
+                                <img src="@/assets/icon/laptop.png" alt="laptop">
+                                <span class="GBCreatedDate">[2023.04.23 14:15]</span>
+                            </p>
+                            <p class="GBEditor">
+                                <span class="modify" style="font-weight: bold;">수정</span>
+                                <span style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
+                                <span class="delete" style="font-weight: bold;">삭제</span>
+                            </p>
+                        </div>
+                        <div id="guestBookMain">
+                            <img src="@/assets/minimi_temp/minime_2.png" alt="" class="guestMinime">
+                            <div class="guestBookContent">
+                                <p class="isSecret">
+                                    <img src="@/assets/icon/lock.png" alt="" class="lock_icon">
+                                    <span style="color : #AC6B19; padding : 0 0.3vw 0 0.3vw;">비밀이야</span>
+                                    <span style="color : #D7AA71">(이 글은 홈 주인과 작성자만 볼 수 있어요)</span>
+                                </p>
+                                <span class="content">
+                                    김ᄊトㅍı님 생일 축㈛합LI⊂ト! ㄴr중øłl 口ざㄴr요!</span>
+                            </div>
+                        </div>
+                        <div id = "guestBookComment" style = "background-color: #FFEFD3;">
+                            <input type="text" class="comment">
+                            <button class="commentCreate">확인</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,23 +69,23 @@
 
 <script>
 import GuestBookCreateComp from '@/components/GuestBookComp/GuestBookCreateComp.vue';
+import UserTitleComp from "../BasicComp/UserTitleComp.vue";
 
 export default {
-components : {GuestBookCreateComp},
+components : {GuestBookCreateComp, UserTitleComp},
 };
 </script>
 
 <style scoped>
+    #Wrapper {
+        padding-top : 40px;
+    }
     #guestBookWrapper {
-        height: 72vh;
-        width : 60vw;
-        border-style : solid;
-        border-width : 0.2vh;
-        border-radius : 2vh;
-        border-color: black;
+        height: 75vh;
+        width : 62vw;
+        border: 1px solid #6A6A6A;
+        border-radius : 15px;
         background-color: white;
-        padding : 2vh;
-        margin-left : 2vh;
         display : flex;
         justify-content: center;
         align-items: center;
@@ -92,8 +95,7 @@ components : {GuestBookCreateComp},
         width : 90vw;
         padding : 0 2vw 0 2vw;
         margin : 0 1vw 0 1vw;
-        overflow : scroll;
-        overflow-x : hidden;
+        overflow-y : scroll;
     }
     /* 방명록 하나 CSS */
     #guestBookOne {

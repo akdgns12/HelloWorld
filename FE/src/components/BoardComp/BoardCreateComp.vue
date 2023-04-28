@@ -1,31 +1,34 @@
 <template>
     <div id = "boardmain">
-        <div id ="boardheader">
-            <input type="text" placeholder="제목 쓰기">
-            <select name="boardCategory" id="boardCategory">
-                <option value="cs">CS</option>
-                <option value="algorithm">Algorithm</option>
-                <option value="pjt">PJT</option>
-            </select>
-        </div>
-        <div id="boardMD">
-            <VMarkdownEditor 
-                id = "mdeditor"
-                v-model="content"
-                locale="en"
-                :upload-action="handleUpload"
-            />
-        </div>
-        <div id="boardfooter">
-            <div id="boardOpen">
-                <p>공개 설정</p>
-                <select name="boardOpen">
-                    <option value="all">전체 공개</option>
-                    <option value="onlyfriend">일촌 공개</option>
-                    <option value="onlyme">비공개</option>
+        <UserTitleComp />
+        <div class="boardWrapper">
+            <div id ="boardheader">
+                <input type="text" placeholder="제목 쓰기">
+                <select name="boardCategory" id="boardCategory">
+                    <option value="cs">CS</option>
+                    <option value="algorithm">Algorithm</option>
+                    <option value="pjt">PJT</option>
                 </select>
             </div>
-            <button>글쓰기</button>
+            <div id="boardMD">
+                <VMarkdownEditor 
+                    id = "mdeditor"
+                    v-model="content"
+                    locale="en"
+                    :upload-action="handleUpload"
+                />
+            </div>
+            <div id="boardfooter">
+                <div id="boardOpen">
+                    <p>공개 설정</p>
+                    <select name="boardOpen">
+                        <option value="all">전체 공개</option>
+                        <option value="onlyfriend">일촌 공개</option>
+                        <option value="onlyme">비공개</option>
+                    </select>
+                </div>
+                <button>글쓰기</button>
+            </div>
         </div>
     </div>
 </template>
@@ -34,6 +37,8 @@
 import {ref} from 'vue'
 import { VMarkdownEditor } from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
+import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+
 const content = ref('')
 const handleUpload = (file) => {
     console.log(file)
@@ -43,15 +48,14 @@ const handleUpload = (file) => {
 
 <style scoped>
     #boardmain {
-        height: 72vh;
-        width : 60vw;
-        border-style : solid;
-        border-width : 0.2vh;
-        border-radius : 2vh;
-        border-color: black;
+        padding-top : 40px;
+    }
+    .boardWrapper {
+        height: 75vh;
+        width : 62vw;
+        border: 1px solid #6A6A6A;
+        border-radius : 15px;
         background-color: white;
-        padding : 2vh;
-        margin-left : 2vh;
     }
     #boardheader{
         display : flex;

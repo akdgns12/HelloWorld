@@ -1,19 +1,10 @@
 <template>
     <div id = "line">
         <div id = "Board">
-            <div>
-                <TodayCnt />
-                <BoardNav @categorySelected="onCategorySelected"/>
-            </div>
-            <div>
-                <div id = "boardheader">
-                    <UserTitleComp />
-                    <BGMComp />
-                </div>
-                <div id = "MainBoard">
-                    <BoardDetailComp/>
-                    <CategoryNav/>
-                </div>
+            <BoardNav @categorySelected="onCategorySelected"/>
+            <div id = "MainBoard">
+                <BoardDetailComp/>
+                <CategoryNav/>
             </div>
         </div>
     </div>
@@ -23,11 +14,8 @@
 import BoardNav from "@/components/BoardComp/BoardNav.vue";
 import BoardDetailComp from "@/components/BoardComp/BoardDetailComp.vue";
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue";
-import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
-import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue";
-import BGMComp from "@/components/BasicComp/BGMComp.vue";
 export default {
-    components : { BoardNav, BoardDetailComp, CategoryNav, TodayCnt, UserTitleComp, BGMComp },
+    components : { BoardNav, BoardDetailComp, CategoryNav},
     methods : {
         onCateogrySelected(category) {
             console.log('Selected category: ', category);
@@ -39,30 +27,24 @@ export default {
 
 <style scoped>
     #line {
-        border-radius : 2vh;
-        border-style: dashed;
-        border-color: black;
-        margin : 4vh 3vw 4vh 3vw;
-        padding : 2vh 0 2vh 0;
+        width: 90vw;
         height: 90vh;
+        margin: 0 auto;
+        margin-top: 5vh;
+        border: 3px dashed #6A6A6A;
+        border-radius: 10px;
     }
 
     #Board {
         display : flex;
         align-items: center;
         justify-content: center;
-        background-color: #E5E5E5;
-        padding : 4vh 0.5vw 4vh 0.5vw;
-        margin : 0 1vw 0 1vw;
-        border-radius : 2vh;
-        height : 82vh;
-    }
-
-    #boardheader {
-        display: flex; 
-        justify-content: space-between;
-        margin : 0 10vw 0 3vw;
-        align-items: center;
+        width: 88vw;
+        height: 86vh;
+        margin: 0 auto;
+        margin-top: 2vh;
+        background-color: #F0F0F0;
+        border-radius: 10px;
     }
     #MainBoard{
         display : flex;

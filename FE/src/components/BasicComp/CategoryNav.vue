@@ -31,6 +31,7 @@ a {
 }
     #category {
         height: 72vh;
+        margin-top : 4rem;
     }
 
     ul {

@@ -1,101 +1,41 @@
 <template>
     <div id = "boardmain">
-        <div id = "categoryinfo">
-            <p id = "folder">[전체보기]</p>
-            <p style="font-size:1.3vw"> 폴더입니다</p>
-            <p id = "cnt">(26)</p>
-        </div>
-        <div id="boardlist">
-            <table>
-                <thead>
-                    <tr id = "boardheader">
-                        <th id = "boardNum">번호</th>
-                        <th id = "boardTitle">제목</th>
-                        <th id = "boardWriter">작성자</th>
-                        <th id = "boardDate">작성일</th>
-                        <th id = "boardCnt">조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id = "boardNum">10</td>
-                        <td id = "boardTitle" @click="goDetail()">Git 이슈 정리</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">9</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">8</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">7</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">6</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">5</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">4</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">3</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">2</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                    <tr>
-                        <td id = "boardNum">1</td>
-                        <td id = "boardTitle">싸이월드 구현하기 프로젝트</td>
-                        <td id = "boardWriter">김싸피</td>
-                        <td id = "boardDate">2023.04.19</td>
-                        <td id = "boardCnt">5</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div id = "writeboard">
-                <button @click="WriteBoard()">글쓰기</button>
+        <UserTitleComp />
+        <div class="boardWrapper">
+            <div id = "categoryinfo">
+                <p id = "folder">[전체보기]</p>
+                <p style="font-size:1rem"> 폴더입니다</p>
+                <p id = "cnt">(26)</p>
             </div>
-            <div id = "searchboard">
-                <p>검색</p>
-                <input type="search">
-                <button @click="searchBoard">확인</button>
+            <div id="boardlist">
+                <table>
+                    <thead>
+                        <tr id = "boardheader">
+                            <th id = "boardNum">번호</th>
+                            <th id = "boardTitle">제목</th>
+                            <th id = "boardWriter">작성자</th>
+                            <th id = "boardDate">작성일</th>
+                            <th id = "boardCnt">조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr v-for="board in visibleBoards" :key="board.boardSeq">
+                            <td id = "boardNum">{{ board.boardSeq }}</td>
+                            <td id = "boardTitle" @click="goDetail()">{{ board.title }}</td>
+                            <td id = "boardWriter">{{ board.nickname }}</td>
+                            <td id = "boardDate">{{ board.createdTime.slice(0,10) }}</td>
+                            <td id = "boardCnt">{{ board.cnt }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id = "writeboard">
+                    <button @click="WriteBoard()">글쓰기</button>
+                </div>
+                <div id = "searchboard">
+                    <p>검색</p>
+                    <input type="search">
+                    <button @click="searchBoard">확인</button>
+                </div>
             </div>
         </div>
     </div>
@@ -103,6 +43,9 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import { defineProps, reactive, computed } from 'vue';
+import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+
 const router = useRouter();
 const WriteBoard = () => {
     router.push({
@@ -115,29 +58,67 @@ const goDetail = () => {
         path:"/board/detail",
     })
 }
+
+const props = defineProps({
+    category : String,
+});
+const state = reactive ({
+    boards: [
+        // {boardSeq : 20, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 19, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 18, userSeq : 20, nickname : '한싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 17, userSeq : 20, nickname : '한싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 16, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 15, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 14, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 13, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 12, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
+        // {boardSeq : 11, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 10, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 9, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 8, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 7, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 6, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 5, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 4, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 3, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 2, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
+        {boardSeq : 1, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
+    ]
+});
+
+const visibleBoards = computed(() => {
+    console.log(props.category, "BoardListComp");
+    if (props.category === "all") {
+        return state.boards;
+    } else {
+        return state.boards.filter(
+            (board) => Number(board.categoryId) === props.category
+        );
+    }
+});
 </script>
 
 <style scoped>
     #boardmain {
-        height: 72vh;
-        width : 60vw;
-        border-style : solid;
-        border-width : 0.2vh;
-        border-radius : 2vh;
-        border-color: black;
+        padding-top : 40px;
+    }
+    .boardWrapper {
+        height: 75vh;
+        width : 62vw;
+        border: 1px solid #6A6A6A;
+        border-radius : 15px;
         background-color: white;
-        padding : 2vh;
-        margin-left : 2vh;
     }
     #folder {
-        font-size : 1.3vw;
+        font-size : 1rem;
         font-weight:bold;
-        margin : 0 0.5vw 0 0.5vw;
+        margin : 0 0.2rem;
     }
     #cnt {
-        font-size : 1vw;
+        font-size : 0.8rem;
         color : #D7AA71;
-        margin-left : 0.5vw;
+        margin-left : 0.3rem;
     }
     #categoryinfo {
         display: flex;
@@ -155,31 +136,31 @@ const goDetail = () => {
         margin: 0 0.5vw 0 0.5vw;
         width : 90%;
         padding : 0 3vw 0 3vw;
+        font-size : 1rem;
     }
     #boardheader {
         background-color: #F2F2F2;
-        font-size : 1.2vw;
         font-weight : bolder;
     }
     th {
-        padding: 0.5vh 0 0.5vh 0;
+        padding: 0.3rem 0;
     }
     td{
-        border-bottom : dashed 0.1vw #6A6A6A;
-        padding : 0.6vh 0 0.6vh 0;
+        border-bottom : dashed 0.05rem #6A6A6A;
+        padding : 0.25rem 0;
     }
 
     #writeboard{
         width : 80%;
         display: flex;
         justify-content: right;
-        padding : 1vw;
+        padding : 1rem;
         
     }
     button {
         background-color: white;
-        border-radius: 0.5vh;
-        font-size : 1.7vh;
+        border-radius: 5px;
+        font-size : 1rem;
         border-color : #6A6A6A;
         margin : 1px;
     }
@@ -189,10 +170,10 @@ const goDetail = () => {
         width : 65%;
         justify-content: space-between;
         align-items: center;
-        margin : 1vh;
+        margin : 0.1rem;
     }
     input {
-        width : 30vw;
+        width : 27rem;
         height: 4vh;
         background-color: #FFF9F9;
         border : 0;

@@ -1,25 +1,31 @@
 <template>
-    <div class="wrap">
-        <router-link to="/mainpage">
-            <div id="username">김싸피 님의 미니홈피</div>
-        </router-link>
-        <div class="follow-request-btn" id="show-modal" @click="showModal = true">
-            일촌 신청
+    <div class="wrapper">
+        <div>
+            <div class="wrap">
+                <router-link to="/mainpage">
+                    <div id="username">김싸피 님의 미니홈피</div>
+                </router-link>
+                <div class="follow-request-btn" id="show-modal" @click="showModal = true">
+                    일촌 신청
+                </div>
+            </div>
+            <Teleport to="body">
+                <modal :show="showModal" @close="showModal = false">
+                    <template #header>
+                        <h3>custom header</h3>
+                    </template>
+                </modal>
+            </Teleport>
         </div>
+        <BGMComp />
     </div>
-    <Teleport to="body">
-        <modal :show="showModal" @close="showModal = false">
-            <template #header>
-                <h3>custom header</h3>
-            </template>
-        </modal>
-    </Teleport>
 </template>
 
 <script>
 import Modal from '@/components/FollowComp/FollowRequestModal.vue'
+import BGMComp from '@/components/BasicComp/BGMComp.vue'
 export default {
-    components: { Modal },
+    components: { Modal, BGMComp },
     data() {
         return {
             showModal: false,
@@ -29,6 +35,12 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right : 5rem;
+}
 a {
     text-decoration: none;
     color: #499DC6;

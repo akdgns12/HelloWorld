@@ -1,25 +1,28 @@
 <template>
     <div id="boardDetail">
-        <div id = "boardWrapper">
-            <div id = "boardTitle">Git 이슈 정리</div>
-            <div id = "boardInfo">
-                <p id="author">김싸피</p>
-                <p id="createdDate">2023.04.19 09:29</p>
-            </div>
-            <div id="boardContent">
-                <img src="../../assets/boardboard.png" alt="">
-            </div>
-            <div id="boardFooter">
-                <p id="sticker">스티커</p>
-                <div id="boardUD">
-                    <p id="boardUpdate">수정</p>
-                    <p>|</p>
-                    <p id="boardDelete">삭제</p>
+        <UserTitleComp />
+        <div id="Wrapper">
+            <div id = "boardWrapper">
+                <div id = "boardTitle">Git 이슈 정리</div>
+                <div id = "boardInfo">
+                    <p id="author">김싸피</p>
+                    <p id="createdDate">2023.04.19 09:29</p>
                 </div>
-            </div>
-            <div id = "comment">
-                <CommentListComp />
-                <CommentCreateComp/>
+                <div id="boardContent">
+                    <img src="../../assets/boardboard.png" alt="">
+                </div>
+                <div id="boardFooter">
+                    <p id="sticker">스티커</p>
+                    <div id="boardUD">
+                        <p id="boardUpdate">수정</p>
+                        <p>|</p>
+                        <p id="boardDelete">삭제</p>
+                    </div>
+                </div>
+                <div id = "comment">
+                    <CommentListComp />
+                    <CommentCreateComp/>
+                </div>
             </div>
         </div>
     </div>
@@ -29,23 +32,24 @@
 <script>
 import CommentListComp from '@/components/BoardComp/CommentComp/CommentListComp.vue'
 import CommentCreateComp from '@/components/BoardComp/CommentComp/CommentCreateComp.vue'
+import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+
 export default {
-    components : {CommentListComp, CommentCreateComp},
+    components : {CommentListComp, CommentCreateComp, UserTitleComp},
 };
 </script>
 
 <style scoped>
     #boardDetail {
-        height: 72vh;
-        width : 60vw;
-        border-style : solid;
-        border-width : 0.2vh;
-        border-radius : 2vh;
-        border-color: black;
+        padding-top : 40px;
+    }
+    #Wrapper {
+        height: 75vh;
+        width : 62vw;
+        border: 1px solid #6A6A6A;
+        border-radius : 15px;
         background-color: white;
-        padding : 2vh;
-        margin-left : 2vh;
-        display : flex;
+        display: flex;
         justify-content: center;
         align-items: center;
     }
