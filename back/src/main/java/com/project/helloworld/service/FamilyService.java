@@ -23,4 +23,6 @@ public interface FamilyService {
     public ResponseEntity<?> updateFamilyRelationComment(FamilyCommentBody familyCommentBody) throws Exception;
 
     public ResponseEntity<?> updateFamilyRelationName(FamilyNameBody familyNameBody) throws Exception;
+
+    public ResponseEntity<?> randomWind(Long userSeq) throws Exception;
 }

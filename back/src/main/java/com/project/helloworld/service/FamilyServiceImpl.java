@@ -155,4 +155,16 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
 
+    @Override
+    public ResponseEntity<?> randomWind(Long userSeq) throws Exception {
+
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : "+userSeq));
+        List<Family> families = user.getFamilies();
+        List<Long> familiesSeq = families.stream().map(x -> x.getFamilyUserSeq()).collect(Collectors.toList());
+       int index = (int)(Math.random()*familiesSeq.size());
+        User newUser = userRepository.findById(familiesSeq.get(index)).orElseThrow(() -> new Exception("not exist user : "+userSeq));
+        return ResponseEntity.ok().body(newUser);
+    }
+
+
 }

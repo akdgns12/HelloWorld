@@ -80,6 +80,11 @@ public class familyController {
 
 
 
+    // 랜덤 파도타기 ㅋㅋㅋ
+    @GetMapping("/random")
+    ResponseEntity<?> randomWind(@RequestParam Long userSeq) throws Exception {
+        return ResponseEntity.ok().body(familyService.randomWind(userSeq));
+    }
 
 
 

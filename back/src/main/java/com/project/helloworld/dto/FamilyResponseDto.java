@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class FamilyResponseDto {
 
 
+    private Long familySeq;
 
     private String relationName;
 
@@ -24,7 +25,7 @@ public class FamilyResponseDto {
 
 
     public FamilyResponseDto(Family family) {
-
+        this.familySeq = family.getFamilySeq();
         this.relationName = family.getRelationName();
         this.relationComment = family.getRelationComment();
         this.familyUserSeq = family.getFamilyUserSeq();
