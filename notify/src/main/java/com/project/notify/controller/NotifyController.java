@@ -22,7 +22,7 @@ import reactor.core.scheduler.Schedulers;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/message")
+@RequestMapping
 @Slf4j
 public class NotifyController {
   private final NotifyRepository notifyRepository;
