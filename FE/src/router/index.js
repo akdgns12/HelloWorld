@@ -27,11 +27,13 @@ const routes = [
     path: "/join",
     name: "join",
     component: RegisterUser,
+    props: true,
   },
   {
     path: "/register-character",
     name: "register-character",
     component: RegisterCharacter,
+    props: true,
   },
   {
     path: "/find-pw",

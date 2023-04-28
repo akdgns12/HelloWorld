@@ -76,7 +76,7 @@ export default {
 .weekly-today {
     text-align: start;
     color: #6A6A6A;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-left: 3%;
     margin-top: 2%;

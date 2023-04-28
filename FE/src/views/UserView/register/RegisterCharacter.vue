@@ -592,17 +592,19 @@
     </div>
     <div class="button-group">
         <button class="cancel-btn" @click="this.$router.push({ path: '/join' })">이전</button>
-        <button class="next-btn" @click="saveAvatar">완료</button>
+        <button class="next-btn" @click="join">완료</button>
     </div>
 </template>
 
 <script>
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 import html2canvas from 'html2canvas';
+import http from '@/api/http';
 // Default theme
 import '@splidejs/vue-splide/css';
 export default {
     name: 'RegisterCharacter',
+    props: ['email', 'password', 'userName', 'nickname'],
     component:
     {
         Splide,
@@ -636,8 +638,8 @@ export default {
         changeHair: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/hair/pixil-layer-" + e.target.id + ".png");
-            if(this.hairSrc==path) {
-                this.hairSrc=null;
+            if (this.hairSrc == path) {
+                this.hairSrc = null;
             }
             else {
                 this.hairSrc = path;
@@ -646,8 +648,8 @@ export default {
         changePet: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/pet/pixil-layer-" + e.target.id + ".png");
-            if(this.petSrc==path) {
-                this.petSrc=null;
+            if (this.petSrc == path) {
+                this.petSrc = null;
             }
             else {
                 this.petSrc = path;
@@ -656,8 +658,8 @@ export default {
         changeEmotion: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/emotion/pixil-layer-" + e.target.id + ".png");
-            if(this.emotionSrc==path) {
-                this.emotionSrc=null;
+            if (this.emotionSrc == path) {
+                this.emotionSrc = null;
             }
             else {
                 this.emotionSrc = path;
@@ -666,8 +668,8 @@ export default {
         changeShirt: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/shirt/pixil-layer-" + e.target.id + ".png");
-            if(this.shirtSrc==path) {
-                this.shirtSrc=null;
+            if (this.shirtSrc == path) {
+                this.shirtSrc = null;
             }
             else {
                 this.shirtSrc = path;
@@ -676,19 +678,37 @@ export default {
         changePants: function (e) {
             e.preventDefault();
             var path = require("@/assets/image/pants/pixil-layer-" + e.target.id + ".png");
-            if(this.pantsSrc==path) {
-                this.pantsSrc=null;
+            if (this.pantsSrc == path) {
+                this.pantsSrc = null;
             }
             else {
                 this.pantsSrc = path;
             }
         },
-        saveAvatar: function () {
-            html2canvas(document.querySelector("#my-character-container")).then(canvas => {
-                document.body.appendChild(canvas);
+        join: async function () {
+            var userAvatar;
+            await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
+                userAvatar = canvas.toDataURL();
             });
+            var user= {
+                email: this.email,
+                name: this.userName,
+                nickname: this.nickname,
+                password: this.password,
+                userAvatar: userAvatar,
+            }
+            console.log(user);
+            http.post(`/user/signUp`, user).then(
+                (response)=> {
+                    console.log(response);
+                    this.$router.push({name: 'login'});
+                },
+                (error)=> {
+                    console.log(error);
+                }
+            )
         }
-    }
+    },
 
 }
 </script>
@@ -708,6 +728,7 @@ a {
     margin: 0 auto;
     display: flex;
     justify-content: space-evenly;
+    width: 98%;
 }
 
 .hair-element-container {
@@ -1015,4 +1036,5 @@ a {
 .next-btn:hover {
     transform: scale(1.05);
     transition: 0.5s;
-}</style>
+}
+</style>

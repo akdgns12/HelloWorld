@@ -3,7 +3,7 @@
         <rect width="12" height="12" v-for="(grass, i) in grassInfo" :key="i" :x=17*parseInt(i/7) :y=15*(i%7) rx="2.5"
             stroke-width="0.5" fill="#82ACC1" :fill-opacity=0.25*(grass.boardList.length) 
             stroke="#D9D9D9" class="grass-element" :id=grass.createDate @click="dateDetail" :boardList=grass.boardList
-            v-tippy="{ content: `${grass.createDate} 게시글 ${grass.boardList.length}개`, arrow: false, placement: 'right', }">
+            v-tippy="{ content: `${grass.createDate} 게시글 ${grass.boardList.length}개 작성`, arrow: false, placement: 'right' }">
         </rect>
     </svg>
     <Teleport to="body">

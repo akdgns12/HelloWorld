@@ -2,17 +2,18 @@
 // import axios from "axios";
 export default {
     name: 'LoginOption',
-    methods: {loginWithGithub: function() {
-    //     try {
-    //     var response = await axios.get("/github.com/login/oauth/authorize?client_id=67e5f9075db550de602e");
-    //     console.log(response);
-    // } catch (error) {
-    //   console.error(error);
+    methods: {
+        loginWithGithub: function () {
+            //     try {
+            //     var response = await axios.get("/github.com/login/oauth/authorize?client_id=67e5f9075db550de602e");
+            //     console.log(response);
+            // } catch (error) {
+            //   console.error(error);
 
-    // }
-    window.location.assign("https://github.com/login/oauth/authorize?client_id=67e5f9075db550de602e");
+            // }
+            window.location.assign("http://k8a308.p.ssafy.io/oauth2/authorize/github");
+        }
     }
-}
 }
 </script>
 
@@ -39,7 +40,9 @@ export default {
             </button>
         </div>
         <div class="other-option">
-            <router-link to="/find-pw"><div class="pw-search">비밀번호 찾기</div></router-link>
+            <router-link to="/find-pw">
+                <div class="pw-search">비밀번호 찾기</div>
+            </router-link>
             <div>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
             <router-link to="/join">
                 <div class="join">회원가입</div>
@@ -134,6 +137,7 @@ a {
     transform: scale(1.05);
     transition: 0.5s;
 }
+
 .github-icon-container {
     width: 30px;
     height: 20px;
@@ -166,6 +170,4 @@ a {
 .login-with-github {
     text-decoration: underline;
     cursor: pointer;
-}
-
-</style>
+}</style>

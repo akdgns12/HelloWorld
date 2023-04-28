@@ -17,7 +17,7 @@ export default {
         <form>
             <div class="id-container">
                 <div class="id">이메일</div>
-                <input class="id-input" type="email"/>
+                <input class="id-input" type="email" />
             </div>
             <div class="pw-container">
                 <div class="pw">비밀번호</div>

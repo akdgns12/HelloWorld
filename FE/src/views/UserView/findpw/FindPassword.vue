@@ -103,6 +103,7 @@ a {
     color: white;
     font-weight: 500;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .get-new-pw-btn:hover {

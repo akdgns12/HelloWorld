@@ -65,7 +65,7 @@ export default {
 .my-post {
     text-align: start;
     color: #6A6A6A;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-left: 6%;
     margin-top: 5%;
