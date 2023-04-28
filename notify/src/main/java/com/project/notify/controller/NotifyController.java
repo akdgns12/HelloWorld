@@ -28,7 +28,7 @@ public class NotifyController {
   private final NotifyRepository notifyRepository;
 
   //[완료] 알림 리스트 중 특정 알림 클릭을 할 때 읽음 처리하기.
-  @PutMapping
+  @PutMapping("/put")
   public Mono<Notify> readStateChange(@RequestBody NotifyDto notifyIdx){
     return notifyRepository.findById(notifyIdx.getNotifySeq())
         .switchIfEmpty(Mono.error(new Exception("TASK_NOT_FOUND")))
@@ -49,14 +49,15 @@ public class NotifyController {
   }
 
   // 특정 이벤트에 따른 알림 메세지 데이터 추가
-  @PostMapping
+  @PostMapping("/post")
   public Mono<Notify> setMsg(@RequestBody Notify notify){
+    log.info("여기왔어");
     notify.setCreatedTime(LocalDateTime.now());
     return notifyRepository.save(notify).log(); //Object를 리턴하면 자동으로 JSON 변환 (MessageConverter)가 해줌
   }
 
   //삭제
-  @DeleteMapping
+  @DeleteMapping("/delete")
   public Mono<Notify> deleteChange(@RequestBody NotifyDto notifyIdx){
     return notifyRepository.findById(notifyIdx.getNotifySeq())
         .switchIfEmpty(Mono.error(new Exception("TASK_NOT_FOUND")))
