@@ -695,7 +695,7 @@ export default {
                 name: this.userName,
                 nickname: this.nickname,
                 password: this.password,
-                phonenum: this.phonenum,
+                phoneNumber: this.phonenum,
                 // userAvatar: userAvatar,
             }
             console.log(user);

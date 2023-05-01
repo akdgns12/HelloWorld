@@ -54,6 +54,11 @@
                     </div>
                 </div>
                 <div class="user-info-container">
+                    <div class="logout-user-btn" @click="logout">
+                        로그아웃
+                    </div>
+                </div>
+                <div class="user-info-container">
                     <div class="modify-user-btn">
                         수정
                     </div>
@@ -64,17 +69,37 @@
 </template>
 
 <script>
+import http from '@/api/httpWithAccessToken';
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
 export default {
     components: { UserTitleComp },
-    // methods: {
-    //     play(sound) {
-    //         if (sound) {
-    //             var audio = new Audio(sound);
-    //             audio.play();
-    //         }
-    //     }
-    // }
+    methods: {
+        logout: async function () {
+            var tokens = {
+                accessToken: window.localStorage.getItem('access-token'),
+                refreshToken: window.localStorage.getItem('refresh-token'),
+            }
+            console.log(tokens);
+            http.post(`/user/logout`, tokens).then(
+                (response) => {
+                    console.log(response);
+                    window.localStorage.removeItem("access-token");
+                    window.localStorage.removeItem("user-seq");
+                    this.$router.push({ name: 'before-login' });
+                },
+                (error) => {
+                    console.log(error);
+                    alert("로그아웃 실패!");
+                }
+            )
+        }
+        // play(sound) {
+        //     if (sound) {
+        //         var audio = new Audio(sound);
+        //         audio.play();
+        //     }
+        // }
+    }
 }
 
 </script>
@@ -157,6 +182,16 @@ export default {
 }
 
 .delete-user-btn {
+    cursor: pointer;
+    font-size: 12px;
+    color: #CC0000;
+    text-decoration: underline;
+    text-align: start;
+    width: 10vw;
+    font-weight: bold;
+}
+
+.logout-user-btn {
     cursor: pointer;
     font-size: 12px;
     color: #CC0000;

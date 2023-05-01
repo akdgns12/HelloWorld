@@ -1,6 +1,35 @@
 <script>
+import http from '@/api/http';
 export default {
     name: 'LogIn',
+    data() {
+        return {
+            email: null,
+            password: null,
+        };
+    },
+    methods: {
+        login: async function () {
+            var user = {
+                email: this.email,
+                password: this.password,
+            }
+            console.log(user);
+            http.post(`/user/signIn`, JSON.stringify(user)).then(
+                (response) => {
+                    console.log(response);
+                    window.localStorage.setItem("access-token", response.data.data.accessToken);
+                    window.localStorage.setItem("refresh-token", response.data.data.refreshToken);
+                    window.localStorage.setItem("user-seq", response.data.data.userSeq);
+                    this.$router.push({ name: 'mainpage' });
+                },
+                (error) => {
+                    console.log(error);
+                    alert("로그인 실패!");
+                }
+            )
+        }
+    }
 }
 </script>
 
@@ -11,24 +40,28 @@ export default {
                 <router-link to="/"><img class="logo-img" src="../../../assets/image/Logo.png" alt="logo" /></router-link>
             </div>
             <div class="person">
-                <router-link to="/"><img class="person-img" src="../../../assets/image/Person.png" alt="logo" /></router-link>
+                <router-link to="/"><img class="person-img" src="../../../assets/image/Person.png"
+                        alt="logo" /></router-link>
             </div>
         </div>
         <form>
             <div class="id-container">
                 <div class="id">이메일</div>
-                <input class="id-input" type="email" />
+                <input class="id-input" type="email" v-model="email" />
             </div>
             <div class="pw-container">
                 <div class="pw">비밀번호</div>
-                <input class="pw-input" type="password" />
+                <input class="pw-input" type="password" v-model="password" />
             </div>
-        </form>
-        <router-link to="/mainpage"><button class="login-btn">로그인</button></router-link>
+        </form><button class="login-btn" @click="login">로그인</button>
         <div class="other-option">
-            <router-link to="/find-pw"><div class="pw-search">비밀번호 찾기</div></router-link>
+            <router-link to="/find-pw">
+                <div class="pw-search">비밀번호 찾기</div>
+            </router-link>
             <div>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-            <router-link to="/join"><div class="join">회원가입</div></router-link>
+            <router-link to="/join">
+                <div class="join">회원가입</div>
+            </router-link>
             <div>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
             <div class="login-with-github">github으로 로그인</div>
         </div>
@@ -37,9 +70,10 @@ export default {
 
 <style scoped>
 a {
-  text-decoration: underline;
-  color: #8C8C8C;
+    text-decoration: underline;
+    color: #8C8C8C;
 }
+
 .wrapper {
     margin-top: 6%;
 }
@@ -164,5 +198,4 @@ a {
 .login-with-github {
     text-decoration: underline;
     cursor: pointer;
-}
-</style>
+}</style>

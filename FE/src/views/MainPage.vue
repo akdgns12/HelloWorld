@@ -18,59 +18,42 @@
 import UserProfile from "@/components/MainPageComp/UserProfile.vue"
 import MiniHomepage from "@/components/MainPageComp/MiniHompage.vue"
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue"
-// import http from "@/api/http";
-import axios from "axios"
+import http from "@/api/httpWithAccessToken";
+// import axios from "axios"
 import 'url-search-params-polyfill';
 
 export default {
     components: { UserProfile, MiniHomepage, CategoryNav, },
     methods: {
-        isLogined: async function () {
-            const url = new URL(window.location.href)
-            const authorizationCode = url.searchParams.get('code');
-            // console.log(authorizationCode);
-            // var ret;
-            var params = new URLSearchParams();
-            params.append("client_id", "67e5f9075db550de602e");
-            params.append("client_secret", "6c9aee8228c4c7293b41193c772fdf97ca80888e");
-            params.append("code", authorizationCode);
-            // var userInfo = JSON.stringify(
-            //     {
-            //         client_id: "67e5f9075db550de602e",
-            //         client_secret: "6c9aee8228c4c7293b41193c772fdf97ca80888e",
-            //         code: authorizationCode,
-            //     }
-            // )
-            // console.log(userInfo);
-            var response = await axios.post(`https://github.com/login/oauth/access_token`, params, {
-                headers: {
-                    Accept: "application/json",
+        getUser: async function () {
+            // var userAvatar;
+            // await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
+            //     userAvatar = canvas.toDataURL();
+            // });ole.log(user);
+            http.get(`/user/userInfo/${window.localStorage.getItem("user-seq")}`).then(
+                (response)=> {
+                    console.log(response);
+                },
+                (error)=> {
+                    console.log(error);
                 }
-            }).then().catch();
-            const access_token = response.data.access_token;
-
-            params = new URLSearchParams();
-            params.append("access_token", access_token);
-            var response2 = await axios.get(`https://api.github.com/user`, {
-                headers: {
-                    authorization: `token ${access_token}`,
-                }
-            }
             )
-            console.log(response2);
-            console.log(response2.data.login + " 계정으로 로그인 성공!!!!!!!")
-        }
+        },
+        // getGrass: async function () {
+        //     http.get(`/grass?startDate=2022-01-01&endDate=2023-05-01`).then(
+        //         (response)=> {
+        //             console.log(response);
+        //         },
+        //         (error)=> {
+        //             console.log(window.localStorage.getItem('access-token'))
+        //             console.log(error);
+        //         }
+        //     )
+        // }
     },
     mounted() {
-        this.isLogined();
-    },
-    // created() {
-    //     (function () { var w = window; if (w.ChannelIO) { return w.console.error("ChannelIO script included twice."); } var ch = function () { ch.c(arguments); }; ch.q = []; ch.c = function (args) { ch.q.push(args); }; w.ChannelIO = ch; function l() { if (w.ChannelIOInitialized) { return; } w.ChannelIOInitialized = true; var s = document.createElement("script"); s.type = "text/javascript"; s.async = true; s.src = "https://cdn.channel.io/plugin/ch-plugin-web.js"; var x = document.getElementsByTagName("script")[0]; if (x.parentNode) { x.parentNode.insertBefore(s, x); } } if (document.readyState === "complete") { l(); } else { w.addEventListener("DOMContentLoaded", l); w.addEventListener("load", l); } })();
-
-    //     window.ChannelIO('boot', {
-    //         "pluginKey": "acbc3cce-55f3-4812-89d5-823845c119bd"
-    //     });
-    // }
+        // this.getGrass();
+    }
 };
 </script>
 

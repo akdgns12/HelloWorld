@@ -2,14 +2,17 @@
 export default {
     name: "RedirectHandler",
     methods: {
-        getAuthCode: function() {
-            window.location.assign("https://https://k8a308.p.ssafy.io/oauth2/authorize/github?redirect_uri=http://localhost:8080/mainpage");
+        getAuthCode: function () {
+            const urlParams = new URL(location.href).searchParams;
+            const access_token = urlParams.get('token');
+            console.log(access_token);
+            localStorage.setItem("access-token", access_token);
+            this.$router.push("mainpage");
         }
     },
     mounted() {
         this.getAuthCode();
     }
-
 }
 </script>
 
@@ -17,5 +20,4 @@ export default {
     <div>HI</div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
