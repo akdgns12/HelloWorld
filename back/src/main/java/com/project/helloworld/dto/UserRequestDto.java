@@ -60,7 +60,8 @@ public class UserRequestDto {
     @Setter
     public static class ChangePassword{
         private Long userSeq;
-        private String password;
+        private String originPassword;
+        private String changePassword;
     }
 
     @Getter
@@ -84,5 +85,12 @@ public class UserRequestDto {
         private String accessToken;
         @NotEmpty(message = "refreshToken을 입력해야 합니다.")
         private String refreshToken;
+    }
+
+    @Getter
+    @Setter
+    public static class OauthSignIn{
+        private String email;
+        private String password;
     }
 }

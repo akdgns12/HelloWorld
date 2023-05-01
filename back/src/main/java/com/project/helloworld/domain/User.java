@@ -1,6 +1,7 @@
 package com.project.helloworld.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.helloworld.security.oauth2.AuthProvider;
 import com.project.helloworld.util.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -48,8 +49,11 @@ public class User extends BaseTimeEntity implements UserDetails {
   @Column(name = "bgm_url")
   private String bgmUrl;
 
-  @Column(name = "provider")
-  private int provider;
+  @Enumerated(EnumType.STRING)
+  private AuthProvider authProvider;
+
+  @Column(name = "providerId")
+  private String providerId;
 
   @Column(name = "today")
   private int today;
