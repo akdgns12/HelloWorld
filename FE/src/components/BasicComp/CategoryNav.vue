@@ -44,8 +44,7 @@ a {
         width : 4.5vw;
         border-style: solid;
         border-radius : 0 1vw 1vw 0;
-        border-color : black;
-        border-width : 0.2vh;
+        border: 1px solid #6A6A6A;
         border-left : 0;
         margin-bottom : 1.5vh;
         background-color: #499DC6;

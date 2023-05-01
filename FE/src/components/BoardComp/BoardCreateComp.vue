@@ -7,7 +7,9 @@
                 <select name="boardCategory" id="boardCategory">
                     <option value="cs">CS</option>
                     <option value="algorithm">Algorithm</option>
-                    <option value="pjt">PJT</option>
+                    <option value="pjt">Project</option>
+                    <option value="pjt">Language</option>
+                    <option value="pjt">Etc</option>
                 </select>
             </div>
             <div id="boardMD">
@@ -19,14 +21,6 @@
                 />
             </div>
             <div id="boardfooter">
-                <div id="boardOpen">
-                    <p>공개 설정</p>
-                    <select name="boardOpen">
-                        <option value="all">전체 공개</option>
-                        <option value="onlyfriend">일촌 공개</option>
-                        <option value="onlyme">비공개</option>
-                    </select>
-                </div>
                 <button>글쓰기</button>
             </div>
         </div>
@@ -47,22 +41,27 @@ const handleUpload = (file) => {
 </script>
 
 <style scoped>
-    #boardmain {
+    /* #boardmain {
         padding-top : 40px;
-    }
+    } */
     .boardWrapper {
         height: 75vh;
         width : 62vw;
         border: 1px solid #6A6A6A;
         border-radius : 15px;
         background-color: white;
+        display : flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     #boardheader{
         display : flex;
         justify-content: space-between;
+        align-items: center;
         padding : 0 3vw 0 3vw;
-        margin : 5vh 0 1vh 0;
-        width : 90%;
+        margin : 5vh 0 0.1rem 0;
+        width : 45rem;
     }
 
     input {
@@ -75,23 +74,24 @@ const handleUpload = (file) => {
         appearance: none; */
     }
     #boardMD {
-        width : 100%;
+        width : 45rem;
         height: 80%;
         display: flex;
         justify-content: center;
         align-items: center;
     }
     #mdeditor{
-        width : 90%;
-        height: 90%;;
+        width : 100%;
+        height: 95%;
     }
 
     #boardfooter {
         display : flex;
-        justify-content: space-between;
+        justify-content: right;
         align-items: center;
-        padding : 0 3vw 0 3vw;
-        width : 90%;
+        width : 45rem;
+        font-size : 0.9rem;
+        margin-bottom : 0.4rem;
     }
     #boardOpen {
         display: flex;
@@ -104,15 +104,16 @@ const handleUpload = (file) => {
         margin: 0 1vw 0 1vw;
     }
     p {
-        font-size : 1vw;
+        font-size : 0.9rem;
         font-weight: bold;
     }
     button {
         background-color: #499DC6;
         color : white;
-        font-size : 1vw;
-        width : 10%;
-        border-radius: 0.8vh;
+        font-size : 0.9rem;
+        width : 4rem;
+        border-radius: 5px;
+        border : 2px solid;
     }
 
     option {

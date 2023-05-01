@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-        <div class="blank"></div>
+        <!-- <div class="blank"></div> -->
         <UserTitleComp />
         <div class="right-body">
             <TodayChart />

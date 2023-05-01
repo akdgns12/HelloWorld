@@ -40,6 +40,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     margin-right : 5rem;
+    align-items: end;
 }
 a {
     text-decoration: none;

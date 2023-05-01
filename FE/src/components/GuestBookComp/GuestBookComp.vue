@@ -77,9 +77,9 @@ components : {GuestBookCreateComp, UserTitleComp},
 </script>
 
 <style scoped>
-    #Wrapper {
+    /* #Wrapper {
         padding-top : 40px;
-    }
+    } */
     #guestBookWrapper {
         height: 75vh;
         width : 62vw;

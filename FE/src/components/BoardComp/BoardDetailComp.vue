@@ -11,8 +11,17 @@
                 <div id="boardContent">
                     <img src="../../assets/boardboard.png" alt="">
                 </div>
-                <div id="boardFooter">
-                    <p id="sticker">스티커</p>
+                <div class="boardFooter">
+                    <div class="checkSticker">
+                        <p class="sticker">스티커</p>
+                        <div class="sub_nav">
+                            <p>좋아요</p>
+                            <p style="padding : 0 0.3rem;">|</p>
+                            <p>도움되요</p>
+                            <p style="padding : 0 0.3rem;">|</p>
+                            <p>이해가 쏙쏙되요</p>
+                        </div>
+                    </div>
                     <div id="boardUD">
                         <p id="boardUpdate">수정</p>
                         <p>|</p>
@@ -40,9 +49,9 @@ export default {
 </script>
 
 <style scoped>
-    #boardDetail {
+    /* #boardDetail {
         padding-top : 40px;
-    }
+    } */
     #Wrapper {
         height: 75vh;
         width : 62vw;
@@ -54,19 +63,19 @@ export default {
         align-items: center;
     }
     #boardWrapper {
-        height: 90%;
-        width : 90%;
+        height: 85%;
+        width : 87%;
         overflow : scroll;
         overflow-x: hidden;
         padding : 0 2% 0 2%;
     }
     #boardTitle {
-        height: 5%;
+        height: 1rem;
         background-color: #F2F2F2;
         display : flex;
         justify-content: center;
         align-items: center;
-        font-size : 130%;
+        font-size : 1.2rem;
         font-weight: bold;
         padding : 1%;
         border-style: solid;
@@ -77,7 +86,7 @@ export default {
     }
     #boardInfo {
         display : flex;
-        height: 5%;
+        height: 0.9rem;
         justify-content: space-between;
         align-items: center;
         padding : 1% 3% 1% 3%;
@@ -85,25 +94,40 @@ export default {
     }
     #author {
         color : #82ACC1;
-        font-size : 120%;
+        font-size : 0.9rem;
     }
     #createdDate {
-        font-size : 110%;
+        font-size : 0.8rem;
     }
-    #boardFooter{
+    .boardFooter{
         display : flex;
         flex-direction: row;
         justify-content: space-between;
         border-top : dashed black 1px;
         border-bottom : solid black 1px;
         margin : 2% 0 2% 0;
-        padding : 0 3% 0 3%;
-        font-size : 90%;
+        padding : 0 2rem;
+        font-size : 0.8rem;
     }
-
-    #sticker {
+    .sticker {
         color : #D7AA71;
         font-weight: bold;
+    }
+    .checkSticker {
+        display: flex;
+        flex-direction : row;
+        align-items: center;
+    }
+
+    .sub_nav {
+        display: flex;
+        flex-direction: row;
+        margin-left : 1rem;
+        visibility: hidden;
+    }
+    .sticker:hover > .sub_nav {
+        visibility: visible;
+        transition: visibility 0s, opacity 0.5s ease;
     }
 
     #boardUD {
@@ -123,6 +147,6 @@ export default {
         flex-direction: column;
         align-items: center;
         text-align :justify;
-        padding : 1% 0 1% 0;
+        padding : 1rem 0 0.5rem 0;
     }
 </style>

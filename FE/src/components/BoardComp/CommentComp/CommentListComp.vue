@@ -25,17 +25,20 @@
 
 <style scoped>
     #commentList {
-        margin : 2% 1% 0 1%;
         width : 94%;
     }
     #commentAuthor {
         width : auto;
         color : #82ACC1;
         font-weight: bold;
+        font-size : 0.9rem;
+    }
+    #commentContent {
+        font-size : 0.8rem;
     }
     img {
-        width : 2%;
-        height: 2%;
+        width : 0.8rem;
+        height: 0.8rem;
         padding : 0 0.5% 0 1%;
         margin-top : 1%;
         opacity: 0.7;

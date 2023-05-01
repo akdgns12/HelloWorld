@@ -15,11 +15,11 @@
         width : 94%;
         justify-content: space-between;
         align-items: center;
-        margin : 1%;
+        font-size : 0.9rem;
     }
     input {
         width : 80%;
-        height: 3vh;
+        height: 1.5rem;
         background-color: #FFF9F9;
         border : 0;
     }

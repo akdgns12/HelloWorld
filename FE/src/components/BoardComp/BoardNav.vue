@@ -6,18 +6,18 @@
             <hr>
             <div id="category">
                 <div id = "Allcategory" :class="{ active: selectedCategory === 'all' }"
-                @click="handleClick('all')">
+                @click="handleClick('all')" style="cursor: pointer;">
                     전체보기
                 </div>
                 <div v-for="category in categories" :key="category.id">
                     <img src="../../assets/icon/folder.png" alt="">
                     <p :class="{ active: selectedCategory === category.id }"
-                    @click="handleClick(category.id)">{{ category.name }}</p>
+                    @click="handleClick(category.id)" style="cursor: pointer;">{{ category.name }}</p>
                 </div>
                 <div>
                     <img src="../../assets/icon/share.png" alt="">
                     <p :class="{ active: selectedCategory === 5 }"
-                    @click="handleClick(5)">퍼간글</p>
+                    @click="handleClick(5)" style="cursor: pointer;">퍼간글</p>
                 </div>
             </div>
         </div>

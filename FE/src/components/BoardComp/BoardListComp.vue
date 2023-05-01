@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody >
-                        <tr v-for="board in visibleBoards" :key="board.boardSeq">
+                        <tr v-for="board in visibleBoards" :key="board.boardSeq" style="cursor: pointer;">
                             <td id = "boardNum">{{ board.boardSeq }}</td>
                             <td id = "boardTitle" @click="goDetail()">{{ board.title }}</td>
                             <td id = "boardWriter">{{ board.nickname }}</td>
@@ -32,7 +32,7 @@
                     <button @click="WriteBoard()">글쓰기</button>
                 </div>
                 <div id = "searchboard">
-                    <p>검색</p>
+                    <p style="font-size:0.9rem;">검색</p>
                     <input type="search">
                     <button @click="searchBoard">확인</button>
                 </div>
@@ -100,15 +100,16 @@ const visibleBoards = computed(() => {
 </script>
 
 <style scoped>
-    #boardmain {
+    /* #boardmain {
         padding-top : 40px;
-    }
+    } */
     .boardWrapper {
         height: 75vh;
         width : 62vw;
         border: 1px solid #6A6A6A;
         border-radius : 15px;
         background-color: white;
+        
     }
     #folder {
         font-size : 1rem;
@@ -124,7 +125,7 @@ const visibleBoards = computed(() => {
         display: flex;
         justify-content: right;
         align-items:baseline;
-        margin : 1vh 3vw 1vh 0;
+        margin : 1rem 3vw 1vh 0;
     }
     #boardlist {
         display:flex;
@@ -136,7 +137,7 @@ const visibleBoards = computed(() => {
         margin: 0 0.5vw 0 0.5vw;
         width : 90%;
         padding : 0 3vw 0 3vw;
-        font-size : 1rem;
+        font-size : 0.95rem;
     }
     #boardheader {
         background-color: #F2F2F2;
@@ -154,13 +155,13 @@ const visibleBoards = computed(() => {
         width : 80%;
         display: flex;
         justify-content: right;
-        padding : 1rem;
+        padding : 0.5rem;
         
     }
     button {
         background-color: white;
         border-radius: 5px;
-        font-size : 1rem;
+        font-size : 0.9rem;
         border-color : #6A6A6A;
         margin : 1px;
     }
@@ -170,11 +171,11 @@ const visibleBoards = computed(() => {
         width : 65%;
         justify-content: space-between;
         align-items: center;
-        margin : 0.1rem;
+        margin-bottom : 0.5rem;
     }
     input {
         width : 27rem;
-        height: 4vh;
+        height: 1.8rem;
         background-color: #FFF9F9;
         border : 0;
     }

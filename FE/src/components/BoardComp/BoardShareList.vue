@@ -51,9 +51,9 @@ export default {
 
 
 <style scoped>
-    .boardWrapper {
+    /* .boardWrapper {
         padding-top : 40px;
-    }
+    } */
     .shareWrapper {
         height: 75vh;
         width : 62vw;
