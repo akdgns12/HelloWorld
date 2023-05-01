@@ -4,7 +4,6 @@ import com.project.helloworld.domain.User;
 import com.project.helloworld.dto.*;
 import com.project.helloworld.repository.UserRepository;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
-import com.project.helloworld.security.oauth2.AuthProvider;
 import com.project.helloworld.util.Authority;
 import com.project.helloworld.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService{
                 .name(signUp.getName())
                 .phoneNumber(signUp.getPhoneNumber())
                 .roles(Collections.singletonList(Authority.ROLE_USER.name()))
-                .authProvider(AuthProvider.local)
+                .provider(1)
                 .build();
         userRepository.save(user);
 
@@ -142,9 +141,8 @@ public class UserServiceImpl implements UserService{
                 .total(user.getTotal())
                 .bgmUrl(user.getBgmUrl())
                 .backgroundUrl(user.getBackgroundUrl())
+                .provider(user.getProvider())
                 .avatar(user.getAvatar())
-                .providerId(user.getProviderId())
-                .authProvider(user.getAuthProvider())
                 .build();
 
         return response.success(userInfo, "유저 정보가 조회되었습니다.", HttpStatus.OK);
@@ -169,9 +167,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<?> changePassword(UserRequestDto.ChangePassword changePassword) throws Exception {
         User user = userRepository.findByUserSeq(changePassword.getUserSeq()).orElseThrow(()-> new Exception("해당하는 유저가 없습니다" + changePassword.getUserSeq()));
-        if(passwordEncoder.matches(changePassword.getOriginPassword(), user.getPassword())){ // 비밀번호가 일치하면
+        if(passwordEncoder.matches(changePassword.getPassword(), user.getPassword())){ // 비밀번호가 일치하면
             // 입력받은 비밀번호로 변경
-            user.setPassword(passwordEncoder.encode(changePassword.getChangePassword()));
+            user.setPassword(passwordEncoder.encode(changePassword.getPassword()));
             userRepository.save(user);
         }
 
