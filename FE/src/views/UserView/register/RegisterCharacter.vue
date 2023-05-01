@@ -598,13 +598,13 @@
 
 <script>
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
-import html2canvas from 'html2canvas';
+// import html2canvas from 'html2canvas';
 import http from '@/api/http';
 // Default theme
 import '@splidejs/vue-splide/css';
 export default {
     name: 'RegisterCharacter',
-    props: ['email', 'password', 'userName', 'nickname'],
+    props: ['email', 'password', 'userName', 'nickname', 'phonenum'],
     component:
     {
         Splide,
@@ -686,19 +686,20 @@ export default {
             }
         },
         join: async function () {
-            var userAvatar;
-            await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
-                userAvatar = canvas.toDataURL();
-            });
+            // var userAvatar;
+            // await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
+            //     userAvatar = canvas.toDataURL();
+            // });
             var user= {
                 email: this.email,
                 name: this.userName,
                 nickname: this.nickname,
                 password: this.password,
-                userAvatar: userAvatar,
+                phonenum: this.phonenum,
+                // userAvatar: userAvatar,
             }
             console.log(user);
-            http.post(`/user/signUp`, user).then(
+            http.post(`/user/signUp`, JSON.stringify(user)).then(
                 (response)=> {
                     console.log(response);
                     this.$router.push({name: 'login'});
@@ -709,7 +710,6 @@ export default {
             )
         }
     },
-
 }
 </script>
 
