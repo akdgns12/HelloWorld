@@ -2,6 +2,7 @@ package com.project.notify.repository;
 
 import com.project.notify.domain.Notify;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.data.mongodb.repository.Tailable;
@@ -17,7 +18,10 @@ public interface NotifyRepository extends ReactiveMongoRepository<Notify, String
     @Query("{receiveUserSeq: ?0, deleted: false}")
     Flux<Notify> findByUser(Long receiveUserSeq);
 
+
+
     @Query("{notifySeq: ?0, deleted: false}")
     Mono<Notify> findByNotifySeq(String notifySeq);
+
 
 }
