@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.10'
+	id 'org.springframework.boot' version '2.7.12-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -16,18 +16,14 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
 }
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	// OAuth 추가
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	// AppProperties
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
 	// 유효성 검사
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -45,11 +41,6 @@ dependencies {
 	//Kafka
 	implementation 'org.springframework.kafka:spring-kafka'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
-	// 이메일 인증 관련 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-	// SMS 인증 관련
-	implementation 'net.nurigo:sdk:4.2.7'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
