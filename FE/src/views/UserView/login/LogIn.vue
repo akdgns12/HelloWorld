@@ -198,4 +198,5 @@ a {
 .login-with-github {
     text-decoration: underline;
     cursor: pointer;
-}</style>
+}
+</style>

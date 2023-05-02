@@ -42,7 +42,7 @@ export default {
             }
             console.log(tokens);
             http.post(`/user/logout`, JSON.stringify(tokens)).then(
-                (response) => {
+                function(response) {
                     console.log(response);
                     window.localStorage.removeItem("access-token");
                     window.localStorage.removeItem("user-seq");
