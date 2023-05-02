@@ -8,6 +8,9 @@
                 <router-link to="/board" class="nav-link">게시글</router-link>
             </li>
             <li class="navitem">
+                <router-link to="/community" class="nav-link">커뮤니티</router-link>
+            </li>
+            <li class="navitem">
                 <router-link to="/guestbook" class="nav-link">방명록</router-link>
             </li>
             <li class="navitem">

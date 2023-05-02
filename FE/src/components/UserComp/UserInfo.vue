@@ -77,10 +77,9 @@ export default {
         logout: async function () {
             var tokens = {
                 accessToken: window.localStorage.getItem('access-token'),
-                refreshToken: window.localStorage.getItem('refresh-token'),
             }
             console.log(tokens);
-            http.post(`/user/logout`, tokens).then(
+            http.post(`/user/logout`, JSON.stringify(tokens)).then(
                 (response) => {
                     console.log(response);
                     window.localStorage.removeItem("access-token");

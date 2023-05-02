@@ -75,13 +75,11 @@ export default {
     color: #82ACC1;
     font-size: 12px;
     font-weight: 600;
-    /* zoom: 0.8; */
 }
 
 .request-msg {
     color: #6A6A6A;
     font-size: 12px;
-    /* zoom: 0.8; */
 }
 
 .profile-img-container {

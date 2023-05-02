@@ -3,7 +3,7 @@
         <div id = "Board">
             <UserProfile />
             <div id = "MainBoard">
-                <StatisticComp/>
+                <CommunityComp/>
                 <CategoryNav/>
             </div>
         </div>
@@ -12,11 +12,11 @@
 
 <script>
 import UserProfile from "@/components/MainPageComp/UserProfile.vue"
-import StatisticComp from "@/components/StatisticComp/StatisticMain.vue"
+import CommunityComp from "@/components/CommunityComp/CommunityMain.vue"
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue"
 
 export default {
-    components: { UserProfile, StatisticComp, CategoryNav },
+    components: { UserProfile, CommunityComp, CategoryNav },
 };
 </script>
 

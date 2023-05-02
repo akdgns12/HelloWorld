@@ -7,6 +7,7 @@ import { plugin as VueTippy } from "vue-tippy";
 import "tippy.js/dist/tippy.css";
 import timeago from 'vue-timeago3';
 import { ko } from 'date-fns/locale';
+import Tabs from 'vue3-tabs';
 
 //createApp(App).mount('#app')
 
@@ -21,9 +22,9 @@ const timeagoOptions = {
     locale: ko,
 }
 
-app.use(router)
-app.use(VueSplide)
-app.use(VueApexCharts)
+app.use(router);
+app.use(VueSplide);
+app.use(VueApexCharts);
 app.use(
   VueTippy,
   // optional
@@ -37,6 +38,7 @@ app.use(
     }, // => Global default options * see all props
   }
 );
+app.use(Tabs);
 // app.component('apexChart', VueApexChart)
 
 app.use(timeago, timeagoOptions)

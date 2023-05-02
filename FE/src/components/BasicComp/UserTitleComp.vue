@@ -39,7 +39,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-right : 5rem;
+    /* margin-right : 5rem; */
     align-items: end;
 }
 a {
