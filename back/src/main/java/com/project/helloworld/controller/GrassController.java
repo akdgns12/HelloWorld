@@ -20,9 +20,9 @@ public class GrassController {
 
     private final GrassService grassService;
     @GetMapping("")
-    public ResponseEntity<?> getGrass( @RequestParam("startDate") String startDate , @RequestParam("endDate") String endDate){
+    public ResponseEntity<?> getGrass( @RequestParam("startDate") String startDate , @RequestParam("endDate") String endDate,@RequestParam("userSeq") Long userSeq){
         //        Long userSeq = jwtTokenProvider.getUserSeq(token);
-        Long userSeq = 1L;
+//        Long userSeq = 1L;
         LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE);
         LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
 

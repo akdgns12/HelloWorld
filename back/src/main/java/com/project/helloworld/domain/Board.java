@@ -36,6 +36,9 @@ public class Board extends BaseTimeEntity{
   @Column(name = "img_url")
   private String imgUrl;
 
+  @Column(name="view_cnt")
+  private int viewCnt;
+
   @Column(name = "like_cnt")
   private int likeCnt;
 
@@ -50,18 +53,18 @@ public class Board extends BaseTimeEntity{
   private User user;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "board")
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
   List<Comment> comments = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "board")
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
   List<Grass> grasses = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "board")
+  @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
   List<Sticker> stickers = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "board")
+  @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
   List<BookMark> bookMarks = new ArrayList<>();
 }

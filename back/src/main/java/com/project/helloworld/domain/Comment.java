@@ -25,14 +25,17 @@ public class Comment extends BaseTimeEntity {
   @Column(name = "comment_seq")
   private Long commentSeq;
 
-  @Column(name = "user_seq")
-  private Long userSeq;
+
 
   @Column(name = "content")
   private String content;
 
   @Column(name = "date")
   private Date date;
+
+  @JoinColumn(name = "user_seq",nullable = false)
+  @ManyToOne(fetch=FetchType.LAZY)
+  private User user;
 
   @JoinColumn(name = "board_seq", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)

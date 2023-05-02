@@ -77,12 +77,15 @@ public class FamilyServiceImpl implements FamilyService {
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : " + userSeq));
         Family family = Family.builder().relationName(fromRelationName).isAccepted(1).user(user).familyUserSeq(toUserSeq).requestMessage("호호호").
                 build();
-        familyRepository.save(family);
+        Family newFamilySaved = familyRepository.save(family);
         // 반대방향도 저장
         User userReverse = userRepository.findById(toUserSeq).orElseThrow(() -> new Exception("not exist user: " + toUserSeq));
         Family familyReverse = Family.builder().relationName(toRelationName).isAccepted(0).user(userReverse).familyUserSeq(userSeq).requestMessage("호호호").build();
-        familyRepository.save(familyReverse);
-        MessageResponse messageResponse = MessageResponse.builder().message("요청을 보냈습니다.").build();
+       familyRepository.save(familyReverse);
+        MessageResponse messageResponse = MessageResponse.builder().type(3).typeSeq(newFamilySaved.getFamilySeq())
+                .title(newFamilySaved.getUser().getName()+"님이 친구 요청을 하였습니다.").content(newFamilySaved.getRequestMessage())
+                .receiveUserSeq(newFamilySaved.getUser().getUserSeq())
+                .build();
         return ResponseEntity.ok().body(messageResponse);
     }
 
@@ -95,7 +98,7 @@ public class FamilyServiceImpl implements FamilyService {
                 .familyUserSeq(family.getFamilyUserSeq()).isAccepted(2).familyUserNickname(family.getFamilyUserNickname())
                 .requestMessage(family.getRequestMessage()).user(family.getUser())
                 .build();
-        familyRepository.save(newFamily);
+        Family newFamilySaved = familyRepository.save(newFamily);
         // 반대 방향도 수락 해야지 familySeq 구한다음
         Long familySeqReverse = familyRepository.findByUsers(family.getFamilyUserSeq(),family.getUser().getUserSeq());
         // 그다음 진행
@@ -107,7 +110,10 @@ public class FamilyServiceImpl implements FamilyService {
                 .requestMessage(family.getRequestMessage()).user(familyReverse.getUser())
                 .build();
         familyRepository.save(newFamilyReverse);
-        MessageResponse messageResponse = MessageResponse.builder().message("일촌 수락 하셨습니다.").build();
+        MessageResponse messageResponse = MessageResponse.builder().type(4).typeSeq(newFamilySaved.getUser().getUserSeq())
+                .title(newFamilySaved.getUser().getName()+"님이 일촌 수락 하였습니다.")
+                .content("일촌 수락했습니다~~")
+                .build();
 
         return ResponseEntity.ok().body(messageResponse);
     }
@@ -122,7 +128,7 @@ public class FamilyServiceImpl implements FamilyService {
         familyRepository.deleteById(familySeq);
         // 역방향
         familyRepository.deleteById(familySeqReverse);
-        MessageResponse messageResponse = MessageResponse.builder().message("일촌이 끊어졌습니다.").build();
+        MessageResponse messageResponse = MessageResponse.builder().type(-1).title("일촌이 끊어졌습니다.").build();
         return ResponseEntity.ok().body(messageResponse);
     }
 
@@ -136,8 +142,11 @@ public class FamilyServiceImpl implements FamilyService {
                 .familyUserSeq(family.getFamilyUserSeq()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
                 .requestMessage(family.getRequestMessage()).user(family.getUser())
                 .build();
-        familyRepository.save(newFamily);
-        MessageResponse messageResponse = MessageResponse.builder().message("일촌평이 수정되었습니다.").build();
+        Family newFamilySaved = familyRepository.save(newFamily);
+        MessageResponse messageResponse = MessageResponse.builder().type(0).typeSeq(newFamilySaved.getFamilySeq())
+                .title("일촌평이 수정되었습니다.").content(newFamilySaved.getRelationComment())
+                .receiveUserSeq(newFamilySaved.getUser().getUserSeq())
+                .build();
         return ResponseEntity.ok().body(messageResponse);
     }
 
@@ -149,8 +158,10 @@ public class FamilyServiceImpl implements FamilyService {
                         .familyUserSeq(family.getFamilyUserSeq()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
                         .requestMessage(family.getRequestMessage()).user(family.getUser())
                 .build();
-        familyRepository.save(newFamily);
-        MessageResponse messageResponse = MessageResponse.builder().message("일촌명이 수정되었습니다.").build();
+        Family newFamilySaved = familyRepository.save(newFamily);
+        MessageResponse messageResponse = MessageResponse.builder().type(-1).typeSeq(newFamilySaved.getFamilySeq())
+                .title("일촌명이 수정되었습니다.").content(newFamilySaved.getRelationName())
+                .receiveUserSeq(newFamilySaved.getUser().getUserSeq()).build();
         return ResponseEntity.ok().body(messageResponse);
     }
 
