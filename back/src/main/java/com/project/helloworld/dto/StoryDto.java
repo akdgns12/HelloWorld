@@ -38,15 +38,6 @@ public class StoryDto implements Serializable {
                 '}';
     }
 
-
-    public StoryDto(Guestbook guestBook, Long userSeq ){
-        this.boardSeq = guestBook.getGuestbookSeq();
-        this.title = guestBook.getContent();
-        this.imgUrl = "asdf";
-        this.writerSeq = guestBook.getUser().getUserSeq();
-        this.nickname = guestBook.getUser().getNickname();
-        this.userSeq = userSeq;
-    }
     public StoryDto(Board board, User writer, Long userSeq){
         this.boardSeq = board.getBoardSeq();
         this.title = board.getTitle();
@@ -55,7 +46,6 @@ public class StoryDto implements Serializable {
         this.nickname = writer.getNickname();
         this.userSeq = userSeq;
         this.isRead = false;
-
     }
 
 }

@@ -37,11 +37,11 @@ public class StoryServiceImpl implements StoryService{
     @Override
     public ResponseEntity<?> getAllStory(Long userSeq) throws Exception {
         log.info("user_seq: {}", userSeq);
-//        User user = userRepository.selectUserByEmail(email).orElseThrow(() -> new Exception("not exist user:" + email));
         User user = userRepository.findById(userSeq).orElse(userRepository.save(new User(userSeq)));
         LocalDateTime now = LocalDateTime.now();
 
         List<Story> stories = user.getStories();
+
         List<StoryDto> existStories = stories.stream()
                 .filter(x->Duration.between(x.getCreateTime(),now).toHours() < 24).map(y->new StoryDto(y,user.getUserSeq()))
                 .collect(Collectors.toList());
@@ -61,7 +61,7 @@ public class StoryServiceImpl implements StoryService{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Story story = optionalStory.get();
-        story.setIsRead(0x01);
+        story.setIsRead(1);
         return new ResponseEntity<>(new StoryResponseDto(storyRepository.save(story)), HttpStatus.OK);
     }
 }
