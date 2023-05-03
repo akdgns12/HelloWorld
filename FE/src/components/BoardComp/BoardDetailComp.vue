@@ -8,8 +8,12 @@
                     <p id="author">김싸피</p>
                     <p id="createdDate">2023.04.19 09:29</p>
                 </div>
-                <div id="boardContent">
-                    <img src="../../assets/boardboard.png" alt="">
+                <div class="temp">
+                    <VMarkdownView 
+                        :mode="mode"
+                        :content="content"
+                        class="vm-view"
+                    />
                 </div>
                 <div class="boardFooter">
                     <div class="checkSticker">
@@ -23,6 +27,8 @@
                         </div>
                     </div>
                     <div id="boardUD">
+                        <p id="boardShare">퍼가기</p>
+                        <p>|</p>
                         <p id="boardUpdate">수정</p>
                         <p>|</p>
                         <p id="boardDelete">삭제</p>
@@ -38,22 +44,83 @@
 </template>
 
 
-<script>
+<script setup>
 import CommentListComp from '@/components/BoardComp/CommentComp/CommentListComp.vue'
 import CommentCreateComp from '@/components/BoardComp/CommentComp/CommentCreateComp.vue'
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+import { ref } from 'vue';
+import { VMarkdownView }  from 'vue3-markdown';
+import 'vue3-markdown/dist/style.css';
 
-export default {
-    components : {CommentListComp, CommentCreateComp, UserTitleComp},
-};
+const mode = ref('light');
+
+const content = ref(`## Markdown Basic Syntax
+
+I just love **bold text**. Italicized text is the _cat's meow_. At the command prompt, type \`nano\`.
+
+My favorite markdown editor is [vue3-markdown](https://www.npmjs.com/package/vue3-markdown).
+
+1. First item
+2. Second item
+3. Third item
+
+> Dorothy followed her through many of the beautiful rooms in her castle.
+
+\`\`\`js
+import { ref } from 'vue'
+import { VMarkdownEditor } from 'vue3-markdown'
+import 'vue3-markdown/dist/style.css'
+
+const handleUpload = (file) => {
+  console.log(file)
+  return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
+}
+\`\`\`
+
+## GFM Extended Syntax
+
+Automatic URL Linking: https://www.npmjs.com/package/vue3-markdown
+
+~~The world is flat.~~ We now know that the world is round.
+
+- [x] Write the press release
+- [ ] Update the website
+- [ ] Contact the media
+
+| Syntax    | Description |
+| --------- | ----------- |
+| Header    | Title       |
+| Paragraph | Text        |
+
+## Footnotes
+
+Here's a simple footnote,[^1] and here's a longer one.[^bignote]
+
+[^1]: This is the first footnote.
+[^bignote]: Here's one with multiple paragraphs and code.
+
+    Indent paragraphs to include them in the footnote.
+
+    \`{ my code }\`
+
+    Add as many paragraphs as you like.
+
+## Math Equation
+
+Inline math equation: $a+b$
+
+`);
+
+
 </script>
 
 <style scoped>
-    /* #boardDetail {
-        padding-top : 40px;
-    } */
+    #boardDetail {
+        overflow: hidden!important;
+    }
     #Wrapper {
         height: 75vh;
+        max-height: 75vh;
         width : 62vw;
         border: 1px solid #6A6A6A;
         border-radius : 15px;
@@ -67,6 +134,7 @@ export default {
         width : 87%;
         overflow : scroll;
         overflow-x: hidden;
+        /* overflow: hidden; */
         padding : 0 2% 0 2%;
     }
     #boardTitle {
@@ -99,6 +167,17 @@ export default {
     #createdDate {
         font-size : 0.8rem;
     }
+    .vm-view{
+        display: inline-block;
+    vertical-align: top;
+    overflow: auto;
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: left;
+    font-size: 14px;
+    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+    padding: 0.8rem;
+    } 
     .boardFooter{
         display : flex;
         flex-direction: row;
@@ -112,6 +191,7 @@ export default {
     .sticker {
         color : #D7AA71;
         font-weight: bold;
+        cursor: pointer;
     }
     .checkSticker {
         display: flex;
@@ -133,12 +213,13 @@ export default {
     #boardUD {
         display : flex;
         flex-direction: row;
-        width : 11%;
+        width : 8rem;
         justify-content: space-between;
     }
-    #boardUpdate, #boardDelete {
+    #boardUpdate, #boardDelete, #boardShare {
         color:#D7AA71;
         font-weight: bold;
+        cursor: pointer;
     }
 
     #comment {

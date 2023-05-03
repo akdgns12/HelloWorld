@@ -48,7 +48,8 @@ const routes = [
     component: MainPage,
   },
   {
-    path: "/board",
+    path: "/board/boardlist/:category",
+    name : 'boardlist',
     component: BoardListView
   },
   {

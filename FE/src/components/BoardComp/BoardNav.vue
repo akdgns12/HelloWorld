@@ -10,14 +10,10 @@
                     전체보기
                 </div>
                 <div v-for="category in categories" :key="category.id">
-                    <img src="../../assets/icon/folder.png" alt="">
+                    <img src="../../assets/icon/folder.png" alt="" v-if="category.id != 5">
+                    <img src="../../assets/icon/share.png" alt="" v-if="category.id === 5">
                     <p :class="{ active: selectedCategory === category.id }"
                     @click="handleClick(category.id)" style="cursor: pointer;">{{ category.name }}</p>
-                </div>
-                <div>
-                    <img src="../../assets/icon/share.png" alt="">
-                    <p :class="{ active: selectedCategory === 5 }"
-                    @click="handleClick(5)" style="cursor: pointer;">퍼간글</p>
                 </div>
             </div>
         </div>
@@ -26,7 +22,7 @@
 
 
 <script>
-// import { router } from '@/router';
+import { router } from '@/router';
 import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
 export default {
     components: { TodayCnt },
@@ -34,19 +30,21 @@ export default {
         return {
             selectedCategory : 'all',
             categories : [
-                {id : 0, name : 'cs'},
+                {id : 0, name : 'CS'},
                 {id : 1, name : 'Algorithm'},
                 {id : 2, name : 'Project'},
                 {id : 3, name : 'Language'},
-                {id : 4, name : 'Etc'}
+                {id : 4, name : 'Etc'},
+                {id : 5, name : 'Share'},
             ]
         }
     },
     methods: {
         handleClick(category) {
-            console.log(category);
             this.selectedCategory = category;
             this.$emit('category-selected', category);
+            if (category != 'all') category = this.categories[category].name;
+            router.push(`/board/boardlist/${category}`);
         }
     }
 }
@@ -77,7 +75,6 @@ hr {
     font-weight: bold;
     color:#82ACC1;
     display: flex;
-    /* padding-left : 2.5rem; */
     margin : 2.5rem 2.5rem 1rem 2.5rem;
 }
 
@@ -103,5 +100,10 @@ img {
 }
 .active {
     font-weight: bold;
+}
+
+router-link {
+    text-decoration-line: none;
+    text-decoration: none;
 }
 </style>

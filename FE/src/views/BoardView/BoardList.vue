@@ -34,7 +34,6 @@ export default {
     },
     methods : {
         selectCategory(categoryId) {
-            console.log(categoryId, "BoardList");
             this.selectedCategory = categoryId;
         }
     }
