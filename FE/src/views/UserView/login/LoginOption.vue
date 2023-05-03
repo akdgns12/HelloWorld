@@ -14,6 +14,9 @@ export default {
             
             window.location.assign("https://k8a308.p.ssafy.io/api/oauth2/authorize/github?redirect_uri=https://k8a308.p.ssafy.io/redirect-handler");
         }
+    },
+    mounted() {
+        localStorage.clear();
     }
 }
 </script>

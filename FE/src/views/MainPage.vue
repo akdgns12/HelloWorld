@@ -25,12 +25,12 @@ import 'url-search-params-polyfill';
 export default {
     components: { UserProfile, MiniHomepage, CategoryNav, },
     methods: {
-        getUser: async function () {
+        getUser: function () {
             // var userAvatar;
             // await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
             //     userAvatar = canvas.toDataURL();
             // });ole.log(user);
-            http.get(`/user/userInfo/${window.localStorage.getItem("user-seq")}`).then(
+            http.get(`/user/userInfo/${localStorage.getItem("user-seq")}`).then(
                 (response)=> {
                     console.log(response);
                 },
@@ -45,12 +45,18 @@ export default {
         //             console.log(response);
         //         },
         //         (error)=> {
-        //             console.log(window.localStorage.getItem('access-token'))
+        //             console.log(localStorage.getItem('access-token'))
         //             console.log(error);
         //         }
         //     )
         // }
     },
+    mounted() {
+
+        localStorage.setItem("access-token", localStorage.getItem("access-token"));
+        localStorage.setItem("refresh-token", localStorage.getItem("refresh-token"));
+        localStorage.setItem("user-seq", localStorage.getItem("user-seq"));
+    }
 };
 </script>
 

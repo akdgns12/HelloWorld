@@ -83,6 +83,7 @@ export default {
                 (response) => {
                     console.log(response);
                     window.localStorage.removeItem("access-token");
+                    window.localStorage.removeItem("refresh-token");
                     window.localStorage.removeItem("user-seq");
                     this.$router.push({ name: 'before-login' });
                 },

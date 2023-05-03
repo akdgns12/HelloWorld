@@ -36,17 +36,21 @@ export default {
         }
     },
     methods: {
-        logout: async function () {
+        logout: function () {
+            var temp = localStorage.getItem('access-token');
             var tokens = {
-                accessToken: window.localStorage.getItem('access-token'),
+                accessToken: temp,
             }
             console.log(tokens);
             http.post(`/user/logout`, JSON.stringify(tokens)).then(
-                function(response) {
+                (response) => {
                     console.log(response);
-                    window.localStorage.removeItem("access-token");
-                    window.localStorage.removeItem("user-seq");
-                    this.$router.push({ name: 'before-login' });
+                    localStorage.removeItem("access-token");
+                    localStorage.removeItem("user-seq");
+                    localStorage.removeItem("refresh-token");
+                    // localStorage.clear();
+                    window.location.replace('https://k8a308.p.ssafy.io/');
+                    // this.$router.push({ name: 'before-login' });
                 },
                 (error) => {
                     console.log(error);

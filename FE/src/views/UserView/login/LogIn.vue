@@ -9,19 +9,20 @@ export default {
         };
     },
     methods: {
-        login: async function () {
+        login: function () {
             var user = {
                 email: this.email,
                 password: this.password,
             }
-            console.log(user);
             http.post(`/user/signIn`, JSON.stringify(user)).then(
                 (response) => {
                     console.log(response);
-                    window.localStorage.setItem("access-token", response.data.data.accessToken);
-                    window.localStorage.setItem("refresh-token", response.data.data.refreshToken);
-                    window.localStorage.setItem("user-seq", response.data.data.userSeq);
-                    this.$router.push({ name: 'mainpage' });
+                    localStorage.clear()
+                    localStorage.setItem("access-token", response.data.data.accessToken);
+                    localStorage.setItem("refresh-token", response.data.data.refreshToken);
+                    localStorage.setItem("user-seq", response.data.data.userSeq);
+                    window.location.replace('https://k8a308.p.ssafy.io/mainpage');
+                    // this.$router.push({ name: 'mainpage' });
                 },
                 (error) => {
                     console.log(error);
@@ -29,6 +30,9 @@ export default {
                 }
             )
         }
+    },
+    created() {
+        localStorage.clear();
     }
 }
 </script>

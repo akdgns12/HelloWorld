@@ -685,7 +685,7 @@ export default {
                 this.pantsSrc = path;
             }
         },
-        join: async function () {
+        join: function () {
             // var userAvatar;
             // await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
             //     userAvatar = canvas.toDataURL();
