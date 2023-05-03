@@ -7,7 +7,8 @@ export default {
             const access_token = urlParams.get('token');
             console.log(access_token);
             localStorage.setItem("access-token", access_token);
-            this.$router.push("mainpage");
+            window.location.replace('https://k8a308.p.ssafy.io/mainpage');
+            // this.$router.push("mainpage");
         }
     },
     mounted() {
