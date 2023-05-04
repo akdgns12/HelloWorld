@@ -1,10 +1,15 @@
 package com.project.helloworld.controller;
 
 
+import com.project.helloworld.dto.Response;
 import com.project.helloworld.dto.request.*;
 import com.project.helloworld.service.BoardService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -70,5 +75,15 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.removeSticker(stickerSeq));
     }
 
+    @GetMapping("/getTopTen")
+    ResponseEntity<?> getTopSearchTerms() throws Exception {
+        return ResponseEntity.ok().body(boardService.getTop10KeywordsByRedis());
+    }
+
+    // 키워드 검색
+    @GetMapping("/searchByKeyword")
+    ResponseEntity<?> searchBoards(@RequestParam String keyword, @RequestParam int page) throws Exception {
+        return ResponseEntity.ok().body(boardService.searchByKeyword(keyword, page));
+    }
 
 }
