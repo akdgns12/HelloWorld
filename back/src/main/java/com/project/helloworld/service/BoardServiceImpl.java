@@ -60,11 +60,13 @@ public class BoardServiceImpl implements BoardService{
                 imgUrl("").likeCnt(0).helpfulCnt(0).understandCnt(0)
                 .user(user).build();
         Board newBoardSaved = boardRepository.save(board);
+        String content = newBoardSaved.getContent();
+        int endIndex = Math.min(content.length(), 30);
 
         BoardDocument boardDocument = BoardDocument.builder()
             .id(newBoardSaved.getBoardSeq().toString())
             .title(newBoardSaved.getTitle())
-            .content(newBoardSaved.getContent().substring(0, 30))
+            .content(content.substring(0, endIndex))
             .imageUrl(newBoardSaved.getImgUrl())
             .likeCnt(newBoardSaved.getLikeCnt())
             .boardSeq(newBoardSaved.getBoardSeq())
