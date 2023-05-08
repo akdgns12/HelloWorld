@@ -127,6 +127,7 @@ public class SecurityConfig {
         // 추후 도메인 주소에 맞게 변경필요
         configuration.addAllowedOrigin("http://localhost:8081");
         configuration.addAllowedOrigin("https://k8a308.p.ssafy.io");
+//        configuration.addAllowedOrigin("https://i8a805.p.ssafy.io");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

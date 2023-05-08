@@ -1,10 +1,7 @@
 package com.project.helloworld.security;
 
-import com.project.helloworld.domain.User;
 import com.project.helloworld.repository.UserRepository;
-import com.project.helloworld.security.oauth2.UserPrincipal;
 import lombok.RequiredArgsConstructor;
-import org.elasticsearch.ResourceNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,14 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-        return UserPrincipal.create(user);
-    }
-
-    public UserDetails loadByUserSeq(Long userSeq) {
-        User user = userRepository.findByUserSeq(userSeq)
-                .orElseThrow(()-> new ResourceNotFoundException("사용자를 찾을 수 없습니다." + userSeq));
-        return UserPrincipal.create(user);
     }
 }
