@@ -69,6 +69,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+    text-decoration: none;
+}
 .wrapper {
     height: 62.6px;
     width: 25%;
