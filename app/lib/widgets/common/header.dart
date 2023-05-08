@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:app/services/user_api.dart';
 
 class Header extends StatefulWidget {
-  const Header({Key? key}) : super(key: key);
+  const Header({Key? key }) : super(key: key);
 
   @override
   State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
+  dynamic userName = "";
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo(
+      success: (dynamic response) {
+          setState(() {
+            userName = response['data']['nickname'];
+          });
+      },
+      fail: (error) {
+        print('유저정보 조회: $error');
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,7 +88,7 @@ class _HeaderState extends State<Header> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: '원송희 ',
+                        text: userName,
                         style: TextStyle(
                           color: Theme.of(context).primaryColorLight,
                           fontSize: 20,

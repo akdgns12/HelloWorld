@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:app/services/my_page_api.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = FlutterSecureStorage();
 
 class MyPageCategory extends StatefulWidget {
   final String category;
   final Color textColor;
+
 
   const MyPageCategory({
     super.key,
@@ -142,7 +146,7 @@ class _MyPageCategoryState extends State<MyPageCategory> {
           // );
         } else if (widget.category ==
             convertCategoryNameToKor(CategoryName.Logout)) {
-          // logout();
+            signOut();
         } else if (widget.category ==
             convertCategoryNameToKor(CategoryName.Resign)) {
           showDialog(
@@ -258,7 +262,7 @@ class _MyPageCategoryState extends State<MyPageCategory> {
     deleteUserInfo(
       success: (dynamic response) {},
       fail: (error) {
-        print('사용자 정보 초기화 오류: $error');
+        print('회원 탈퇴 오류: $error');
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/error',
@@ -268,6 +272,29 @@ class _MyPageCategoryState extends State<MyPageCategory> {
           ModalRoute.withName('/home'),
         );
       },
+    );
+  }
+
+  signOut() async{
+    Future<String?> futureString = storage.read(key: "accessToken");
+    String? accessToken = await futureString;
+    logout(
+      success: (dynamic response) async {
+        await storage.deleteAll();
+        Navigator.pushNamed(context, "/before-login");
+      },
+      fail: (error) {
+        print('로그아웃 오류: $error');
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/error',
+          arguments: {
+            'errorText': error,
+          },
+          ModalRoute.withName('/home'),
+        );
+      },
+      body: {"accessToken": "$accessToken"}
     );
   }
 }

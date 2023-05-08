@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app/widgets/logo_widget/logo_widget.dart';
 import 'package:app/services/user_api.dart';
+import 'package:flutter_client_sse/flutter_client_sse.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Login extends StatefulWidget {
@@ -91,6 +92,7 @@ class _LoginState extends State<Login> {
                       Container(
                         height: 30,
                         child: TextField(
+                          obscureText: true,
                           controller: pwController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -116,9 +118,14 @@ class _LoginState extends State<Login> {
                     login(
                       success: (dynamic response) async {
                         await storage.write(
-                          key: "access-token",
+                          key: "accessToken",
                           value: response['data']['accessToken']
                         );
+                        await storage.write(
+                            key: "userSeq",
+                            value: response['data']['userSeq'].toString(),
+                        );
+                        print("어세스!!!! $response['data']['accessToken']");
                         Navigator.pushNamed(context, '/home');
                       },
                       fail: (error) {

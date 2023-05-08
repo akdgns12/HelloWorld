@@ -41,19 +41,33 @@ class _FooterState extends State<Footer> {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              if(ModalRoute.of(context)?.settings.name != '/community') {
+                Navigator.pushNamed(context, '/community');
+              }
+            },
             child: Icon(
-              Icons.question_answer_rounded,
-              color: Colors.grey,
-              size: 30,
+              ModalRoute.of(context)?.settings.name == '/community'?Icons.question_answer_rounded:Icons.question_answer,
+              color: ModalRoute.of(context)?.settings.name == '/community'
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.grey,
+              size: ModalRoute.of(context)?.settings.name == '/community' ? 40 : 30,
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              if (ModalRoute.of(context)?.settings.name != '/board') {
+                Navigator.pushNamed(context, '/board');
+              }
+            },
             child: Icon(
-              Icons.developer_board,
-              color: Colors.grey,
-              size: 30,
+              ModalRoute.of(context)?.settings.name == '/board'
+                  ? Icons.developer_board_outlined
+                  : Icons.developer_board,
+              color: ModalRoute.of(context)?.settings.name == '/board'
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.grey,
+              size: ModalRoute.of(context)?.settings.name == '/board' ? 40 : 30,
             ),
           ),
           TextButton(

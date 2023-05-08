@@ -3454,7 +3454,7 @@ class _RegisterCharacterState extends State<RegisterCharacter> {
                   onPressed: () {
                     signUp(
                         success: (dynamic response) async {
-                          print("SUCCESS");
+                          Navigator.pushNamed(context, "/login");
                         },
                         fail: (error) {
                           print('회원가입: $error');

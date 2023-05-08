@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app/services/home_api.dart';
 
 class Grass extends StatefulWidget {
   const Grass({Key? key}) : super(key: key);
@@ -8,41 +9,21 @@ class Grass extends StatefulWidget {
 }
 
 class _GrassState extends State<Grass> {
-  dynamic grassInfo = [
-    {
-      'createDate': '2023-04-16',
-      'boardList': [4, 12]
-    },
-    {
-      'createDate': '2023-04-17',
-      'boardList': [11, 43, 174, 233]
-    },
-    {'createDate': '2023-04-18', 'boardList': []},
-    {
-      'createDate': '2023-04-19',
-      'boardList': [1]
-    },
-    {
-      'createDate': '2023-04-20',
-      'boardList': [112]
-    },
-    {
-      'createDate': '2023-04-21',
-      'boardList': [114, 224]
-    },
-    {
-      'createDate': '2023-04-22',
-      'boardList': [333, 222]
-    },
-    {
-      'createDate': '2023-04-23',
-      'boardList': [444, 767, 235, 1522]
-    },
-    {
-      'createDate': '2023-04-24',
-      'boardList': [2, 3]
-    },
-  ];
+  dynamic grassInfo = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getGrass(success: (dynamic response) {
+      setState(() {
+        grassInfo = response['body'];
+      });
+    }, fail: (error) {
+      print('잔디 내역 호출 오류: $error');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,6 +46,7 @@ class _GrassState extends State<Grass> {
         child: Stack(
           children: [
             for (int i = 0; i < grassInfo.length; i++)
+              grassInfo[i]!=null?
               Positioned(
                 top: (i % 7) * 18 * 1.0,
                 left: (i ~/ 7) * 20 * 1.0,
@@ -72,15 +54,32 @@ class _GrassState extends State<Grass> {
                   width: 15,
                   height: 15,
                   decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .primaryColor
-                        .withOpacity(
+                    color: Theme.of(context).primaryColor.withOpacity(
                         grassInfo[i]['boardList'].length >= 4
                             ? 1.0
-                            : grassInfo[i]['boardList'].length *
-                            0.25),
+                            : grassInfo[i]['boardList'].length * 0.25),
                     border: Border.all(
-                      color: Theme.of(context).secondaryHeaderColor.withOpacity(0.6),
+                      color: Theme.of(context)
+                          .secondaryHeaderColor
+                          .withOpacity(0.6),
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      2.5,
+                    ),
+                  ),
+                ),
+              ):Positioned(
+                top: (i % 7) * 18 * 1.0,
+                left: (i ~/ 7) * 20 * 1.0,
+                child: Container(
+                  width: 15,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Theme.of(context)
+                          .secondaryHeaderColor
+                          .withOpacity(0.6),
                     ),
                     borderRadius: BorderRadius.circular(
                       2.5,

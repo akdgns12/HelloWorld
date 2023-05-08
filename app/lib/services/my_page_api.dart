@@ -6,9 +6,24 @@ void deleteUserInfo({
   required Function(String error) fail,
   Map<String, String>? body,
 }) {
-  apiInstance(
+  apiWithHeaderInstance(
     path: '/user/delete',
     method: Method.delete,
+    body: body,
+    success: success,
+    fail: fail,
+  );
+}
+
+// 로그아웃
+void logout({
+  required dynamic Function(dynamic) success,
+  required Function(String error) fail,
+  Map<String, String>? body,
+}) {
+  apiWithHeaderInstance(
+    path: '/user/logout',
+    method: Method.post,
     body: body,
     success: success,
     fail: fail,

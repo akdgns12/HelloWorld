@@ -11,6 +11,7 @@ import 'package:app/screens/join_screen/register_user_screen.dart';
 import 'package:app/screens/join_screen/register_character_screen.dart';
 import 'package:app/screens/find_pw_screen/find_pw_screen.dart';
 import 'package:app/screens/notice_screen/notice_screen.dart';
+import 'package:app/screens/community_screen/community_screen.dart';
 
 void main() async {
   // 앱 처음 실행 시 flutter 엔진 초기화 메소드 호출
@@ -36,7 +37,7 @@ void main() async {
         primaryColor: const Color(0xFF499DC6),
         primaryColorLight: const Color(0xFF82ACC1),
         disabledColor: const Color(0xFFD24646).withOpacity(0.78),
-        shadowColor: const Color(0xFFF0F0F0),
+        shadowColor: const Color(0xFFA8A8A8),
         secondaryHeaderColor: const Color(0xFF6A6A6A),
       ),
       themeMode: ThemeMode.system,
@@ -51,6 +52,7 @@ void main() async {
         '/register-character': (context) => const RegisterCharacter(),
         '/find-pw': (context) => const FindPassword(),
         '/notice': (context) => const Notice(),
+        '/community': (context) => const Community(),
         // '/register': (context) => const CarRegister(),
         // '/detail': (context) => const CarDetail(),
         // '/my-page': (context) => const MyPage(),
