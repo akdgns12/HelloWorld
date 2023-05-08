@@ -54,6 +54,14 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+	// Spring Data Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.data:spring-data-redis'
+	// Jedis (레디스 클라이언트 라이브러리 중 하나)
+	implementation 'redis.clients:jedis'
+
 }
 
 tasks.named('test') {
