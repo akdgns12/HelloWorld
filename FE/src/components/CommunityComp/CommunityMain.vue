@@ -36,16 +36,18 @@
                 </carousel>
             </div>
             <hr style="width: 96%; margin: 0 auto; margin-top: 5px;" />
-            <div style="display: flex; margin-left: 3%; height: 20px; margin-top: 3px;">
-                <div style="font-weight: 600; font-size: 16px; line-height: 20px;">' {{ searchDecisionKeyword }} ' </div>
-                <div style="font-size: 12px; line-height: 20px;">&nbsp;&nbsp;에 대한 검색 결과입니다</div>
+            <div style="display: flex; margin-left: 3%; height: 25px; margin-top: 5px;">
+                <div style="font-weight: 600; font-size: 20px; line-height: 25px;">' {{ searchDecisionKeyword }} ' </div>
+                <div style="font-size: 15px; line-height: 25px;">&nbsp;&nbsp;에 대한 검색 결과입니다</div>
             </div>
             <div class="whole-alticles" style="display: flex;">
-                <div class="articles" v-for="result in searchResult" :key="result">
-                    <div class="article-container">
-                        <div class="represent-img-container">
+                <div class="articles" v-for="(result, i) in searchResult" :key="i">
+                    <div class="article-container" :id="result.id" @click="printBoardSeq">
+                        <div class="represent-img-container" :id="result.id">
                             <img class="represent-img" v-if="result.imageUrl == ''"
-                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" />
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" :id="result.id" alt="대표이미지" />
+                                <img class="represent-img" v-if="result.imageUrl != ''"
+                                src="result.imageUrl" :id="result.id" alt="대표이미지" />
                         </div>
                         <div class="title">
                             {{ result.title }}
@@ -67,6 +69,36 @@
                             </div>
                             <div class="comment-cnt">12</div>
                         </div>
+                    </div>
+                </div>
+                <div class="articles" v-for="i in 4-searchResult.length" :key="i">
+                    <div class="article-container" hidden>
+                        <!-- <div class="represent-img-container">
+                            <img class="represent-img"
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" />
+                        </div>
+                        <div class="title">
+                            {{ result.title }}
+                        </div>
+                        <div class="author">
+                            by {{ result.author }}
+                        </div>
+                        <div class="content">
+                            {{ result.content }}
+                        </div>
+                        <hr width="92%">
+                        <div class="sticker-and-comment">
+                            <div class="heart-icon-container">
+                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" />
+                            </div>
+                            <div class="heart-cnt">
+                                {{ result.likeCnt }}
+                            </div>
+                            <div class="comment-icon-container">
+                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" />
+                            </div>
+                            <div class="comment-cnt">12</div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -123,6 +155,10 @@ export default {
                 }
             );
         },
+        printBoardSeq: async function(e) {
+            e.preventDefault();
+            console.log(e.target.id);
+        }
     },
     created() {
         http.get(`/board/getTopTen`).then(
@@ -214,7 +250,7 @@ export default {
 }
 
 .whole-alticles {
-    width: 96%;
+    width: 98%;
     margin: 0 auto;
     height: 75%;
     /* overflow: hidden; */
