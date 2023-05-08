@@ -5,11 +5,23 @@ import com.project.helloworld.dto.MessageResponse;
 import com.project.helloworld.dto.request.*;
 import com.project.helloworld.dto.response.BoardDetailResponse;
 import com.project.helloworld.dto.response.BoardListResponse;
+import com.project.helloworld.elkStack.domain.BoardDocument;
+
 import com.project.helloworld.repository.*;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +43,16 @@ public class BoardServiceImpl implements BoardService{
     private final StickerRepository stickerRepository;
 
     private final GrassRepository grassRepository;
+    private final StoryService storyService;
+
+    private final BoardDocumentRepository boardDocumentRepository;
+
+    private final KeywordCount keywordCount;
+
+    private final ElasticsearchOperations elasticsearchOperations;
+
+    private final RedisTemplate<String, Object> redisTemplate;
+
     @Override
     public ResponseEntity<?> createBoard(BoardCreateBody boardCreateBody) throws Exception {
         User user = userRepository.findById(boardCreateBody.getUserSeq()).orElseThrow(()-> new Exception("not exist user : "+boardCreateBody.getUserSeq()));
@@ -38,6 +60,20 @@ public class BoardServiceImpl implements BoardService{
                 imgUrl("").likeCnt(0).helpfulCnt(0).understandCnt(0)
                 .user(user).build();
         Board newBoardSaved = boardRepository.save(board);
+        String content = newBoardSaved.getContent();
+        int endIndex = Math.min(content.length(), 30);
+
+        BoardDocument boardDocument = BoardDocument.builder()
+            .id(newBoardSaved.getBoardSeq().toString())
+            .title(newBoardSaved.getTitle())
+            .content(content.substring(0, endIndex))
+            .imageUrl(newBoardSaved.getImgUrl())
+            .likeCnt(newBoardSaved.getLikeCnt())
+            .boardSeq(newBoardSaved.getBoardSeq())
+            .build();
+
+        boardDocumentRepository.save(boardDocument);
+
         // 잔디도 심어주기
         LocalDate grassDate = newBoardSaved.getCreateTime().toLocalDate();
         Grass grass = Grass.builder().grassDate(grassDate).board(newBoardSaved).user(newBoardSaved.getUser()).build();
@@ -45,6 +81,7 @@ public class BoardServiceImpl implements BoardService{
         MessageResponse messageResponse = MessageResponse.builder().type(-1).typeSeq(newBoardSaved.getBoardSeq())
                 .title(newBoardSaved.getUser().getName()+"님이 게시글을 작성하였습니다.")
                 .content("게시글게시글").receiveUserSeq(newBoardSaved.getUser().getUserSeq()).build();
+        storyService.sendStory(newBoardSaved, user.getFamilies().stream().map(x->x.getFamilyUserSeq()).collect(Collectors.toList()));
         return ResponseEntity.ok().body(messageResponse);
     }
 
@@ -155,4 +192,37 @@ public class BoardServiceImpl implements BoardService{
     }
 
 
+    @Cacheable(value = "searchResults", key = "#searchTerm")
+    public ResponseEntity<?> searchByKeyword(String searchTerm, int page) {
+        // 로그 메시지 추가
+        log.info("Searching by searchTerm: {}", searchTerm);
+
+        // 레디스에 검색어 빈도를 저장
+        keywordCount.incrementSearchTermCount(searchTerm);
+
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
+            .should(QueryBuilders.matchQuery("title", searchTerm))
+            .should(QueryBuilders.matchQuery("content", searchTerm));
+
+        Query searchQuery = new NativeSearchQueryBuilder()
+            .withQuery(boolQuery)
+            .withSort(SortBuilders.fieldSort("likeCnt").order(SortOrder.DESC)) // likes 필드를 기준으로 내림차순 정렬
+            .withPageable(PageRequest.of(page, 3)) // 요청한 페이지의 결과 반환
+            .build();
+
+        SearchHits<BoardDocument> searchHits = elasticsearchOperations.search(
+            searchQuery, BoardDocument.class);
+
+        List<BoardDocument> results = searchHits.getSearchHits().stream()
+            .map(hit -> hit.getContent())
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(results);
+    }
+
+    public ResponseEntity<Set<Object>> getTop10KeywordsByRedis() {
+
+        Set<Object> topKeywords = redisTemplate.opsForZSet().reverseRange("search_ranking", 0, 9);
+        return ResponseEntity.ok(topKeywords);
+    }
 }

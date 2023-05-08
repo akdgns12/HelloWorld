@@ -8,6 +8,5 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface StoryService {
-    public void sendToFamilies(Board board);
-    public void sendStory(Board board, List<Family> families);
+    public void sendStory(Board board, List<Long> families);
 }

@@ -29,7 +29,8 @@ public class Guestbook extends BaseTimeEntity {
 
   @Column(name = "guestbook_nickname")
   private String guestbookNickname;
-
+  @Column(name = "is_secret")
+  private boolean isSecret;
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_seq", nullable = false)
   private User user;
@@ -38,7 +39,8 @@ public class Guestbook extends BaseTimeEntity {
   @JoinColumn(name = "avatar_seq")
   private Avatar avatar;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @Setter
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "guestbook_comment_seq")
   private Guestbook_Comment guestbook_comment;
 }
