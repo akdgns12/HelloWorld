@@ -50,24 +50,9 @@ export default {
                 }
             )
         }
-        // play(sound) {
-        //     if (sound) {
-        //         var audio = new Audio(sound);
-        //         audio.play();
-        //     }
-        // }
     },
     mounted() {
-        http.get(`/board/board-list?start=0&size=8`).then(
-                (response) => {
-                    console.log(response);
-                    console.log(response.data);
-                },
-                (error) => {
-                    console.log(error);
-                    alert("인기 게시물 로드 실패!");
-                }
-        );
+        this.getTopArticles();
     }
 
 }

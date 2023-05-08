@@ -8,6 +8,7 @@ import "tippy.js/dist/tippy.css";
 import timeago from 'vue-timeago3';
 import { ko } from 'date-fns/locale';
 import Tabs from 'vue3-tabs';
+import VueYtframe from "vue3-ytframe"
 
 //createApp(App).mount('#app')
 
@@ -15,6 +16,7 @@ const app = createApp(App);
 app.use(router);
 app.use(VueSplide);
 app.use(VueApexCharts);
+app.use(VueYtframe);
 const timeagoOptions = {
     converterOptions: {
         includeSeconds : true,

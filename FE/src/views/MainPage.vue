@@ -52,7 +52,7 @@ export default {
         // }
     },
     mounted() {
-
+        this.getUser();
         localStorage.setItem("access-token", localStorage.getItem("access-token"));
         localStorage.setItem("refresh-token", localStorage.getItem("refresh-token"));
         localStorage.setItem("user-seq", localStorage.getItem("user-seq"));

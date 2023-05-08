@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <!-- <div style="margin-top: 50px;">
-    <iframe src="https://www.youtube.com/embed/EkRuV-h6Bv0?autoplay=1&mute=1&loop=1 " title="YouTube video player"
+    <div style="margin-top: 50px;">
+      
+    <!-- <iframe src="https://www.youtube.com/embed/EkRuV-h6Bv0?autoplay=1&mute=1&loop=1 " title="YouTube video player"
       frameborder="0"
       height="25px"
       width="400px"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"></iframe>
       <embed src="http://www.youtube.com/v/EkRuV-h6Bv0?version=2&autoplay=1&mute=1&loop=1&playlist=EkRuV-h6Bv0&showinfo=0&modestbranding=0&disablekb=1&controls=1&rel=0" type="application/x-shockwave-flash" 
-      width="500" height="40" autohide="0" />
-    </div> -->
+      width="500" height="40" autohide="0" /> -->
+    </div>
     <router-view></router-view>
   </div>
 </template>
