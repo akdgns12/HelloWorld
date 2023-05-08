@@ -81,7 +81,6 @@ public class BoardServiceImpl implements BoardService{
         MessageResponse messageResponse = MessageResponse.builder().type(-1).typeSeq(newBoardSaved.getBoardSeq())
                 .title(newBoardSaved.getUser().getName()+"님이 게시글을 작성하였습니다.")
                 .content("게시글게시글").receiveUserSeq(newBoardSaved.getUser().getUserSeq()).build();
-        storyService.sendStory(newBoardSaved, user.getFamilies().stream().map(x->x.getFamilyUserSeq()).collect(Collectors.toList()));
         return ResponseEntity.ok().body(messageResponse);
     }
 

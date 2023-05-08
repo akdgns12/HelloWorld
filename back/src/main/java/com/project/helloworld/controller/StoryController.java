@@ -1,9 +1,7 @@
 package com.project.helloworld.controller;
 
 import com.project.helloworld.domain.Board;
-import com.project.helloworld.dto.request.BoardCreateBody;
 import com.project.helloworld.repository.UserRepository;
-import com.project.helloworld.service.BoardService;
 import com.project.helloworld.service.StoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +19,16 @@ import retrofit2.http.Path;
 @Slf4j
 public class StoryController {
     private final StoryService storyService;
-    private final BoardService boardService;
     private final UserRepository userRepository;
 
     @GetMapping("/test-send-msg")
-    public ResponseEntity<?> storyTest( ) throws Exception{
-        boardService.createBoard(BoardCreateBody.builder()
+    public ResponseEntity<?> storyTest( ){
+        storyService.sendToFamilies(Board.builder()
+                .boardSeq(null)
                 .content("test_content")
                 .title("test_title")
-                .userSeq(1L)
+                .user(userRepository.findByUserSeq(1L).get())
+                .imgUrl("test_img_url")
                 .build());
         return new ResponseEntity<>(HttpStatus.OK);
     }
