@@ -32,7 +32,8 @@ export default {
             // });ole.log(user);
             http.get(`/user/userInfo/${localStorage.getItem("user-seq")}`).then(
                 (response)=> {
-                    console.log(response);
+                    localStorage.setItem("user-nickname", response.data.data.nickname);
+                    // console.log(response.data.data.nickname);
                 },
                 (error)=> {
                     console.log(error);

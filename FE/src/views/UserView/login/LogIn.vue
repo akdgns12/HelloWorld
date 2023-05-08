@@ -21,8 +21,8 @@ export default {
                     localStorage.setItem("access-token", response.data.data.accessToken);
                     localStorage.setItem("refresh-token", response.data.data.refreshToken);
                     localStorage.setItem("user-seq", response.data.data.userSeq);
-                    // window.location.replace('https://k8a308.p.ssafy.io/mainpage');
-                    this.$router.replace({name: 'mainpage'});
+                    window.location.replace('https://k8a308.p.ssafy.io/mainpage');
+                    // this.$router.replace({name: 'mainpage'});
                 },
                 (error) => {
                     console.log(error);
