@@ -62,9 +62,6 @@ public class User extends BaseTimeEntity implements UserDetails {
   @ColumnDefault("0")
   private int understandCnt;
 
-  @Column(name = "bgm_url")
-  private String bgmUrl;
-
   @Enumerated(EnumType.STRING)
   private AuthProvider authProvider;
 

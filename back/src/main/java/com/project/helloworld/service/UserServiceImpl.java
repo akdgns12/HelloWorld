@@ -1,12 +1,18 @@
 package com.project.helloworld.service;
 
+import com.project.helloworld.domain.Bgm;
 import com.project.helloworld.domain.User;
 import com.project.helloworld.dto.*;
+import com.project.helloworld.dto.response.BgmList;
+import com.project.helloworld.repository.BgmRepository;
 import com.project.helloworld.repository.UserRepository;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
 import com.project.helloworld.security.oauth2.AuthProvider;
 import com.project.helloworld.util.Authority;
 import com.project.helloworld.security.SecurityUtil;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
@@ -49,7 +55,7 @@ public class UserServiceImpl implements UserService{
     @Value("${spring.sms.sender}")
     private String sender;
 
-
+    private final BgmRepository bgmRepository;
     private final UserRepository userRepository;
     private final Response response;
     private final PasswordEncoder encoder;
@@ -150,7 +156,6 @@ public class UserServiceImpl implements UserService{
                 .likeCnt(user.getLikeCnt())
                 .helpfulCnt(user.getHelpfulCnt())
                 .understandCnt(user.getUnderstandCnt())
-                .bgmUrl(user.getBgmUrl())
                 .backgroundUrl(user.getBackgroundUrl())
                 .avatar(user.getAvatar())
                 .providerId(user.getProviderId())
@@ -177,11 +182,24 @@ public class UserServiceImpl implements UserService{
                 .understandCnt(user.getUnderstandCnt())
                 .today(todayCnt)
                 .total(totalCnt)
-                .bgmUrl(user.getBgmUrl())
                 .backgroundUrl(user.getBackgroundUrl())
                 .avatar(user.getAvatar())
                 .build();
 
+
+        List<Bgm> bgms = bgmRepository.findAll();
+        Collections.shuffle(bgms);
+
+        List<BgmList> bgmList = bgms.stream().map(bgm -> {
+            BgmList list = new BgmList();
+            list.setBgmSeq(bgm.getBgmSeq());
+            list.setVideoId(bgm.getVideoId());
+            list.setTitle(bgm.getTitle());
+            list.setArtist(bgm.getArtist());
+            return list;
+        }).collect(Collectors.toList());
+
+        userMainInfo.setBgmList(bgmList);
         LocalDate today = LocalDate.now();
         LocalDate firstDayOfYear = today.withDayOfYear(1);
         LocalDate signUpDate = user.getCreateTime().toLocalDate();
@@ -205,7 +223,7 @@ public class UserServiceImpl implements UserService{
         user.setNickname(modify.getNickname());
         user.setPhoneNumber(modify.getPhoneNumber());
 //        user.getAvatar().setImgUrl(modify.getAvatar_imgUrl());
-        user.setBgmUrl(modify.getBgmUrl());
+
 
         userRepository.save(user);
         return response.success(user, "유저 정보가 수정되었습니다.", HttpStatus.OK);
@@ -270,6 +288,7 @@ public class UserServiceImpl implements UserService{
 
         return response.success("", "로그아웃이 성공했습니다.", HttpStatus.OK);
     }
+
 
     /**
      *  본인 인증 메서드
