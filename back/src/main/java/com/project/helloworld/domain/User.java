@@ -43,6 +43,9 @@ public class User extends BaseTimeEntity implements UserDetails {
   @Column(name = "name")
   private String name;
 
+  @Column(name = "comment")
+  private String comment;
+
   @Column(name = "phone_number", unique = true)
   private String phoneNumber;
 
@@ -55,11 +58,8 @@ public class User extends BaseTimeEntity implements UserDetails {
   @Column(name = "providerId")
   private String providerId;
 
-  @Column(name = "today")
-  private int today;
-
   @Column(name = "total")
-  private int total;
+  private Long total;
 
   @Column(name = "background_url")
   private String backgroundUrl;
@@ -95,6 +95,10 @@ public class User extends BaseTimeEntity implements UserDetails {
   @JsonIgnore
   @OneToMany(mappedBy = "user")
   List<Sticker> stickers = new ArrayList<>();
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  List<TodayVisit> todayVisits = new ArrayList<>();
 
   /**
    * Security 관련 메소드

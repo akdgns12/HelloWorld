@@ -28,10 +28,16 @@ public class RedisRepositoryConfig {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(){
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, String> redisForInterceptor = new RedisTemplate<>();
+
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         // setKeySerializer, setValueSerializer 설정을 함으로써 redis-cli을 통해 데이터를 직접 볼 수 있음
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
+
+        redisForInterceptor.setConnectionFactory(redisConnectionFactory());
+        redisForInterceptor.setKeySerializer(new StringRedisSerializer());
+        redisForInterceptor.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 

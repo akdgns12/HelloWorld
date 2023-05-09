@@ -1,8 +1,10 @@
 package com.project.helloworld.controller;
 
 import com.project.helloworld.dto.UserRequestDto;
+import com.project.helloworld.security.jwt.JwtAuthenticationFilter;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
 import com.project.helloworld.service.UserService;
+import com.project.helloworld.service.VisitorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -20,6 +24,8 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final VisitorService visitorService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @ApiOperation(value = "회원가입", notes = "id, email, password, nickname, name")
     @PostMapping("/signUp")
@@ -122,5 +128,13 @@ public class UserController {
         log.debug("message", emailCertify);
 
         return userService.confirmEmail(emailCertify);
+    }
+
+    @ApiOperation(value = "유저 정보 전체 조회", notes = "홈페이지 접속시 필요한 정보 전체 조회")
+    @GetMapping("/mainpage/{userSeq}")
+    public ResponseEntity<?> getUserMainInfo(@PathVariable Long userSeq) throws Exception{
+        log.debug("userSeq ", userSeq);
+
+        return userService.getUserMainInfo(userSeq);
     }
 }

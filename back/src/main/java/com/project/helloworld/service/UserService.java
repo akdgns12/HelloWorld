@@ -9,6 +9,7 @@ public interface UserService {
     ResponseEntity<?> signIn(UserRequestDto.SignIn signIn) throws Exception;
     ResponseEntity<?> reissue(UserRequestDto.Reissue reissue);
     ResponseEntity<?> getUserInfo(Long userSeq) throws Exception;
+    ResponseEntity<?> getUserMainInfo(Long userSeq) throws Exception;
     ResponseEntity<?> modify(UserRequestDto.Modify modify) throws Exception;
     ResponseEntity<?> changePassword(UserRequestDto.ChangePassword changePassword) throws Exception;
     ResponseEntity<?> delete(Long userSeq) throws Exception;

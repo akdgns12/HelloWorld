@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
@@ -58,6 +59,9 @@ public class UserServiceImpl implements UserService{
     private final JavaMailSender javaMailSender;
     private final CertificationDto certificationDto;
     private final PasswordEncoder passwordEncoder;
+    private final FamilyService familyService;
+    private final GrassService grassService;
+    private final VisitorService visitorService;
     DefaultMessageService messageService;
 
     @Override
@@ -134,13 +138,15 @@ public class UserServiceImpl implements UserService{
     public ResponseEntity<?> getUserInfo(Long userSeq) throws Exception{
         User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
 
+        Long today = visitorService.getTodayVisitors(String.valueOf(userSeq));
+        Long total = visitorService.getTotalVisitors(String.valueOf(userSeq));
         UserResponseDto.UserInfo userInfo = UserResponseDto.UserInfo.builder()
                 .userSeq(userSeq)
                 .nickname(user.getNickname())
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())
-                .today(user.getToday())
-                .total(user.getTotal())
+                .today(today)
+                .total(total)
                 .bgmUrl(user.getBgmUrl())
                 .backgroundUrl(user.getBackgroundUrl())
                 .avatar(user.getAvatar())
@@ -149,6 +155,37 @@ public class UserServiceImpl implements UserService{
                 .build();
 
         return response.success(userInfo, "유저 정보가 조회되었습니다.", HttpStatus.OK);
+    }
+
+    // 메인페이지 접속했을때 돌려줄 정보
+    public ResponseEntity<?> getUserMainInfo(Long userSeq) throws Exception {
+        User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
+
+        UserResponseDto.UserMainInfo userMainInfo = UserResponseDto.UserMainInfo.builder()
+                .userSeq(user.getUserSeq())
+                .nickname(user.getNickname())
+                .name(user.getName())
+                .comment(user.getComment())
+                .phoneNumber(user.getPhoneNumber())
+//                .today(user.getToday())
+                .total(user.getTotal())
+                .bgmUrl(user.getBgmUrl())
+                .backgroundUrl(user.getBackgroundUrl())
+                .avatar(user.getAvatar())
+                .build();
+
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfYear = today.withDayOfYear(1);
+        LocalDate signUpDate = user.getCreateTime().toLocalDate();
+        // 회원가입일과 올해 1월1일 중 더 최신날짜 선택
+        LocalDate olderDate = firstDayOfYear.isBefore(signUpDate) ? firstDayOfYear : signUpDate;
+
+        ResponseEntity<?> grassInfoList = grassService.getGrass(olderDate, today, userSeq);
+        ResponseEntity familiesCommentInfo = familyService.getFamilies(userSeq, "accepted", true);
+        userMainInfo.getFamilyResponseDtos(familiesCommentInfo.getBody());
+        userMainInfo.getGrassList(grassInfoList.getBody());
+
+        return response.success(userMainInfo, "유저 메인페이지 정보 조회가 성공했습니다.", HttpStatus.OK);
     }
 
     // 회원정보 수정

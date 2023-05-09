@@ -83,8 +83,6 @@ public class UserRequestDto {
     public static class Logout{
         @NotEmpty(message = "accessToken을 입력해야 합니다.")
         private String accessToken;
-        @NotEmpty(message = "refreshToken을 입력해야 합니다.")
-        private String refreshToken;
     }
 
     @Getter
