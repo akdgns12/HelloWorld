@@ -43,7 +43,7 @@ const routes = [
     component: PasswordSearch,
   },
   {
-    path: "/mainpage",
+    path: "/mainpage/:userSeq",
     name: "mainpage",
     component: MainPage,
   },

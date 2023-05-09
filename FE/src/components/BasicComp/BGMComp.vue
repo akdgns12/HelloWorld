@@ -49,8 +49,8 @@ export default {
                     localStorage.removeItem("user-seq");
                     localStorage.removeItem("refresh-token");
                     // localStorage.clear();
-                    window.location.replace('https://k8a308.p.ssafy.io/');
-                    // this.$router.push({ name: 'before-login' });
+                    // window.location.replace('https://k8a308.p.ssafy.io/');
+                    this.$router.replace({ name: 'before-login' });
                 },
                 (error) => {
                     console.log(error);

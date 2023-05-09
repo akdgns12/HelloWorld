@@ -69,6 +69,7 @@
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
 import GrassComp from "@/components/MainPageComp/GrassComp.vue"
 import FamilyComment from "@/components/MainPageComp/FamilyComment.vue"
+import http from '@/api/httpWithAccessToken';
 
 export default {
     components: { UserTitleComp, GrassComp, FamilyComment },
@@ -90,6 +91,15 @@ export default {
             },
         };
     },
+    created() {
+        var userSeq = localStorage.getItem('user-seq');
+        console.log(userSeq);
+        http.get(`/user/mainpage/${userSeq}`).then((result) => {
+            console.log(result);
+        }, (error)=>{
+            console.log(error);
+        });
+    }
 }
 
 </script>
