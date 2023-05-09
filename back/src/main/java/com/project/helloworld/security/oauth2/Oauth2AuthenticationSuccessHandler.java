@@ -1,8 +1,11 @@
 package com.project.helloworld.security.oauth2;
 
+import com.project.helloworld.domain.User;
 import com.project.helloworld.dto.UserResponseDto;
+import com.project.helloworld.repository.UserRepository;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
 import com.project.helloworld.util.CookieUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,13 +32,15 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private JwtTokenProvider jwtTokenProvider;
     private AppProperties appProperties;
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    private UserRepository userRepository;
 
     @Autowired
     Oauth2AuthenticationSuccessHandler(JwtTokenProvider jwtTokenProvider, AppProperties appProperties,
-                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
+                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository, UserRepository userRepository) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.appProperties = appProperties;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -62,9 +67,11 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         UserResponseDto.TokenInfo token = jwtTokenProvider.generateToken(authentication);
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + authentication.getName()));
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token.getAccessToken())
+                .queryParam("userSeq", user.getUserSeq())
                 .build().toUriString();
     }
 
