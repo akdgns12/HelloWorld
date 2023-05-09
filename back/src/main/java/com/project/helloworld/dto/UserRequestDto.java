@@ -29,7 +29,6 @@ public class UserRequestDto {
     @Setter
     public static class SignUp{
         private String nickname;
-        @NotEmpty(message = "email을 입력해야 합니다.")
         private String email;
         private String password;
         private String name;
