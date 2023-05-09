@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+//import store from './store';
 import App from "./App.vue";
 import { router } from "./router/index.js";
 import VueSplide from "@splidejs/vue-splide";
@@ -12,6 +13,7 @@ import Tabs from 'vue3-tabs';
 //createApp(App).mount('#app')
 
 const app = createApp(App);
+//app.use(store);
 app.use(router);
 app.use(VueSplide);
 app.use(VueApexCharts);
@@ -22,9 +24,6 @@ const timeagoOptions = {
     locale: ko,
 }
 
-app.use(router);
-app.use(VueSplide);
-app.use(VueApexCharts);
 app.use(
   VueTippy,
   // optional
