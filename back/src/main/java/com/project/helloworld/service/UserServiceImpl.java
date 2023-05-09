@@ -84,6 +84,7 @@ public class UserServiceImpl implements UserService{
 
         String avatarUrl = null;
         Avatar avatar = new Avatar();
+        if(img.isEmpty()) return response.fail("아바타가 비었습니다.", HttpStatus.BAD_REQUEST);
         try{
             avatarUrl = s3Uploader.uploadFiles(img, "avatar");
             avatar.setImgUrl(avatarUrl);
