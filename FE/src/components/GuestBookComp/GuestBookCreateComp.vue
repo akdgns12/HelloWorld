@@ -1,17 +1,52 @@
 <template>
-    <div id="guestBookCreate">
+    <div id="guestBookCreate" v-if="showCreateComp">
         <div id="GBCreate">
             <img src="@/assets/minimi_temp/minime_me.png" alt="temp_minime">
-            <textarea name="guestBookContent" id="GBContent" cols="80" rows="7" placeholder="방명록을 작성하세요"></textarea>
+            <textarea name="guestBookContent" id="GBContent" cols="80" rows="7" placeholder="방명록을 작성하세요" v-model="newGuestBookContent"></textarea>
         </div>
         <div id="GBUser">
             <router-link to="" class="minime-link">미니미</router-link>
-            <button id="GBCheck">확인</button>
+            <button id="GBCheck" @click="addGuestBook">확인</button>
         </div>       
     </div>
 </template>
 
-<script>
+<script setup>
+import axios from 'axios';
+import { ref, getCurrentInstance, computed } from 'vue';
+
+const emit = getCurrentInstance().emit;
+const newGuestBookContent = ref('');
+//const baseURL = "https://k8a308.p.ssafy.io/api";
+const headers = {
+    "Content-Type": "application/json;charset=utf-8",
+    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+  };
+const minihomeMaster = ref(1);
+const userSeq = ref(`${localStorage.getItem("user-seq")}`);
+
+const showCreateComp = computed(() => {
+    return minihomeMaster.value !== userSeq.value;
+})
+
+const addGuestBook = () => {
+    const requestDto = {
+        "content" : newGuestBookContent.value,
+        "isSecret" : 0,
+        "readSeq" : 1,
+        "writeSeq" : Number(userSeq.value),
+    };
+    newGuestBookContent.value = '';
+    axios.post(`/api/guestbook`, requestDto, {headers})
+        .then(response => {
+            console.log(response.data);
+            emit('addGuestBook');
+        })
+        .catch(error => {
+            console.error(error);
+            alert('방명록 작성에 실패했습니다!');
+        })
+}
 </script>
 
 <style scoped>

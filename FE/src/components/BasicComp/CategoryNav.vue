@@ -5,7 +5,7 @@
                 <router-link to="/mainpage" class="nav-link">홈</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/board" class="nav-link">게시글</router-link>
+                <router-link to="/board/boardlist/all" class="nav-link">게시글</router-link>
             </li>
             <li class="navitem">
                 <router-link to="/community" class="nav-link">커뮤니티</router-link>

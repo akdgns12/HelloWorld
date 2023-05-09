@@ -3,83 +3,276 @@
         <UserTitleComp />
         <div id = guestBookWrapper>
             <div id = "guestBook">
-                <GuestBookCreateComp/>
-                <div id = "guestBookList">
-                    <div id="guestBookOne">
-                        <div id="guestBookHeader">
+                <GuestBookCreateComp v-if="showCreateComp" @addGuestBook="addGuestBook"/>
+                <div id = "guestBookList" v-for="guestBook in guestBooks" :key=guestBook?.guestBookSeq>
+                    <div id="guestBookOne" v-if="showSecretGuestBook(guestBook?.guestBookUserSeq, guestBook?.secret)">
+                        <div :class="{'guestBookHeader_secret' : guestBook?.secret , 'guestBookHeader' : guestBook?.secret === false}">
                             <p class="GBWrite">
-                                <span class="GBWriter">이싸피</span>
+                                <span class="GBWriter">{{ guestBook?.guestBookUserNickname  }}</span>
                                 <img src="@/assets/icon/laptop.png" alt="laptop">
-                                <span class="GBCreatedDate">[2023.04.23 14:15]</span>
+                                <span class="GBCreatedDate">{{ formatDate(guestBook?.createdTime) }}</span>
                             </p>
                             <p class="GBEditor">
-                                <span class="secret" style="font-weight: bold;">비밀로 하기</span>
-                                <span style="padding: 0 0.5vw 0 0.5vw;" class="secret">|</span>
-                                <span class="modify" style="font-weight: bold;">수정</span>
-                                <span style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
-                                <span class="delete" style="font-weight: bold;">삭제</span>
+                                <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" class="secret" style="font-weight: bold; cursor: pointer;" @click="isSecretGuestBook(guestBook?.guestBookSeq, guestBook?.secret, guestBook?.content)">{{ guestBook?.secret ? "비밀로 하기" : "공개로 하기" }}</span>
+                                <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" style="padding: 0 0.5vw 0 0.5vw;" class="secret">|</span>
+                                <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" class="modify" style="font-weight: bold; cursor: pointer;" @click="showEditArea(guestBook?.guestBookSeq)">수정</span>
+                                <span v-if="!showCreateComp || showEditGuestBook(guestBook?.guestBookUserSeq)" style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
+                                <span v-if="!showCreateComp" class="delete" style="font-weight: bold; cursor: pointer;" @click="deleteGuestBook(guestBook?.guestBookSeq)">삭제</span>
                             </p>
                         </div>
                         <div id="guestBookMain">
                             <img src="@/assets/minimi_temp/minime_1.png" alt="" class="guestMinime">
                             <div class="guestBookContent">
-                                <span class="content">김싸피님 안녕하세요 일촌일촌!저희 일촌이예요! 안녕하세요!!! 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요</span>
-                            </div>
-                        </div>
-                        <div id = "guestBookComment">
-                            <input type="text" class="comment">
-                            <button class="commentCreate">확인</button>
-                        </div>
-                    </div>
-                    <div id="guestBookOne">
-                        <div id="guestBookHeader" style="background-color : #FFEFD3; border-top : solid 1px #E29714;">
-                            <p class="GBWrite">
-                                <span class="GBWriter">choi싸피</span>
-                                <img src="@/assets/icon/laptop.png" alt="laptop">
-                                <span class="GBCreatedDate">[2023.04.23 14:15]</span>
-                            </p>
-                            <p class="GBEditor">
-                                <span class="modify" style="font-weight: bold;">수정</span>
-                                <span style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
-                                <span class="delete" style="font-weight: bold;">삭제</span>
-                            </p>
-                        </div>
-                        <div id="guestBookMain">
-                            <img src="@/assets/minimi_temp/minime_2.png" alt="" class="guestMinime">
-                            <div class="guestBookContent">
-                                <p class="isSecret">
+                                <p class="secret" v-if="guestBook.secret">
                                     <img src="@/assets/icon/lock.png" alt="" class="lock_icon">
                                     <span style="color : #AC6B19; padding : 0 0.3vw 0 0.3vw;">비밀이야</span>
                                     <span style="color : #D7AA71">(이 글은 홈 주인과 작성자만 볼 수 있어요)</span>
                                 </p>
-                                <span class="content">
-                                    김ᄊトㅍı님 생일 축㈛합LI⊂ト! ㄴr중øłl 口ざㄴr요!</span>
+                                <span v-if="!edit[guestBook?.guestBookSeq]" class="content">{{ guestBook.content }}</span>
+                                <div v-else class="updateContent">
+                                    <textarea v-model="updateContent[guestBook?.guestBookSeq]" class="updateText"></textarea>
+                                    <button class="updateB" @click="updateGuestBook(updateContent[guestBook?.guestBookSeq],guestBook?.guestBookSeq, guestBook?.secret)">저장</button>
+                                </div>
                             </div>
                         </div>
-                        <div id = "guestBookComment" style = "background-color: #FFEFD3;">
-                            <input type="text" class="comment">
-                            <button class="commentCreate">확인</button>
+                        <div :class="{'guestBookCommentList_secret' : guestBook?.secret , 'guestBookCommentList' : guestBook?.secret === false}" >
+                            <div id="guestBookCommentWrapper" v-if="guestBook?.commentDto !== null">
+                                <div class="commentOne">
+                                    <p style="color : #4689aa; font-weight : bold;">{{ guestBook?.commentDto.nickname }}</p>
+                                    <p style="padding : 0 1rem;">{{ guestBook?.commentDto.content }}</p>
+                                    <button class="commentDelete" @click="removeGuestBookComment(guestBook?.guestBookSeq,guestBook?.commentDto.guestBookCommentSeq)">삭제</button>
+                                </div>
+                            </div>
+                            <div id = "guestBookComment"> 
+                                <input type="text" class="comment" v-model="newComment[guestBook?.guestBookSeq]">
+                                <button class="commentCreate" @click="addGuestBookComment(newComment[guestBook?.guestBookSeq], guestBook?.guestBookSeq)">확인</button>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <button
+                        @click="loadDown"
+                        :class="{ 'backButton': start > 0, 'disabled': start === 0 }"
+                    >
+                        이전 페이지
+                    </button>
+                    <button
+                        @click="loadMore"
+                        :class="{'nextButton': guestBooks.length >= size, 'disabled': guestBooks.length < size}"
+                    >
+                        다음 페이지
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import GuestBookCreateComp from '@/components/GuestBookComp/GuestBookCreateComp.vue';
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+import { ref, onMounted, computed, watch } from 'vue';
+import axios from 'axios';
 
-export default {
-components : {GuestBookCreateComp, UserTitleComp},
+//const baseURL = "https://k8a308.p.ssafy.io/api";
+const headers = {
+    "Content-Type" : "application/json;charset=utf-8",
+    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+  };
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const hours = ("0" + date.getHours()).slice(-2);
+  const minutes = ("0" + date.getMinutes()).slice(-2);
+  const seconds = ("0" + date.getSeconds()).slice(-2);
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
+
+const minihomeMaster = ref(1);
+const userSeq = ref(`${localStorage.getItem("user-seq")}`);
+const start = ref(0);
+const size = ref(10);
+const updateContent = ref({});
+const newComment = ref({});
+const guestBooks = ref([]);
+
+const showCreateComp = computed(() => {
+    return minihomeMaster.value != userSeq.value;
+})
+
+const showSecretGuestBook = (guestBookUserSeq, secret) => {
+    if (secret == 0) return 1;
+    else {
+        if (userSeq.value == guestBookUserSeq || minihomeMaster.value == userSeq.value) return 1;
+        else return 0;
+    }
+}
+
+const showEditGuestBook = (guestBookUserSeq) => {
+    if (userSeq.value == guestBookUserSeq || minihomeMaster.value == userSeq.value) return 1;
+    else return 0;
+}
+
+const edit = ref({});
+const showEditArea = computed(() => (guestBookSeq) => edit.value[guestBookSeq] = guestBookSeq);
+
+watch(showEditArea, (newValue) => {
+  console.log(newValue);
+});
+
+
+const getGuestBooks = () => {
+    axios
+        .get(`/api/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`, {headers})
+        .then(response => {
+            guestBooks.value = response.data;
+        })
+        .catch(error => {
+            console.error(error);
+            alert("에러 발생..왜지?");
+        })
+};
+const loadDown = () => {
+    start.value -= 1;
+    getGuestBooks();
+}
+const loadMore = () => {
+    start.value += 1;
+    getGuestBooks();
+}
+
+const addGuestBook = () => {
+    start.value = 0;
+    guestBooks.value = ref([]);
+    axios
+        .get(`/api/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`,{headers})
+        .then(response => {
+            guestBooks.value = response.data;
+        })
+        .catch(error => {
+            console.error(error);
+            alert("다시 렌더링할 때, 에러 발생");
+        })
+}
+
+const isSecretGuestBook = (guestBookSeq, secret, content) => {
+    const updateGuestBook = guestBooks.value.map(guestBook => {
+        if (guestBook.guestBookSeq === guestBookSeq) {
+            guestBook.secret = !secret;
+        }
+        return guestBook;
+    })
+    const requestDto = {
+        content : content,
+        isSecret : Number(!secret),
+        guestBookSeq : guestBookSeq
+    };
+    console.log(updateGuestBook);
+    axios
+    .patch( `/api/guestbook`, requestDto, {headers})
+    .then((response) => {
+        console.log(response.data);
+    })
+    .catch((error) => {
+        console.log(error);
+        alert("수정할 수 없습니다!");
+    })
+}
+
+const updateGuestBook = (updateContentValue, guestBookSeq, secret) => {
+    const updateGuestBook = guestBooks.value.map(guestBook => {
+        if (guestBook.guestBookSeq === guestBookSeq) {
+            guestBook.content = updateContentValue;
+        }
+        return guestBook;
+    })
+    console.log(updateGuestBook);
+    const requestDto = {
+        content : updateContentValue,
+        isSecret : Number(secret),
+        guestBookSeq : guestBookSeq
+    };
+    axios
+        .patch(`/api/guestbook`, requestDto, {headers})
+        .then((reponse) => {
+            console.log(reponse);
+            edit.value[guestBookSeq] = !edit.value[guestBookSeq];
+        })
+        .catch((error) => {
+        console.log(error);
+        alert("수정할 수 없습니다!");
+    })
+}
+
+onMounted(() => {
+    start.value = 0;
+    guestBooks.value = [];
+    getGuestBooks();
+});
+
+const deleteGuestBook = (guestBookSeq) => {
+    axios
+        .delete(`/api/guestbook/${guestBookSeq}`,{headers})
+        .then(response => {
+            console.log(response.data);
+            getGuestBooks();
+            alert("방명록이 삭제되었습니다!");
+        })
+        .catch(error => {
+            console.error(error);
+            alert("삭제할 수 없습니다!");
+        });
+}
+
+const addGuestBookComment = (newCommentValue, guestBookSeq) => {
+    const requestDto = {
+        userSeq : userSeq.value,
+        content : newCommentValue,
+        guestbookCommentSeq : 0
+    };
+    newComment.value[guestBookSeq] = '';
+    axios
+        .post(`/api/guestbook/comment/${guestBookSeq}`, requestDto, {headers})
+        .then(response => {
+            console.log(response.data);
+            axios.get(`/api/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`,{headers})
+            .then(response => {
+                guestBooks.value = response.data;
+            })
+            .catch(error => {
+                console.error(error);
+                alert("댓글을 불러올 수 없습니다!");
+            })
+        })
+        .catch(error => {
+            console.error(error);
+            alert("댓글을 추가할 수 없습니다!");
+        })
+}
+
+const removeGuestBookComment = (guestBookSeq) => {
+    axios
+        .delete(`/api/guestbook/comment/${guestBookSeq}`, {headers})
+        .then(response => {
+            console.log(response.data);
+            getGuestBooks();
+            alert("댓글이 삭제되었습니다!");
+        })
+        .catch(error => {
+            console.error(error);
+            alert("댓글을 삭제할 수 없습니다!");
+        })
+}
+
 </script>
 
 <style scoped>
-    /* #Wrapper {
-        padding-top : 40px;
-    } */
+
     #guestBookWrapper {
         height: 75vh;
         width : 62vw;
@@ -99,18 +292,28 @@ components : {GuestBookCreateComp, UserTitleComp},
     }
     /* 방명록 하나 CSS */
     #guestBookOne {
-        margin-top:3vh;
+        margin-top:2rem;
     }
     /* 방명록 헤더 정보 */
-    #guestBookHeader {
+    .guestBookHeader {
         display : flex;
         justify-content: space-between;
         align-items: center;
-        padding : 0 2vw 0 2vw;
+        padding : 0 2vw;
         background-color: #F0F0F0;
         height: 4vh;
         border-top : solid 1px;
         font-size : 1vw;
+    }
+    .guestBookHeader_secret {
+        display : flex;
+        justify-content: space-between;
+        align-items: center;
+        padding : 0 2vw;
+        height: 4vh;
+        font-size : 1vw;
+        background-color : #FFEFD3; 
+        border-top : solid 1px #E29714;
     }
     .GBWrite {
         display : flex;
@@ -119,6 +322,7 @@ components : {GuestBookCreateComp, UserTitleComp},
     .GBWriter {
         color : #4689aa;
         font-weight : bold;
+        cursor: pointer;
     }
     .GBCreatedDate{
         font-size:1vh;
@@ -142,8 +346,8 @@ components : {GuestBookCreateComp, UserTitleComp},
         justify-content: space-around;
     }
     .guestMinime {
-        width : 10vw;
-        height: 10vw;
+        width : 6rem;
+        height: 6rem;
     }
     .guestBookContent {
         width : 40vw;
@@ -151,7 +355,7 @@ components : {GuestBookCreateComp, UserTitleComp},
         flex-direction: column;
         text-align: left;
     }
-    .isSecret {
+    .secret {
         font-size: 1.5vh;
     }
     .lock_icon {
@@ -159,17 +363,60 @@ components : {GuestBookCreateComp, UserTitleComp},
     }
     .content {
         margin-bottom : 2vh;
-        font-size : 1vw;
+        font-size : 0.8rem;
     }
 
+    .updateContent {
+        display :flex;
+        align-items:end;
+    }
+    .updateText {
+        width : 80%;
+        height: 5rem;
+        border : 2px solid #82ACC1;
+        resize : none;
+    }
+    .updateB {
+        cursor: pointer;
+        font-size: 10px;
+        background-color: #82acc1;
+        color: #fff;
+        width: 60px;
+        padding: 2px 4px;
+        margin-left: 15px;
+        border: none;
+        border-radius: 15px;
+    }
     /* 방명록 댓글 CSS */
-    #guestBookComment {
+    .guestBookCommentList {
+        display: flex;
+        flex-direction: column;
         background-color: #F0F0F0;
+        margin : 0 0.5rem;
+    }
+
+    .guestBookCommentList_secret {
+        display : flex;
+        flex-direction: column;
+        background-color: #FFEFD3;
+        margin: 0 0.5rem;
+    }
+
+    #guestBookCommentWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top : 1rem;
+        margin : 0 1vw;
+        padding-left : 3vw;
+        font-size : 0.8rem;
+    }
+    #guestBookComment {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        padding : 2vh 1vw 2vh 1vw;
-        margin : 0 1vw 0 1vw;
+        padding : 1rem;
+        margin : 0 1rem;
     }
     .comment {
         width : 43vw;
@@ -179,10 +426,38 @@ components : {GuestBookCreateComp, UserTitleComp},
         border-color : #6A6A6A;
         border-width: 1px;
     }
-
+    .commentOne {
+        padding : 0.1rem 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 1rem;
+        padding-bottom : 0.5rem;
+        font-size : 0.7rem;
+    }
+    .commentDelete {
+        background-color: white;
+        border-radius : 5px;
+        border : 1px solid;
+        font-size : 0.65rem;
+    }
     .commentCreate{
         background-color: white;
         border-radius : 5px;
-        font-weight: bold;
+        border : 1px solid;
+        font-size : 0.6rem;
+    }
+    .backButton, .nextButton {
+        margin : 1rem;
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    .disabled {
+        opacity: 0.5;
+        margin : 1rem;
+        background-color: white;
+        border-radius: 5px;
+        cursor: not-allowed;
     }
 </style>
