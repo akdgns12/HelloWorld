@@ -7,6 +7,7 @@ import com.project.helloworld.util.BaseTimeEntity;
 import javax.persistence.*;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +49,18 @@ public class User extends BaseTimeEntity implements UserDetails {
 
   @Column(name = "phone_number", unique = true)
   private String phoneNumber;
+
+  @Column(name = "like_cnt")
+  @ColumnDefault("0")
+  private int likeCnt;
+
+  @Column(name = "helpful_cnt")
+  @ColumnDefault("0")
+  private int helpfulCnt;
+
+  @Column(name = "understand_cnt")
+  @ColumnDefault("0")
+  private int understandCnt;
 
   @Column(name = "bgm_url")
   private String bgmUrl;

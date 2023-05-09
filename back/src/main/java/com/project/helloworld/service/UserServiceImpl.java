@@ -147,6 +147,9 @@ public class UserServiceImpl implements UserService{
                 .phoneNumber(user.getPhoneNumber())
                 .today(today)
                 .total(total)
+                .likeCnt(user.getLikeCnt())
+                .helpfulCnt(user.getHelpfulCnt())
+                .understandCnt(user.getUnderstandCnt())
                 .bgmUrl(user.getBgmUrl())
                 .backgroundUrl(user.getBackgroundUrl())
                 .avatar(user.getAvatar())
@@ -161,14 +164,19 @@ public class UserServiceImpl implements UserService{
     public ResponseEntity<?> getUserMainInfo(Long userSeq) throws Exception {
         User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
 
+        Long todayCnt = visitorService.getTodayVisitors(String.valueOf(userSeq));
+        Long totalCnt = visitorService.getTotalVisitors(String.valueOf(userSeq));
         UserResponseDto.UserMainInfo userMainInfo = UserResponseDto.UserMainInfo.builder()
                 .userSeq(user.getUserSeq())
                 .nickname(user.getNickname())
                 .name(user.getName())
                 .comment(user.getComment())
                 .phoneNumber(user.getPhoneNumber())
-//                .today(user.getToday())
-                .total(user.getTotal())
+                .likeCnt(user.getLikeCnt())
+                .helpfulCnt(user.getHelpfulCnt())
+                .understandCnt(user.getUnderstandCnt())
+                .today(todayCnt)
+                .total(totalCnt)
                 .bgmUrl(user.getBgmUrl())
                 .backgroundUrl(user.getBackgroundUrl())
                 .avatar(user.getAvatar())

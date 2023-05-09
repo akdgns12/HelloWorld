@@ -36,6 +36,9 @@ public class UserResponseDto {
         private String phoneNumber;
         private String providerId;
         private AuthProvider authProvider;
+        private int likeCnt;
+        private int helpfulCnt;
+        private int understandCnt;
         private Long today;
         private Long total;
         private Avatar avatar;
@@ -55,6 +58,9 @@ public class UserResponseDto {
         private String phoneNumber;
         private String providerId;
         private AuthProvider authProvider;
+        private int likeCnt;
+        private int helpfulCnt;
+        private int understandCnt;
         private Long today;
         private Long total;
         private Avatar avatar;
