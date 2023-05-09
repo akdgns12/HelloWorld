@@ -126,6 +126,7 @@ public class GuestBookDto {
     public static class updateDto{
         private Long guestBookSeq;
         private String content;
+        private int isSecret;
 
     }
 }

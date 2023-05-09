@@ -29,6 +29,7 @@ public class Guestbook extends BaseTimeEntity {
 
   @Column(name = "guestbook_nickname")
   private String guestbookNickname;
+  @Setter
   @Column(name = "is_secret")
   private boolean isSecret;
   @ManyToOne(fetch = FetchType.LAZY)
