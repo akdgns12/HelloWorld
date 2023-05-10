@@ -8,9 +8,7 @@
         </div> -->
         <div class="BN-container">
             <div class="BN">
-                <router-link to="/mainpage">
-                    <div class="router-btn">마이홈</div>
-                </router-link>
+                <div class="router-btn" @click="goHome">마이홈</div>
             </div>
             <div class="BN">
                 <div class="router-btn" @click="showModal = true">알림</div>
@@ -33,6 +31,7 @@ export default {
     data() {
         return {
             showModal: false,
+            myHomeId: `/mainpage/${localStorage.getItem('user-seq')}`
         }
     },
     methods: {
@@ -49,14 +48,17 @@ export default {
                     localStorage.removeItem("user-seq");
                     localStorage.removeItem("refresh-token");
                     // localStorage.clear();
-                    window.location.replace('https://k8a308.p.ssafy.io/');
-                    // this.$router.push({ name: 'before-login' });
+                    // window.location.replace('https://k8a308.p.ssafy.io/');
+                    this.$router.replace({ name: 'before-login' });
                 },
                 (error) => {
                     console.log(error);
                     alert("로그아웃 실패!");
                 }
             )
+        },
+        goHome: function() {
+            this.$router.replace({path: this.myHomeId});
         }
         // play(sound) {
         //     if (sound) {
@@ -69,6 +71,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+    text-decoration: none;
+}
 .wrapper {
     height: 62.6px;
     width: 25%;

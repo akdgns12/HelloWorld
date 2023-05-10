@@ -8,7 +8,13 @@
 idea/
 back/.idea/*
 StoryModule/.idea/*
+<<<<<<< HEAD
 StoryModule/HELP.md
+=======
+StoryModule/HELP.md 
+app/.idea/libraries/Dart_Packages.xml
+FE/src/components/BoardComp/BoardMarkDown.vue
+>>>>>>> 2bada55336bc71f4303bb3c16830289bda823ea4
 
 .idea/*
 # reousrces
@@ -411,4 +417,9 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/vuejs,vue,node,visualstudiocode,intellij,windows,macos,java,gradle
+=======
+# End of https://www.toptal.com/developers/gitignore/api/vuejs,vue,node,visualstudiocode,intellij,windows,macos,java,gradle
+
+>>>>>>> 2bada55336bc71f4303bb3c16830289bda823ea4

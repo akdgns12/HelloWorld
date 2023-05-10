@@ -1,15 +1,33 @@
 <template>
     <div class="wrap">
         <div style="font-size:12px">TODAY</div>
-        <div id="today">1234</div>
+        <div id="today">{{this.today}}</div>
         <div style="font-size:12px; padding-right : 0.5vw"> | </div>
         <div style="font-size:12px">TOTAL</div>
-        <div id="total">123123</div>
+        <div id="total">{{this.total}}</div>
 
     </div>
 </template>
 
 <script>
+import http from '@/api/httpWithAccessToken'
+export default {
+    data() {
+        return {
+            masterSeq: this.$route.params.userSeq,
+            today: null,
+            total: null,
+        }
+    },
+    created() {
+        http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
+            this.today = result.data.data.today;
+            this.total = result.data.data.total;
+        }, (error)=>{
+            console.log(error);
+        });
+    },
+}
 </script>
 
 <style scoped>

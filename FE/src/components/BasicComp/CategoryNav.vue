@@ -2,19 +2,19 @@
     <nav id = "category">
         <ul>
             <li class="navitem">
-                <router-link to="/mainpage" class="nav-link">홈</router-link>
+                <router-link :to="`/mainpage/${this.masterSeq}`" class="nav-link">홈</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/board" class="nav-link">게시글</router-link>
+                <router-link to="/board/boardlist/all" class="nav-link">게시글</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/community" class="nav-link">커뮤니티</router-link>
+                <router-link :to="`/community/${this.masterSeq}`" class="nav-link">커뮤니티</router-link>
             </li>
             <li class="navitem">
                 <router-link to="/guestbook" class="nav-link">방명록</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/statistic" class="nav-link">통계</router-link>
+                <router-link :to="`/statistic/${this.masterSeq}`" class="nav-link">통계</router-link>
             </li>
         </ul>
     </nav>
@@ -22,7 +22,14 @@
 
 
 <script>
-
+export default {
+    data() {
+        return {
+            userSeq: localStorage.getItem('user-seq'),
+            masterSeq: this.$route.params.userSeq,
+        }
+    }
+}
 </script>
 
 <style scoped>

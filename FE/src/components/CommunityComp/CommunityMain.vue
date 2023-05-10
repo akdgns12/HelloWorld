@@ -4,26 +4,102 @@
         <UserTitleComp />
         <div class="right-body">
             <div class="community-notice">
-                <form action="" class="search-bar">
-                    <input type="search" name="search" pattern=".*\S.*" required>
-                    
-                    <button class="search-btn" type="submit">
-                    </button>
-                </form>
-
-            </div>
-            <div class="whole-alticles">
-                <div class="articles">
-                    <ArticleComp />
-                    <ArticleComp />
-                    <ArticleComp />
-                    <ArticleComp />
+                <div class="search-container">
+                    <form class="search-form">
+                        <input type="search-input" class="search-input" name="search" required v-model="searchKeyword">
+                    </form>
+                    <button class="search-button" @click="searchWithKeyword">검색</button>
                 </div>
-                <div class="articles">
-                    <ArticleComp />
-                    <ArticleComp />
-                    <ArticleComp />
-                    <ArticleComp />
+            </div>
+            <!-- <div class="keyword-notice">
+                    # 실시간 인기 검색어
+                </div> -->
+            <div style="width: 100%; margin: 0 auto;">
+                <carousel :autoplay="3000" :wrap-around="true" :transition="1000" :navigation-enabled="true" :dir="ttb"
+                    :i18n="{
+                        'ariaNextSlide': '',
+                        'ariaPreviousSlide': '',
+                        'ariaNavigateToSlide': '',
+                        'ariaGallery': '',
+                        'itemXofY': '',
+                        'iconArrowUp': '',
+                        'iconArrowDown': '',
+                        'iconArrowRight': '',
+                        'iconArrowLeft': '',
+                    }">
+                    <slide v-for="(keyword, index) in topKeywords" :key="keyword">
+                        <div class="keyword" :id="keyword" @click="search"> {{ index + 1 }}위&nbsp;&nbsp; {{ keyword }}
+                        </div>
+                    </slide>
+                    <template #addons>
+                    </template>
+                </carousel>
+            </div>
+            <hr style="width: 96%; margin: 0 auto; margin-top: 5px;" />
+            <div style="display: flex; margin-left: 3%; height: 25px; margin-top: 5px;">
+                <div style="font-weight: 600; font-size: 20px; line-height: 25px;">' {{ searchDecisionKeyword }} ' </div>
+                <div style="font-size: 15px; line-height: 25px;">&nbsp;&nbsp;에 대한 검색 결과입니다</div>
+            </div>
+            <div class="whole-alticles" style="display: flex;">
+                <div class="articles" v-for="(result, i) in searchResult" :key="i">
+                    <div class="article-container" :id="result.id" @click="printBoardSeq">
+                        <div class="represent-img-container" :id="result.id">
+                            <img class="represent-img" v-if="result.imageUrl == ''"
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" :id="result.id" alt="대표이미지" />
+                                <img class="represent-img" v-if="result.imageUrl != ''"
+                                src="result.imageUrl" :id="result.id" alt="대표이미지" />
+                        </div>
+                        <div class="title">
+                            {{ result.title }}
+                        </div>
+                        <div class="author">
+                            by {{ result.author }}
+                        </div>
+                        <div class="content">
+                            {{ result.content }}
+                        </div>
+                        <hr width="92%">
+                        <div class="sticker-and-comment">
+                            <div class="heart-icon-container">
+                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" />
+                            </div>
+                            <div class="heart-cnt">{{ result.likeCnt }}</div>
+                            <div class="comment-icon-container">
+                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" />
+                            </div>
+                            <div class="comment-cnt">12</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="articles" v-for="i in 4-searchResult.length" :key="i">
+                    <div class="article-container" hidden>
+                        <!-- <div class="represent-img-container">
+                            <img class="represent-img"
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" />
+                        </div>
+                        <div class="title">
+                            {{ result.title }}
+                        </div>
+                        <div class="author">
+                            by {{ result.author }}
+                        </div>
+                        <div class="content">
+                            {{ result.content }}
+                        </div>
+                        <hr width="92%">
+                        <div class="sticker-and-comment">
+                            <div class="heart-icon-container">
+                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" />
+                            </div>
+                            <div class="heart-cnt">
+                                {{ result.likeCnt }}
+                            </div>
+                            <div class="comment-icon-container">
+                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" />
+                            </div>
+                            <div class="comment-cnt">12</div>
+                        </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,44 +108,70 @@
 
 <script>
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
-import ArticleComp from "@/components/CommunityComp/ArticleComp.vue"
 import http from "@/api/httpWithAccessToken"
+// import { isProxy, toRaw } from 'vue';
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, } from 'vue3-carousel'
 
 export default {
-    components: { UserTitleComp, ArticleComp },
-    methods: {
-        getTopArticles: function () {
-            http.get(`/board/board-list?start=0&size=8`).then(
-                (response) => {
-                    console.log(response);
-                    return response;
-                },
-                (error) => {
-                    console.log(error);
-                    alert("인기 게시물 로드 실패!");
-                }
-            )
+    components: { UserTitleComp, Carousel, Slide, },
+    data() {
+        return {
+            topKeywords: [],
+            searchKeyword: null,
+            searchResult: [],
+            searchDecisionKeyword: null,
         }
-        // play(sound) {
-        //     if (sound) {
-        //         var audio = new Audio(sound);
-        //         audio.play();
-        //     }
-        // }
     },
-    mounted() {
-        http.get(`/board/board-list?start=0&size=8`).then(
-                (response) => {
-                    console.log(response);
-                    console.log(response.data);
-                },
+    methods: {
+        search: async function (e) {
+            e.preventDefault();
+            this.searchKeyword = e.target.id;
+            this.searchDecisionKeyword = e.target.id;
+            http.get(
+                `/board/searchByKeyword?keyword=${this.searchKeyword}&page=0`
+            ).then((response) => {
+                this.searchResult = response.data.body;
+                console.log(response.data.body);
+            },
                 (error) => {
                     console.log(error);
-                    alert("인기 게시물 로드 실패!");
+                    alert("검색 실패!");
                 }
+            );
+        },
+        searchWithKeyword: async function () {
+            console.log(this.searchKeyword);
+            this.searchDecisionKeyword = this.searchKeyword;
+            http.get(
+                `/board/searchByKeyword?keyword=${this.searchKeyword}&page=0`
+            ).then((response) => {
+                this.searchResult = response.data.body;
+                console.log(response.data.body);
+            },
+                (error) => {
+                    console.log(error);
+                    alert("검색 실패!");
+                }
+            );
+        },
+        printBoardSeq: async function(e) {
+            e.preventDefault();
+            console.log(e.target.id);
+        }
+    },
+    created() {
+        http.get(`/board/getTopTen`).then(
+            ({ data }) => {
+                this.topKeywords = data.body;
+                console.log(this.topKeywords);
+            },
+            (error) => {
+                console.log(error);
+                alert("인기 검색어 로드 실패!");
+            }
         );
     }
-
 }
 
 </script>
@@ -87,16 +189,70 @@ export default {
     text-align: start;
     color: #6A6A6A;
     font-size: 20px;
-    /* font-weight: 600; */
     display: flex;
     justify-content: start;
-    height: 11%;
-    /* margin-left: 1%; */
+    height: 9%;
 }
+
+.keyword-notice {
+    width: 100%;
+    text-align: center;
+    color: #6A6A6A;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.keyword {
+    background-color: #82ACC1;
+    color: white;
+    width: 150px;
+    padding: 3px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 10px;
+    justify-content: start;
+    cursor: pointer;
+}
+
+.search-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.search-form {
+    width: 50%;
+    margin-top: 10px;
+}
+
+.search-input {
+    width: 100%;
+    height: 32px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233, 233, 233);
+}
+
+.search-button {
+    margin-left: 30px;
+    width: 50px;
+    height: 32px;
+    margin-top: 10px;
+    border: 0;
+    border-radius: 15px;
+    background-color: #82ACC1;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 .whole-alticles {
     width: 98%;
     margin: 0 auto;
-    height: 84%;
+    height: 75%;
     /* overflow: hidden; */
     overflow-y: scroll;
 }
@@ -128,183 +284,114 @@ export default {
     margin-bottom: 10px;
 }
 
-
-:root {
-    font-size: calc(16px + (24 - 16)*(100vw - 320px)/(1920 - 320));
-}
-
-button,
-input {
-    font-size: 12px;
-    line-height: 12px;
-}
-
-input {
-    color: #171717;
-}
-
-.search-bar {
-    display: flex;
-}
-.search-bar input,
-.search-btn,
-.search-btn:before,
-.search-btn:after {
-    transition: all 0.25s ease-out;
-}
-
-.search-bar input,
-.search-btn {
-    width: 2.5em;
-    height: 2.5em;
-}
-
-
-
-.search-bar input:invalid:not(:focus),
-.search-btn {
+.article-container {
+    width: 14vw;
+    height: 45vh;
+    border: 1px solid #A8A8A8;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px;
     cursor: pointer;
 }
 
-.search-bar,
-.search-bar input:focus,
-.search-bar input:valid {
-    width: 50%;
+.article-container:hover {
+    transform: scale(1.03);
+    transition: 0.8s;
 }
 
-.search-bar input:focus,
-.search-bar input:valid {
-    width: 80%;
-    margin-left: 5%;
+.represent-img-container {
+    border: 2px solid #D9D9D9;
+    width: 90%;
+    height: 60%;
+    margin: 0 auto;
+    margin-top: 2.5%;
 }
 
-.search-bar input:focus,
-.search-bar input:not(:focus)+.search-btn:focus {
-    outline: transparent;
+.represent-img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
 
-.search-bar {
-    padding-top: 1.5em;
-    justify-content: start;
-    max-width: 30em;
-}
-
-.search-bar input {
-    background: transparent;
-    border-radius: 1.5em;
-    box-shadow: 0 0 0 0.4em #171717 inset;
-    padding: 0.2em;
-    transform: translate(0.5em, 0.5em) scale(0.5);
-    transform-origin: 100% 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-.search-bar input::-webkit-search-decoration {
-    -webkit-appearance: none;
-}
-
-.search-bar input:focus,
-.search-bar input:valid {
-    background: #fff;
-    border-radius: 0.375em 0 0 0.375em;
-    box-shadow: 0 0 0 0.1em #d9d9d9 inset;
-    transform: scale(1);
-}
-
-.search-btn {
-    background: #171717;
-    border-radius: 0 0.75em 0.75em 0 / 0 1.5em 1.5em 0;
-    padding: 0.2em;
-    position: relative;
-    transform: translate(0.25em, 0.25em) rotate(45deg) scale(0.25, 0.125);
-    transform-origin: 0 50%;
-}
-
-.search-btn:before,
-.search-btn:after {
-    content: "";
-    display: block;
-    opacity: 0;
-    position: absolute;
-}
-
-.search-btn:before {
-    border-radius: 50%;
-    box-shadow: 0 0 0 0.2em #f1f1f1 inset;
-    top: 0.5em;
-    left: 0.5em;
-    width: 1.2em;
-    height: 1.2em;
-}
-
-.search-btn:after {
-    background: #f1f1f1;
-    border-radius: 0 0.25em 0.25em 0;
-    top: 63%;
-    left: 63%;
-    width: 0.3em;
-    height: 0.3em;
-    transform: translate(0.2em, 0) rotate(45deg);
-    transform-origin: 0 50%;
-}
-
-.search-btn span {
-    display: inline-block;
+.title {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 5%;
+    text-align: start;
+    font-size: 13px;
+    font-weight: 700;
     overflow: hidden;
-    width: 1px;
-    height: 1px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-/* Active state */
-.search-bar input:focus+.search-btn,
-.search-bar input:valid+.search-btn {
-    background: #82ACC1;
-    border-radius: 0 0.375em 0.375em 0;
-    transform: scale(1);
+.author {
+    font-size: 9px;
+    width: 90%;
+    margin: 0 auto;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 1%;
 }
 
-.search-bar input:focus+.search-btn:before,
-.search-bar input:focus+.search-btn:after,
-.search-bar input:valid+.search-btn:before,
-.search-bar input:valid+.search-btn:after {
-    opacity: 1;
+.content {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 5%;
+    text-align: start;
+    font-size: 10px;
+    color: #6A6A6A;
+    overflow: hidden;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
-.search-bar input:focus+.search-btn:hover,
-.search-bar input:valid+.search-btn:hover,
-.search-bar input:valid:not(:focus)+.search-btn:focus {
-    background: #82ACC1;
+.sticker-and-comment {
+    width: 90%;
+    margin: 0 auto;
+    justify-content: end;
+    display: flex;
 }
 
-.search-bar input:focus+.search-btn:active,
-.search-bar input:valid+.search-btn:active {
-    transform: translateY(1px);
+.heart-icon-container {
+    width: 12px;
+    height: 10px;
 }
 
-@media screen and (prefers-color-scheme: dark) {
+.heart-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
 
-    body,
-    input {
-        color: #f1f1f1;
-    }
+.heart-cnt {
+    font-size: 8px;
+    margin-left: 3px;
+    height: 12px;
+    line-height: 19px;
+    color: #6A6A6A;
+}
 
-    body {
-        background: #171717;
-    }
+.comment-icon-container {
+    margin-left: 5%;
+    width: 12px;
+    height: 10px;
+}
 
-    .search-bar input {
-        box-shadow: 0 0 0 0.4em #f1f1f1 inset;
-    }
+.comment-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
 
-    .search-bar input:focus,
-    .search-bar input:valid {
-        background: #3d3d3d;
-        box-shadow: 0 0 0 0.1em #3d3d3d inset;
-    }
-
-    .search-btn {
-        background: #f1f1f1;
-    }
-}</style>
+.comment-cnt {
+    font-size: 8px;
+    margin-left: 3px;
+    height: 12px;
+    line-height: 19px;
+    color: #6A6A6A;
+}
+</style>

@@ -18,7 +18,7 @@ export default {
 </script>
 
 <template>
-    <div>HI</div>
+    <div></div>
 </template>
 
 <style scoped></style>
