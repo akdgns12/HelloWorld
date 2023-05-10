@@ -58,7 +58,8 @@ export default {
             )
         },
         goHome: function() {
-            this.$router.replace({path: this.myHomeId});
+            console.log(this.myHomeId)
+            this.$router.push({ path: this.myHomeId });
         }
         // play(sound) {
         //     if (sound) {

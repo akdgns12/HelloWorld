@@ -79,16 +79,35 @@ export default {
         }
     },
     created() {
-        http.get(`/user/mainpage/${this.userSeq}`).then((result) => {
-            // console.log(result.data.data)
-            this.nickname = result.data.data.nickname;
-        }, (error)=>{
+        // http.get(`/user/mainpage/${this.userSeq}`).then((result) => {
+        //     // console.log(result.data.data)
+        //     this.nickname = result.data.data.nickname;
+        // }, (error)=>{
+        //     console.log(error);
+        // });
+        // http.get(`/user/mainpage/${this.masterSeq}`).then((result)=> {
+        //     console.log(result.data.data);
+        // }, (error) => {
+        //     console.log(error);
+        // });
+        http.get(`/family?userSeq=${this.userSeq}&status=all&hasComment=false`).then((result) => {
+            console.log(result.data.body);
+        }, (error) => {
             console.log(error);
         });
     },
     methods: {
         postFamilyComment: function() {
-            http.post(`/family/comment`)
+            var info = {
+                user_seq: "",
+                content: this.postMsg,
+            };
+            console.log(info);
+            http.put(`/family/comment/`, JSON.stringify(info)).then((result) => {
+                console.log(result);
+            }, (error) => {
+                console.log(error);
+            });
         }
     }
 }

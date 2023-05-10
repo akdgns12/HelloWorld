@@ -6,41 +6,44 @@ export default {
     },
     data() {
         return {
-            myNickname: localStorage.getItem('user-nickname'),
+            myNickname: null,
             otherNickname: null,
             fromRelationName: null,
             toRelationName: null,
             requestMessage: null,
-            fromUserSeq: localStorage.getItem('user-seq'),
-            toUserSeq: null,
+            userSeq: localStorage.getItem('user-seq'),
+            masterSeq: this.$route.params.userSeq,
         }
-    },
-    created() {
-        // var userSeq = localStorage.getItem('userSeq');
-        // http.get(`/user/userInfo/${userSeq}`).then((response) => {
-        //     console.log(response);
-        //      this.otherNickname = response.data.data.nickname;
-        // }, (error) => {
-        //     console.log(error);
-        //     alert("유저 조회 실패!");
-        // });
     },
     methods: {
         requestFamily: function () {
             var info = {
                 "fromRelationName": this.fromRelationName,
-                "fromUserSeq": localStorage.getItem('user-seq'),
+                "fromUserSeq": this.userSeq,
                 "requestMessage": this.requestMessage,
                 "toRelationName": this.toRelationName,
-                "toUserSeq": 0
+                "toUserSeq": this.masterSeq,
             };
             http.post(`/family`, JSON.stringify(info)).then((response) => {
                 console.log(response);
+                this.$emit('close');
             }, (error) => {
                 console.log(error);
                 alert("일촌 요청 실패!")
             });
         }
+    },
+    created() {
+        http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
+            this.myNickname = result.data.data.nickname;
+        }, (error)=>{
+            console.log(error);
+        });
+        http.get(`/user/userInfo/${this.masterSeq}`).then((result) => {
+            this.otherNickname = result.data.data.nickname;
+        }, (error)=>{
+            console.log(error);
+        });
     }
 }
 </script>
@@ -57,21 +60,21 @@ export default {
                         <div class="profile-img-container">
                             <img class="profile-img" src="@/assets/image/Person.png" />
                         </div>
-                        <div class="user-name">최싸피</div>
+                        <div class="user-name">{{this.otherNickname}}</div>
                         <div class="request-msg">&nbsp;님께 일촌을 신청합니다</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">최싸피</div>
+                        <div class="user-name">{{this.otherNickname}}</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">{{ this.myNickname }} (나)</div>
+                        <div class="user-name">{{this.myNickname}} (나)</div>
                         <div class="request-msg">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.toRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">{{ this.myNickname }} (나)</div>
+                        <div class="user-name">{{this.myNickname}} (나)</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">최싸피</div>
+                        <div class="user-name">{{this.otherNickname}}</div>
                         <div class="request-msg">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.fromRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
