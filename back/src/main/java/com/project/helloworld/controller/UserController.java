@@ -1,15 +1,21 @@
 package com.project.helloworld.controller;
 
 import com.project.helloworld.dto.UserRequestDto;
+import com.project.helloworld.security.jwt.JwtAuthenticationFilter;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
 import com.project.helloworld.service.UserService;
+import com.project.helloworld.service.VisitorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -22,11 +28,12 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @ApiOperation(value = "회원가입", notes = "id, email, password, nickname, name")
-    @PostMapping("/signUp")
-    public ResponseEntity<?> signUp(@Validated @RequestBody UserRequestDto.SignUp signUp) throws Exception{
+    @PostMapping(value = "/signUp", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> signUp(@Validated @ModelAttribute(value = "user") UserRequestDto.SignUp signUp,
+                                    @RequestPart(value = "img", required = false) MultipartFile img) throws Exception{
         log.debug("singUp", signUp);
 
-        return userService.signUp(signUp);
+        return userService.signUp(signUp, img);
     }
 
     @ApiOperation(value = "일반 로그인", notes = "id, password")
@@ -54,11 +61,12 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원정보 수정", notes = "name, nickName, phoneNumber 입력받음")
-    @PutMapping("/modify")
-    public ResponseEntity<?> modify(@Validated @RequestBody UserRequestDto.Modify modify) throws Exception{
+    @PutMapping(value = "/modify",  consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> modify(@Validated @ModelAttribute(value = "user") UserRequestDto.Modify modify,
+                                    @RequestPart(value = "img", required = false) MultipartFile img) throws Exception{
         log.debug("modifyInfo", modify);
 
-        return userService.modify(modify);
+        return userService.modify(modify, img);
     }
 
     @ApiOperation(value = "비밀번호 변경", notes = "userSeq, password 전달받음")
@@ -122,5 +130,13 @@ public class UserController {
         log.debug("message", emailCertify);
 
         return userService.confirmEmail(emailCertify);
+    }
+
+    @ApiOperation(value = "유저 정보 전체 조회", notes = "홈페이지 접속시 필요한 정보 전체 조회")
+    @GetMapping("/mainpage/{userSeq}")
+    public ResponseEntity<?> getUserMainInfo(@PathVariable Long userSeq) throws Exception{
+        log.debug("userSeq ", userSeq);
+
+        return userService.getUserMainInfo(userSeq);
     }
 }

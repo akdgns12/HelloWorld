@@ -25,6 +25,7 @@ public class StroyServiceImpl implements StoryService{
     private KafkaTemplate<String, StoryDto> kafkaTemplate;
     public void sendToFamilies(Board board){
         User writer = board.getUser();
+<<<<<<< HEAD
         sendStory(board, writer.getFamilies());
     }
     @Async
@@ -32,5 +33,11 @@ public class StroyServiceImpl implements StoryService{
         User writer = board.getUser();
         if(families.isEmpty()) kafkaTemplate.send(TOPIC, new StoryDto(board,writer,1L));
         else families.stream().forEach(x-> kafkaTemplate.send (TOPIC, new StoryDto(board,writer, x.getFamilyUserSeq())));
+=======
+
+        if(families.isEmpty()) return ;
+        families.stream().forEach(x-> kafkaTemplate.send (TOPIC, new StoryDto(board,writer, x)));
+
+>>>>>>> 16a6c759ae22dde36cd7a5b92919238738b2ad28
     }
 }

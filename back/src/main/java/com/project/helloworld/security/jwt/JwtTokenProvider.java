@@ -1,6 +1,8 @@
 package com.project.helloworld.security.jwt;
 
+import com.project.helloworld.domain.User;
 import com.project.helloworld.dto.UserResponseDto;
+import com.project.helloworld.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +26,13 @@ public class JwtTokenProvider {
     private final String AUTHORITIES_KEY = "auth";
     private final String BEARER_TYPE = "Bearer";
     private final String SECRET_KEY;
+    private final UserRepository userRepository;
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
-    public JwtTokenProvider(@Value("${app.auth.token.secret-key}") String secretKey) {
+    public JwtTokenProvider(@Value("${app.auth.token.secret-key}") String secretKey, UserRepository userRepository) {
         this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        this.userRepository = userRepository;
     }
 
     public Key getSignKey(String SECRET_KEY){
@@ -43,12 +47,16 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
+        Optional<User> user = userRepository.findByEmail(authentication.getName());
+        Long userSeq = user.get().getUserSeq();
+
         long now = (new Date()).getTime();
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
+                .claim("userSeq", userSeq)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(getSignKey(SECRET_KEY), SignatureAlgorithm.HS256)
                 .compact();
@@ -85,6 +93,13 @@ public class JwtTokenProvider {
         // UserDetails 객체 만들어서 Authentication 리턴
         UserDetails principal = new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
+    // token으로 Email 얻는 메소드
+    public String getUserEmail(String token){
+        Claims claims = parseClaims(token);
+        String email = claims.getSubject();
+        return email;
     }
 
     // token으로 userSeq 얻는 메소드

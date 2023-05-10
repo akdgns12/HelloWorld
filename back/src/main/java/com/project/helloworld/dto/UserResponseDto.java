@@ -1,9 +1,18 @@
 package com.project.helloworld.dto;
 
 import com.project.helloworld.domain.Avatar;
+<<<<<<< HEAD
+=======
+import com.project.helloworld.dto.response.BgmList;
+import com.project.helloworld.dto.response.GrassResponse;
+import com.project.helloworld.security.oauth2.AuthProvider;
+>>>>>>> 16a6c759ae22dde36cd7a5b92919238738b2ad28
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserResponseDto {
 
@@ -27,12 +36,56 @@ public class UserResponseDto {
         private String email;
         private String name;
         private String nickname;
+        private String comment;
         private String phoneNumber;
+<<<<<<< HEAD
         private int provider;
         private int today;
         private int total;
         private Avatar avatar;
+=======
+        private String providerId;
+        private AuthProvider authProvider;
+        private int likeCnt;
+        private int helpfulCnt;
+        private int understandCnt;
+        private Long today;
+        private Long total;
+        private String avatarUrl;
+>>>>>>> 16a6c759ae22dde36cd7a5b92919238738b2ad28
         private String backgroundUrl;
         private String bgmUrl;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class UserMainInfo{
+        private Long userSeq;
+        private String email;
+        private String name;
+        private String nickname;
+        private String comment;
+        private String phoneNumber;
+        private String providerId;
+        private AuthProvider authProvider;
+        private int likeCnt;
+        private int helpfulCnt;
+        private int understandCnt;
+        private Long today;
+        private Long total;
+        private String avatarUrl;
+        private String backgroundUrl;
+        private List<GrassResponse> grassList;
+        private List<FamilyResponseDto> familyResponseDtos;
+        private List<BgmList> bgmList;
+
+        public void getFamilyResponseDtos(Object body) {
+            this.familyResponseDtos = (List<FamilyResponseDto>) body;
+        }
+
+        public void getGrassList(Object body) {
+            this.grassList = (List<GrassResponse>) body;
+        }
     }
 }

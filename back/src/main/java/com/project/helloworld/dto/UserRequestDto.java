@@ -4,6 +4,8 @@ package com.project.helloworld.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.NotEmpty;
 
 public class UserRequestDto {
@@ -27,7 +29,6 @@ public class UserRequestDto {
     @Setter
     public static class SignUp{
         private String nickname;
-        @NotEmpty(message = "email을 입력해야 합니다.")
         private String email;
         private String password;
         private String name;
@@ -52,8 +53,7 @@ public class UserRequestDto {
         private String name;
         private String nickname;
         private String phoneNumber;
-        private String avatar_imgUrl;
-        private String bgmUrl;
+        private String comment;
     }
 
     @Getter
@@ -82,7 +82,5 @@ public class UserRequestDto {
     public static class Logout{
         @NotEmpty(message = "accessToken을 입력해야 합니다.")
         private String accessToken;
-        @NotEmpty(message = "refreshToken을 입력해야 합니다.")
-        private String refreshToken;
     }
 }

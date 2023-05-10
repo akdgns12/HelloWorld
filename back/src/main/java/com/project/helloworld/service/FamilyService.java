@@ -25,4 +25,8 @@ public interface FamilyService {
     public ResponseEntity<?> updateFamilyRelationName(FamilyNameBody familyNameBody) throws Exception;
 
     public ResponseEntity<?> randomWind(Long userSeq) throws Exception;
+
+    public ResponseEntity<?> getFamiliesWind(Long userSeq,String keyword) throws Exception;
+
+    public ResponseEntity<?> recommendFamily(Long userSeq) throws Exception;
 }

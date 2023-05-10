@@ -2,14 +2,18 @@ package com.project.helloworld.service;
 
 import com.project.helloworld.dto.UserRequestDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface UserService {
 
-    ResponseEntity<?> signUp(UserRequestDto.SignUp signUp);
+    ResponseEntity<?> signUp(UserRequestDto.SignUp signUp, MultipartFile img) throws IOException;
     ResponseEntity<?> signIn(UserRequestDto.SignIn signIn) throws Exception;
     ResponseEntity<?> reissue(UserRequestDto.Reissue reissue);
     ResponseEntity<?> getUserInfo(Long userSeq) throws Exception;
-    ResponseEntity<?> modify(UserRequestDto.Modify modify) throws Exception;
+    ResponseEntity<?> getUserMainInfo(Long userSeq) throws Exception;
+    ResponseEntity<?> modify(UserRequestDto.Modify modify, MultipartFile img) throws Exception;
     ResponseEntity<?> changePassword(UserRequestDto.ChangePassword changePassword) throws Exception;
     ResponseEntity<?> delete(Long userSeq) throws Exception;
     ResponseEntity<?> certifiedEmail(String email) throws Exception;

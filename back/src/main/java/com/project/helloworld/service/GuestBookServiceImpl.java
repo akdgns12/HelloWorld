@@ -68,6 +68,7 @@ public class GuestBookServiceImpl implements GuestBookService{
     public ResponseEntity<?> updateGuestBook(Long guestBookSeq, GuestBookDto.updateDto requestDto) throws Exception {
         Guestbook guestBook = guestBookRepository.findById(guestBookSeq).orElseThrow(()->new Exception("not exist guestbook: " + guestBookSeq));
         guestBook.setContent(requestDto.getContent());
+        guestBook.setSecret(requestDto.getIsSecret()==1);
         guestBookRepository.save(guestBook);
         return new ResponseEntity<>(HttpStatus.OK);
     }
