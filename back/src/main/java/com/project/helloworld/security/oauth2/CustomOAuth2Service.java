@@ -1,8 +1,13 @@
 package com.project.helloworld.security.oauth2;
 
+import com.project.helloworld.domain.Avatar;
 import com.project.helloworld.domain.User;
 import com.project.helloworld.repository.UserRepository;
+import com.project.helloworld.util.Authority;
+import com.project.helloworld.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -12,6 +17,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -19,6 +26,9 @@ import java.util.Optional;
 public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final EntityManager em;
+    @Value("${spring.mail.username}")
+    private String baseAvatar;
 
     // OAuth2UserRequest에 있는 accessToken으로 유저정보 가져오기
     @Override
@@ -66,7 +76,16 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         user.setAuthProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getUserSeq());
         user.setEmail(oAuth2UserInfo.getEmail());
-        user.setNickname(oAuth2UserInfo.getName());
+        user.setName(oAuth2UserInfo.getName());
+
+        // 기본 아바타 이미지 등록
+        Avatar avatar = new Avatar();
+        avatar.setImgUrl(baseAvatar);
+        em.persist(avatar);
+        user.setAvatar(avatar);
+        user.setRoles(Collections.singletonList(Authority.ROLE_USER.name()));
+        user.setAuthProvider(AuthProvider.github);
+
         return userRepository.save(user);
     }
 

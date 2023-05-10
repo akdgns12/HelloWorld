@@ -166,6 +166,7 @@ public class UserServiceImpl implements UserService{
         Long total = visitorService.getTotalVisitors(String.valueOf(userSeq));
         UserResponseDto.UserInfo userInfo = UserResponseDto.UserInfo.builder()
                 .userSeq(userSeq)
+                .email(user.getEmail())
                 .nickname(user.getNickname())
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())
@@ -192,6 +193,7 @@ public class UserServiceImpl implements UserService{
 
         UserResponseDto.UserMainInfo userMainInfo = UserResponseDto.UserMainInfo.builder()
                 .userSeq(user.getUserSeq())
+                .email(user.getEmail())
                 .nickname(user.getNickname())
                 .name(user.getName())
                 .comment(user.getComment())
