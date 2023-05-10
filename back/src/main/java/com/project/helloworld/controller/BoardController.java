@@ -33,9 +33,15 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.getBoard(userSeq,boardSeq));
     }
 
-    @GetMapping("/board-list")
-    ResponseEntity<?> getBoards(@RequestParam int start,@RequestParam int size) throws Exception {
-        return ResponseEntity.ok().body(boardService.getBoards(start,size));
+    @GetMapping("/board-list-all")
+    ResponseEntity<?> getBoardsAll(@RequestParam int start,@RequestParam int size) throws Exception {
+        return ResponseEntity.ok().body(boardService.getBoardsAll(start,size));
+    }
+
+    @GetMapping("/board-list-by-user")
+    ResponseEntity<?> getBoardsByUser(@RequestParam Long userSeq, @RequestParam int start, @RequestParam int size ) throws Exception{
+
+        return ResponseEntity.ok().body(boardService.getBoardsByUser(userSeq,start,size));
     }
     @PatchMapping("")
     ResponseEntity<?> modifyBoard(@RequestBody BoardModifyBody boardModifyBody) throws Exception {
@@ -85,5 +91,11 @@ public class BoardController {
     ResponseEntity<?> searchBoards(@RequestParam String keyword, @RequestParam int page) throws Exception {
         return ResponseEntity.ok().body(boardService.searchByKeyword(keyword, page));
     }
+
+    // Category 실험
+//    @GetMapping("/aaa")
+//    ResponseEntity<?> aaa(@RequestParam Long userSeq ) throws Exception {
+//        return ResponseEntity.ok().body(boardService.getCategoryByUser(userSeq));
+//    }
 
 }

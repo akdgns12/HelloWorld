@@ -28,7 +28,7 @@ public class FamilyResponseDto {
         this.familySeq = family.getFamilySeq();
         this.relationName = family.getRelationName();
         this.relationComment = family.getRelationComment();
-        this.familyUserSeq = family.getFamilyUserSeq();
+        this.familyUserSeq = family.getFamilyUser().getUserSeq();
         this.isAccepted = family.getIsAccepted();
 
     }

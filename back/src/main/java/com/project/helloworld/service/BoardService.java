@@ -13,8 +13,9 @@ public interface BoardService {
 
     ResponseEntity<?> getBoard(Long userSeq,Long boardSeq) throws Exception;
 
-    ResponseEntity<?> getBoards(int start , int size) throws Exception;
+    ResponseEntity<?> getBoardsAll(int start , int size) throws Exception;
 
+    ResponseEntity<?> getBoardsByUser(Long userSeq, int start, int size) throws Exception;
     ResponseEntity<?> modifyBoard(BoardModifyBody boardModifyBody) throws Exception;
 
     ResponseEntity<?> removeBoard(Long boardSeq) throws Exception;
@@ -32,4 +33,6 @@ public interface BoardService {
     ResponseEntity<?> getTop10KeywordsByRedis() throws Exception;
 
     ResponseEntity<?> searchByKeyword(String searchTerm, int page)throws Exception;
+
+    ResponseEntity<?> getCategoryByUser(Long userSeq) throws Exception;
 }

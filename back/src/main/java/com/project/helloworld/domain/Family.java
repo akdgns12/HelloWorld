@@ -30,8 +30,7 @@ public class Family extends BaseTimeEntity {
   @Column(name = "relation_comment")
   private String relationComment;
 
-  @Column(name = "family_user_seq")
-  private Long familyUserSeq;
+
 
   @Column(name = "accept")
   private Integer isAccepted;
@@ -42,6 +41,9 @@ public class Family extends BaseTimeEntity {
   @Column(name="request_message")
   private String requestMessage;
 
+  @JoinColumn(name="family_user_seq",nullable = false)
+  @ManyToOne(fetch=FetchType.LAZY)
+  private User familyUser;
   @JoinColumn(name = "user_seq", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private User user;
