@@ -9,6 +9,8 @@ idea/
 back/.idea/*
 StoryModule/.idea/*
 StoryModule/HELP.md 
+app/.idea/libraries/Dart_Packages.xml
+FE/src/components/BoardComp/BoardMarkDown.vue
 
 .idea/*
 # reousrces
