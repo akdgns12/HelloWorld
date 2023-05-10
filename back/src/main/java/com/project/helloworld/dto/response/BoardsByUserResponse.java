@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Data
-public class BoardListResponse {
+public class BoardsByUserResponse {
 
     private Long boardSeq;
 
@@ -21,8 +21,12 @@ public class BoardListResponse {
 
     private int viewCnt;
 
+
+
+
+
     @Builder
-    public BoardListResponse(Long boardSeq, String title, String writer, LocalDateTime createTime, int viewCnt) {
+    public BoardsByUserResponse(Long boardSeq, String title, String writer, LocalDateTime createTime, int viewCnt) {
         this.boardSeq = boardSeq;
         this.title = title;
         this.writer = writer;

@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,12 +77,14 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public ResponseEntity<?> requestFamily(Long userSeq, Long toUserSeq,String fromRelationName,String toRelationName,String requestMessage) throws Exception {
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : " + userSeq));
-        Family family = Family.builder().relationName(fromRelationName).isAccepted(1).user(user).familyUserSeq(toUserSeq).requestMessage("호호호").
+        User userReverse = userRepository.findById(toUserSeq).orElseThrow(() -> new Exception("not exist user: " + toUserSeq));
+        Family family = Family.builder().relationName(fromRelationName).isAccepted(1).user(user).familyUser(userReverse).requestMessage("호호호").
                 build();
         Family newFamilySaved = familyRepository.save(family);
         // 반대방향도 저장
-        User userReverse = userRepository.findById(toUserSeq).orElseThrow(() -> new Exception("not exist user: " + toUserSeq));
-        Family familyReverse = Family.builder().relationName(toRelationName).isAccepted(0).user(userReverse).familyUserSeq(userSeq).requestMessage("호호호").build();
+
+
+        Family familyReverse = Family.builder().relationName(toRelationName).isAccepted(0).user(userReverse).familyUser(user).requestMessage("호호호").build();
        familyRepository.save(familyReverse);
         MessageResponse messageResponse = MessageResponse.builder().type(3).typeSeq(newFamilySaved.getFamilySeq())
                 .title(newFamilySaved.getUser().getName()+"님이 친구 요청을 하였습니다.").content(newFamilySaved.getRequestMessage())
@@ -95,18 +99,18 @@ public class FamilyServiceImpl implements FamilyService {
         Family family = familyRepository.findById(familySeq).orElseThrow(() -> new Exception("not exist family relation : "+familySeq));
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                 .relationName(family.getRelationName()).relationComment(family.getRelationComment())
-                .familyUserSeq(family.getFamilyUserSeq()).isAccepted(2).familyUserNickname(family.getFamilyUserNickname())
+                .familyUser(family.getFamilyUser()).isAccepted(2).familyUserNickname(family.getFamilyUserNickname())
                 .requestMessage(family.getRequestMessage()).user(family.getUser())
                 .build();
         Family newFamilySaved = familyRepository.save(newFamily);
         // 반대 방향도 수락 해야지 familySeq 구한다음
-        Long familySeqReverse = familyRepository.findByUsers(family.getFamilyUserSeq(),family.getUser().getUserSeq());
+        Long familySeqReverse = familyRepository.findByUsers(family.getFamilyUser().getUserSeq(),family.getUser().getUserSeq());
         // 그다음 진행
 
-        Family familyReverse = familyRepository.findById(familySeqReverse).orElseThrow(() -> new Exception("not exist family relation : "+family.getFamilyUserSeq()));
+        Family familyReverse = familyRepository.findById(familySeqReverse).orElseThrow(() -> new Exception("not exist family relation : "+family.getFamilyUser().getUserSeq()));
         Family newFamilyReverse = family.builder().familySeq(familyReverse.getFamilySeq())
                         .relationName(familyReverse.getRelationName()).relationComment(familyReverse.getRelationComment())
-                .familyUserSeq(familyReverse.getFamilyUserSeq()).isAccepted(2).familyUserNickname(familyReverse.getFamilyUserNickname())
+                .familyUser(familyReverse.getFamilyUser()).isAccepted(2).familyUserNickname(familyReverse.getFamilyUserNickname())
                 .requestMessage(family.getRequestMessage()).user(familyReverse.getUser())
                 .build();
         familyRepository.save(newFamilyReverse);
@@ -121,7 +125,7 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public ResponseEntity<?> deleteFamily(Long familySeq) throws Exception {
         Family family = familyRepository.findById(familySeq).orElseThrow(() ->new Exception("not exist family relation : "+familySeq));
-        Long familySeqReverse = familyRepository.findByUsers(family.getFamilyUserSeq(),family.getUser().getUserSeq());
+        Long familySeqReverse = familyRepository.findByUsers(family.getFamilyUser().getUserSeq(),family.getUser().getUserSeq());
         System.out.println(familySeq);
         System.out.println(familySeqReverse);
         // 정방향
@@ -139,7 +143,7 @@ public class FamilyServiceImpl implements FamilyService {
         Family family = familyRepository.findById(familyCommentBody.getFamilySeq()).orElseThrow(() -> new Exception("not exist familySeq : "+familyCommentBody.getFamilySeq()));
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                 .relationName(family.getRelationName()).relationComment(familyCommentBody.getComment())
-                .familyUserSeq(family.getFamilyUserSeq()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
+                .familyUser(family.getFamilyUser()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
                 .requestMessage(family.getRequestMessage()).user(family.getUser())
                 .build();
         Family newFamilySaved = familyRepository.save(newFamily);
@@ -155,7 +159,7 @@ public class FamilyServiceImpl implements FamilyService {
         Family family = familyRepository.findById(familyNameBody.getFamilySeq()).orElseThrow(() -> new Exception("not exist familySeq : "+familyNameBody.getFamilySeq()));
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                         .relationName(familyNameBody.getName()).relationComment(family.getRelationComment())
-                        .familyUserSeq(family.getFamilyUserSeq()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
+                        .familyUser(family.getFamilyUser()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
                         .requestMessage(family.getRequestMessage()).user(family.getUser())
                 .build();
         Family newFamilySaved = familyRepository.save(newFamily);
@@ -171,10 +175,42 @@ public class FamilyServiceImpl implements FamilyService {
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : "+userSeq));
         List<Family> families = user.getFamilies();
-        List<Long> familiesSeq = families.stream().map(x -> x.getFamilyUserSeq()).collect(Collectors.toList());
+        List<Long> familiesSeq = families.stream().map(x -> x.getFamilyUser().getUserSeq()).collect(Collectors.toList());
        int index = (int)(Math.random()*familiesSeq.size());
         User newUser = userRepository.findById(familiesSeq.get(index)).orElseThrow(() -> new Exception("not exist user : "+userSeq));
         return ResponseEntity.ok().body(newUser);
+    }
+
+    @Override
+    public ResponseEntity<?> getFamiliesWind(Long userSeq, String keyword) throws Exception {
+        User user = userRepository.findById(userSeq).orElseThrow(()-> new Exception("not exist user : " + userSeq));
+        List<Family> families = user.getFamilies();
+        Collections.sort(families,Collections.reverseOrder(
+                (a,b) -> {
+                    LocalDateTime aTime = a.getCreateTime();
+                    LocalDateTime bTime = b.getCreateTime();
+
+                    return aTime.compareTo(bTime);
+                }
+        ));
+        List<FamilyResponseDto> familyResponseDtos = families.stream().filter(data -> data.getIsAccepted() == 2 )
+                .filter(data -> keyword == null || data.getFamilyUser().getName().contains(keyword) ).map(x -> new FamilyResponseDto(x)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(familyResponseDtos);
+    }
+
+    @Override
+    public ResponseEntity<?> recommendFamily(Long userSeq) throws Exception {
+        User user = userRepository.findById(userSeq).orElseThrow(()-> new Exception("not exist user : " + userSeq));
+        Long userNum = userRepository.count();
+        // 여기선 today 순 -> 댓글, 스티커 순 , 흠... 안되면 랜덤으로
+        // 흠... 시간상, 그냥 짜기엔 힘들 것 같고, scheduler 돌려서 추천리스트를 반환하는것이 좋을 것 같은데
+        long arr[] = new long[10];
+        for(int i=0; i<10; i++){
+        long index = (long)(Math.random()*userNum+1);
+            arr[i] = index;
+        }
+
+        return ResponseEntity.ok().body(userRepository.findUserRecommend(arr).stream().map(x -> x.getName()));
     }
 
 

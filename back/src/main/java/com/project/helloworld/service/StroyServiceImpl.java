@@ -26,7 +26,9 @@ public class StroyServiceImpl implements StoryService{
     @Async
     public void sendStory(Board board, List<Long> families) {
         User writer = board.getUser();
+
         if(families.isEmpty()) return ;
         families.stream().forEach(x-> kafkaTemplate.send (TOPIC, new StoryDto(board,writer, x)));
+
     }
 }

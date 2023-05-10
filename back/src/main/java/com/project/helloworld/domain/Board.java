@@ -35,6 +35,8 @@ public class Board extends BaseTimeEntity{
 
   @Column(name = "img_url")
   private String imgUrl;
+  @Column(name="thumbnail_img_url")
+  private String thumbnailImgUrl;
 
   @Column(name="view_cnt")
   private int viewCnt;
@@ -47,6 +49,12 @@ public class Board extends BaseTimeEntity{
 
   @Column(name = "understand_cnt")
   private int understandCnt;
+
+  @Column(name="comment_cnt")
+  private int commentCnt;
+
+  @Column(name="category_seq")
+  private int categorySeq;
 
   @JoinColumn(name = "user_seq", nullable = false)
   @ManyToOne(fetch = FetchType.LAZY)
