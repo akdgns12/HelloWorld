@@ -70,7 +70,7 @@ const routes = [
     component: ModifyUser,
   },
   {
-    path: "/statistic",
+    path: "/statistic/:userSeq",
     name: "statistic",
     component: Statistic,
   },
@@ -80,7 +80,7 @@ const routes = [
     component: RedirectHandler,
   },
   {
-    path: "/community",
+    path: "/community/:userSeq",
     name: "community",
     component: Community,
   }

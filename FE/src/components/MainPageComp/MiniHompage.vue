@@ -89,13 +89,13 @@ export default {
                 padding: 10,
                 pagination: false,
             },
+            avatarUrl: null,
         };
     },
     created() {
         var userSeq = localStorage.getItem('user-seq');
-        console.log(userSeq);
         http.get(`/user/mainpage/${userSeq}`).then((result) => {
-            console.log(result);
+            this.avatraUrl = result.data.data.avatarUrl;
         }, (error)=>{
             console.log(error);
         });

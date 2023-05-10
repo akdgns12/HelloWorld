@@ -13,30 +13,33 @@
                     <div style="width: 80%; height: 70%;">
                         <div class="row-achievement">
                             <div class="achievement-container">
-                                <img id="ten-sticker" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-1.png" alt="업적"
+                                <img id="ten-sticker" class="achievement-element not-yet"
+                                    src="@/assets/image/achievement/pixil-layer-1.png" alt="업적"
                                     v-tippy="{ content: '스티커 10개 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img id="hundred-sticker" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-2.png" alt="업적"
+                                <img id="hundred-sticker" class="achievement-element not-yet"
+                                    src="@/assets/image/achievement/pixil-layer-2.png" alt="업적"
                                     v-tippy="{ content: '스티커 100개 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img id="thousand-sticker" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-3.png" alt="업적"
+                                <img id="thousand-sticker" class="achievement-element not-yet"
+                                    src="@/assets/image/achievement/pixil-layer-3.png" alt="업적"
                                     v-tippy="{ content: '스티커 1000개 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-4.png" alt="업적"
-                                    v-tippy="{ content: 'TODAY 10 달성', arrow: false, placement: 'top', }" />
+                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-4.png"
+                                    alt="업적" v-tippy="{ content: 'TODAY 10 달성', arrow: false, placement: 'top', }" />
                             </div>
                         </div>
                         <div class="row-achievement">
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-5.png" alt="업적"
-                                    v-tippy="{ content: 'TODAY 100 달성', arrow: false, placement: 'top', }" />
+                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-5.png"
+                                    alt="업적" v-tippy="{ content: 'TODAY 100 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-6.png" alt="업적"
-                                    v-tippy="{ content: 'TODAY 1000 달성', arrow: false, placement: 'top', }" />
+                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-6.png"
+                                    alt="업적" v-tippy="{ content: 'TODAY 1000 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
                                 <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-1.png"
@@ -71,10 +74,13 @@ export default {
         }
     },
     created() {
-        var userSeq = localStorage.getItem('user-seq');
-        http.get(`/statistic/${userSeq}?userSeq=${userSeq}`).then((response) => {
+        // var userSeq = localStorage.getItem('user-seq');
+        var masterSeq = this.$route.params.userSeq;
+        http.get(`/statistic/${masterSeq}?userSeq=${masterSeq}`).then((response) => {
             console.log(response.data.data);
             var temp = response.data.data.weeklyTodayInfoList;
+            temp = temp.reverse();
+            console.log(`엥??????${temp[0].date}`);
             for (var i = 0; i < 7; i++) {
                 if (temp[i] != undefined) {
                     this.weeklyToday.push(temp[i].today);
@@ -111,6 +117,15 @@ export default {
                 xaxis: {
                     categories: this.weeklyDate,
                 },
+                yaxis: [
+                    {
+                        labels: {
+                            formatter: function (val) {
+                                return val.toFixed(0);
+                            }
+                        }
+                    }
+                ],
 
                 colors: ['#D9D9D9'],
                 fill: {
@@ -147,16 +162,16 @@ export default {
             this.likeCnt = response.data.data.likeCnt;
             this.helpfulCnt = response.data.data.helpfulCnt;
             this.understandCnt = response.data.data.understandCnt;
-            var stickerCnt = this.likeCnt+this.helpfulCnt+this.understandCnt;
-            if(stickerCnt>=10) {
+            var stickerCnt = this.likeCnt + this.helpfulCnt + this.understandCnt;
+            if (stickerCnt >= 10) {
                 var tenSticker = document.querySelector('#ten-sticker');
                 tenSticker.classList.remove('not-yet');
             }
-            if(stickerCnt>=100) {
+            if (stickerCnt >= 100) {
                 var hundredSticker = document.querySelector('#hundred-sticker');
                 hundredSticker.classList.remove('not-yet');
             }
-            if(stickerCnt>=1000) {
+            if (stickerCnt >= 1000) {
                 var thousandSticker = document.querySelector('#thousand-sticker');
                 thousandSticker.classList.remove('not-yet');
             }
@@ -196,7 +211,15 @@ export default {
                 xaxis: {
                     categories: ['', '', '', '', '', '', ''],
                 },
-
+                yaxis: [
+                    {
+                        labels: {
+                            formatter: function (val) {
+                                return val.toFixed(0);
+                            }
+                        }
+                    }
+                ],
                 colors: ['#D9D9D9'],
                 fill: {
                     type: 'gradient',
@@ -309,5 +332,4 @@ export default {
 
 .not-yet {
     filter: grayscale(100%);
-}
-</style>
+}</style>

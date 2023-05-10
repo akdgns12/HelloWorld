@@ -59,15 +59,39 @@
         </div>
     </div>
     <div class="comment-input-container">
-        <div class="author-name">김싸피 (나)</div>
-        <input class="comment-input" placeholder="일촌평을 등록해보세요" />
-        <div class="comment-post-btn">
+        <div class="author-name">{{this.nickname}} (나)</div>
+        <input class="comment-input" placeholder="일촌평을 등록해보세요" v-model="postMsg"/>
+        <div class="comment-post-btn" @click="postFamilyComment">
             등록
         </div>
     </div>
 </template>
 
 <script>
+import http from '@/api/httpWithAccessToken'
+export default {
+    data() {
+        return {
+            masterSeq: this.$route.params.userSeq,
+            userSeq: localStorage.getItem('user-seq'),
+            nickname: null,
+            postMsg: null,
+        }
+    },
+    created() {
+        http.get(`/user/mainpage/${this.userSeq}`).then((result) => {
+            // console.log(result.data.data)
+            this.nickname = result.data.data.nickname;
+        }, (error)=>{
+            console.log(error);
+        });
+    },
+    methods: {
+        postFamilyComment: function() {
+            http.post(`/family/comment`)
+        }
+    }
+}
 </script>
 
 <style>

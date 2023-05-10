@@ -3,7 +3,7 @@
         <div>
             <div class="wrap">
                 <router-link to="/mainpage">
-                    <div id="username">김싸피 님의 미니홈피</div>
+                    <div id="username">{{this.nickname}} 님의 미니홈피</div>
                 </router-link>
                 <div class="follow-request-btn" id="show-modal" @click="showModal = true">
                     일촌 신청
@@ -29,13 +29,23 @@
 <script>
 import Modal from '@/components/FollowComp/FollowRequestModal.vue'
 import BGMComp from '@/components/BasicComp/BGMComp.vue'
+import http from '@/api/httpWithAccessToken'
 
 export default {
     components: { Modal, BGMComp },
     data() {
         return {
             showModal: false,
+            masterSeq: this.$route.params.userSeq,
+            nickname: null,
         }
+    },
+    created() {
+        http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
+            this.nickname = result.data.data.nickname;
+        }, (error)=>{
+            console.log(error);
+        });
     }
 }
 </script>
