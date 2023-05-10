@@ -43,12 +43,13 @@ const routes = [
     component: PasswordSearch,
   },
   {
-    path: "/mainpage",
+    path: "/mainpage/:userSeq",
     name: "mainpage",
     component: MainPage,
   },
   {
-    path: "/board",
+    path: "/board/boardlist/:category",
+    name : 'boardlist',
     component: BoardListView
   },
   {
@@ -69,7 +70,7 @@ const routes = [
     component: ModifyUser,
   },
   {
-    path: "/statistic",
+    path: "/statistic/:userSeq",
     name: "statistic",
     component: Statistic,
   },
@@ -79,7 +80,7 @@ const routes = [
     component: RedirectHandler,
   },
   {
-    path: "/community",
+    path: "/community/:userSeq",
     name: "community",
     component: Community,
   }

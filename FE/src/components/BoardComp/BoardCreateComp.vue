@@ -21,7 +21,7 @@
                 />
             </div>
             <div id="boardfooter">
-                <button>글쓰기</button>
+                <button @click="createBoard">글쓰기</button>
             </div>
         </div>
     </div>
@@ -37,6 +37,12 @@ const content = ref('')
 const handleUpload = (file) => {
     console.log(file)
     return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
+}
+
+const createBoard = () => {
+    console.log(content);
+    console.log(content.value);
+    return;
 }
 </script>
 

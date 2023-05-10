@@ -1,7 +1,46 @@
 <script>
+import http from '@/api/httpWithAccessToken';
 export default {
     props: {
         show: Boolean
+    },
+    data() {
+        return {
+            myNickname: localStorage.getItem('user-nickname'),
+            otherNickname: null,
+            fromRelationName: null,
+            toRelationName: null,
+            requestMessage: null,
+            fromUserSeq: localStorage.getItem('user-seq'),
+            toUserSeq: null,
+        }
+    },
+    created() {
+        // var userSeq = localStorage.getItem('userSeq');
+        // http.get(`/user/userInfo/${userSeq}`).then((response) => {
+        //     console.log(response);
+        //      this.otherNickname = response.data.data.nickname;
+        // }, (error) => {
+        //     console.log(error);
+        //     alert("유저 조회 실패!");
+        // });
+    },
+    methods: {
+        requestFamily: function () {
+            var info = {
+                "fromRelationName": this.fromRelationName,
+                "fromUserSeq": localStorage.getItem('user-seq'),
+                "requestMessage": this.requestMessage,
+                "toRelationName": this.toRelationName,
+                "toUserSeq": 0
+            };
+            http.post(`/family`, JSON.stringify(info)).then((response) => {
+                console.log(response);
+            }, (error) => {
+                console.log(error);
+                alert("일촌 요청 실패!")
+            });
+        }
     }
 }
 </script>
@@ -24,27 +63,28 @@ export default {
                     <div class="select-name">
                         <div class="user-name">최싸피</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">김싸피 (나)</div>
+                        <div class="user-name">{{ this.myNickname }} (나)</div>
                         <div class="request-msg">&nbsp;님의</div>
-                        <input class="family-name-input" placeholder="일촌명" />
+                        <input class="family-name-input" placeholder="일촌명" v-model="this.toRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">김싸피 (나)</div>
+                        <div class="user-name">{{ this.myNickname }} (나)</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
                         <div class="user-name">최싸피</div>
                         <div class="request-msg">&nbsp;님의</div>
-                        <input class="family-name-input" placeholder="일촌명" />
+                        <input class="family-name-input" placeholder="일촌명" v-model="this.fromRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
                     </div>
                     <div class="request-msg-container">
-                        <textarea class="request-msg-input" placeholder="일촌 신청 메시지를 작성해주세요"></textarea>
+                        <textarea class="request-msg-input" placeholder="일촌 신청 메시지를 작성해주세요"
+                            v-model="this.requestMessage"></textarea>
                     </div>
                     <div class="notice-msg">
                         상대방이 동의하면 일촌이 맺어집니다
                     </div>
                     <div class="btn-list">
-                        <div class="send-btn">
+                        <div class="send-btn" @click="requestFamily">
                             보내기
                         </div>
                         <div class="close-btn" @click="$emit('close')">

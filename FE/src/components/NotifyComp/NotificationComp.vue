@@ -9,48 +9,50 @@
                 <li v-if="notifications.length === 0" class="notification-none">
                     <span>알림창이 비었습니다!</span>
                 </li>
-               <li v-else v-for="(notification, index) in notifications" v-bind:key="index" class="notification"
+               <li v-else v-for="notification in notifications" :key="notification.notifySeq" class="notification"
                 :style="{ backgroundColor: notification.readState ? 'white' : '#FAF3E8'}">
-                    <div v-if="notification.type == 0">
-                        <span class="nickname">{{ notification.nickname }}</span>
-                        <span>님이</span>
-                        <span class="acc">일촌평</span>
-                        <span>을 남겼습니다.</span>
-                        <span class="date"> <timeago :datetime="notification.createdTime" auto-update /></span>
+                    <div @click="putNotification(notification)">
+                        <div v-if="notification.type == 0">
+                            <span class="nickname">{{ notification.nickname }}</span>
+                            <span>님이</span>
+                            <span class="acc">일촌평</span>
+                            <span>을 남겼습니다.</span>
+                            <span class="date"> <timeago :datetime="notification.createdTime" auto-update /></span>
+                        </div>
+                        <div v-else-if="notification.type == 1">
+                            <span class="nickname">{{ notification.nickname }}</span>
+                            <span>님이</span>
+                            <span class="acc">방명록</span>
+                            <span>을 남겼습니다.</span>
+                            <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
+                        </div>
+                        <div v-else-if="notification.type == 2">
+                            <span class="nickname">{{ notification.nickname }}</span>
+                            <span>님이</span>
+                            <span class="acc">{{ notification.title.length > 22 ? notification.title.slice(0, 22) + '...' : notification.title }}</span>
+                            <span>에</span>
+                            <span class="acc">댓글</span>
+                            <span>을 남겼습니다.</span>
+                            <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
+                        </div>
+                        <div v-else-if="notification.type == 3">
+                            <span class="nickname">{{ notification.nickname }}</span>
+                            <span>님이</span>
+                            <span class="ilchon">일촌신청</span>
+                            <span>을 하였습니다.</span>
+                            <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
+                        </div>
+                        <div v-else-if="notification.type == 4">
+                            <span class="nickname">{{ notification.nickname }}</span>
+                            <span>님이</span>
+                            <span class="ilchon">일촌신청</span>
+                            <span>을</span>
+                            <span  class="acc">수락</span>
+                            <span>하였습니다.</span>
+                            <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
+                        </div>
                     </div>
-                    <div v-else-if="notification.type == 1">
-                        <span class="nickname">{{ notification.nickname }}</span>
-                        <span>님이</span>
-                        <span class="acc">방명록</span>
-                        <span>을 남겼습니다.</span>
-                        <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
-                    </div>
-                    <div v-else-if="notification.type == 2">
-                        <span class="nickname">{{ notification.nickname }}</span>
-                        <span>님이</span>
-                        <span class="acc">{{ notification.title.length > 22 ? notification.title.slice(0, 22) + '...' : notification.title }}</span>
-                        <span>에</span>
-                        <span class="acc">댓글</span>
-                        <span>을 남겼습니다.</span>
-                        <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
-                    </div>
-                    <div v-else-if="notification.type == 3">
-                        <span class="nickname">{{ notification.nickname }}</span>
-                        <span>님이</span>
-                        <span class="ilchon">일촌신청</span>
-                        <span>을 하였습니다.</span>
-                        <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
-                    </div>
-                    <div v-else-if="notification.type == 4">
-                        <span class="nickname">{{ notification.nickname }}</span>
-                        <span>님이</span>
-                        <span class="ilchon">일촌신청</span>
-                        <span>을</span>
-                        <span  class="acc">수락</span>
-                        <span>하였습니다.</span>
-                        <span class="date"> <timeago :datetime="notification.createdTime" auto-update/></span>
-                    </div>
-                    <img src="@/assets/icon/trash.png" alt="" @click="deleteNotification(index)" style="cursor:pointer">
+                    <img src="@/assets/icon/trash.png" alt="" @click="deleteNotification(notification)" style="cursor:pointer">
                 </li>
             </ul>
           </div>
@@ -58,34 +60,95 @@
     </Transition>
 </template>
 
-<script> 
+<script>
+// import axios from "axios";
+// import { EventSourcePolyfill } from 'event-source-polyfill';
+
+// const baseURL = 'https://k8a308.p.ssafy.io/notify';
+// const headers = {
+//     "Content-Type": "application/json;charset=utf-8",
+//     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+//     "Connection": "keep-alive",
+//     "Accept": "text/event-stream",
+//     "Cache-Control": "no-cache",
+//   };
+// const userSeq = ref(`${localStorage.getItem("user-seq")}`);
+
 export default {
-    props: {
-        show: Boolean
-    },
-    data() {
-        return {notifications : [{notifySeq : 11, type : 4, readState : false,nickname : 'cotton_blanket', title : null, createdTime : '2023-04-26T14:25:43.511+09:00'},
-                                {notifySeq : 10, type : 0, readState : false,nickname : '싸89', title : null, createdTime : '2023-04-25T18:25:43.511+09:00'}, 
-                                {notifySeq : 7,type : 2, readState : true, nickname : '이싸피', title : 'CRA는 이제 그만!! 리액트 개발환경 직접 구축해보자!! (feat: webpack, babel)', createdTime : '2023-04-24T10:25:43.511+09:00'},
-                                {notifySeq : 5,type : 2,readState : true, nickname : '윤싸피', title : 'CRA는 이제 그만!! 리액트 개발환경 직접 구축해보자!! (feat: webpack, babel)', createdTime : '2023-03-24T10:25:43.511+09:00'},
-                                {notifySeq : 4,type : 3, readState : true,nickname : '싸89', title : null, createdTime : '2023-01-26T10:25:43.511+09:00'},
-                                {notifySeq : 3,type : 1, readState : false,nickname:'이싸피', title: null, createdTime : '2022-04-26T10:25:43.511+09:00'}, 
-                                {notifySeq : 2,type : 0, readState : false,nickname : '커피2리터', title : null, createdTime : '2022-03-26T10:25:43.511+09:00'},
-                                {notifySeq : 1,type : 4,readState : true, nickname : '서울사람',title : null, createdTime : '2021-04-26T10:25:43.511+09:00'}
+  props: {
+    show: Boolean,
+  },
+  data() {
+         return {notifications : [
+            // {notifySeq : 11, type : 4, readState : false,nickname : 'cotton_blanket', title : null, createdTime : '2023-04-26T14:25:43.511+09:00'},
+            // {notifySeq : 10, type : 0, readState : false,nickname : '싸89', title : null, createdTime : '2023-04-25T18:25:43.511+09:00'}, 
+            // {notifySeq : 7,type : 2, readState : true, nickname : '이싸피', title : 'CRA는 이제 그만!! 리액트 개발환경 직접 구축해보자!! (feat: webpack, babel)', createdTime : '2023-04-24T10:25:43.511+09:00'},
+            // {notifySeq : 5,type : 2,readState : true, nickname : '윤싸피', title : 'CRA는 이제 그만!! 리액트 개발환경 직접 구축해보자!! (feat: webpack, babel)', createdTime : '2023-03-24T10:25:43.511+09:00'},
+            // {notifySeq : 4,type : 3, readState : true,nickname : '싸89', title : null, createdTime : '2023-01-26T10:25:43.511+09:00'},
+            // {notifySeq : 3,type : 1, readState : false,nickname:'이싸피', title: null, createdTime : '2022-04-26T10:25:43.511+09:00'}, 
+            // {notifySeq : 2,type : 0, readState : false,nickname : '커피2리터', title : null, createdTime : '2022-03-26T10:25:43.511+09:00'},
+            // {notifySeq : 1,type : 4,readState : true, nickname : '서울사람',title : null, createdTime : '2021-04-26T10:25:43.511+09:00'}
                             ]}
-        
+  },
+  methods : {
+    getNotifications() {
+        // axios({
+        //     method:'get',
+        //     url: `${baseURL}`,
+        //     headers : headers,
+        //     responseType : 'stream',
+        // })
+        // .then(response => {
+        //     const eventSource = new EventSourcePolyfill(response.data, {heartbeatTimeout : 3000});
+        //     eventSource.onmessage = (event) => {
+        //         const notification = JSON.parse(event.data);
+        //         this.notifications.push(notification);
+        //     };
+        // })
+        // .catch((error) => {
+        //     console.log(error);
+        //     alert("알림을 불러오지 못했습니다!");
+        // })
     },
-    methods : {
-        deleteNotification(i) {
-            try {
-                if (confirm('정말로 삭제하시겠습니까?')) {
-                    this.notifications.splice(i,1);
-                }
-            } catch(error) {
-                console.log(error);
-            }
-        }
-    }
+    putNotifications(notification) {
+        console.log(notification)
+        // notification.readState = true;
+        // axios({
+        //     method : 'put',
+        //     url : `${baseURL}`,
+        //     headers : headers,
+        //     data : notification,
+        // })
+        // .then((response) => {
+        //     console.log(response.data);
+        //     this.getNotifications();
+        // })
+        // .catch((error) => {
+        //     console.error(error);
+        //     alert("알림 읽지 못합니다!");
+        // })
+    },
+    deleteNotifications(notification) {
+        console.log(notification)
+    //     axios({
+    //         method : 'delete',
+    //         url : `${baseURL}`,
+    //         headers : headers,
+    //         data : notification,
+    //     })
+    //     .then((response) => {
+    //         console.log(response.data);
+    //         this.getNotifications();
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         alert("알림을 삭제하지 못했습니다!");
+    //     })
+     }
+  },
+  created() {
+    // this.getNotifications();
+  }
 }
 </script>
 

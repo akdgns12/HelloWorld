@@ -3,9 +3,9 @@
         <UserTitleComp />
         <div class="boardWrapper">
             <div id = "categoryinfo">
-                <p id = "folder">[전체보기]</p>
-                <p style="font-size:1rem"> 폴더입니다</p>
-                <p id = "cnt">(26)</p>
+                <p id = "folder">[{{ category == 'all' ? "전체보기" : categoryName[category] }}]</p>
+                <p style="font-size:0.9rem"> 폴더입니다</p>
+                <p id = "cnt">({{ visibleBoards.length }})</p>
             </div>
             <div id="boardlist">
                 <table>
@@ -45,6 +45,8 @@
 import { useRouter } from "vue-router";
 import { defineProps, reactive, computed } from 'vue';
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+
+const categoryName = ["CS", "Algorithm", "Project", "Language", "Etc"];
 
 const router = useRouter();
 const WriteBoard = () => {
@@ -88,8 +90,8 @@ const state = reactive ({
 });
 
 const visibleBoards = computed(() => {
-    console.log(props.category, "BoardListComp");
-    if (props.category === "all") {
+
+    if (props.category === 'all') {
         return state.boards;
     } else {
         return state.boards.filter(
@@ -100,9 +102,7 @@ const visibleBoards = computed(() => {
 </script>
 
 <style scoped>
-    /* #boardmain {
-        padding-top : 40px;
-    } */
+
     .boardWrapper {
         height: 75vh;
         width : 62vw;
@@ -112,12 +112,12 @@ const visibleBoards = computed(() => {
         
     }
     #folder {
-        font-size : 1rem;
+        font-size : 0.9rem;
         font-weight:bold;
         margin : 0 0.2rem;
     }
     #cnt {
-        font-size : 0.8rem;
+        font-size : 0.7rem;
         color : #D7AA71;
         margin-left : 0.3rem;
     }
@@ -137,7 +137,7 @@ const visibleBoards = computed(() => {
         margin: 0 0.5vw 0 0.5vw;
         width : 90%;
         padding : 0 3vw 0 3vw;
-        font-size : 0.95rem;
+        font-size : 0.9rem;
     }
     #boardheader {
         background-color: #F2F2F2;
@@ -164,6 +164,7 @@ const visibleBoards = computed(() => {
         font-size : 0.9rem;
         border-color : #6A6A6A;
         margin : 1px;
+        cursor: pointer;
     }
 
     #searchboard {
