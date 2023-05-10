@@ -26,8 +26,6 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final VisitorService visitorService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @ApiOperation(value = "회원가입", notes = "id, email, password, nickname, name")
     @PostMapping(value = "/signUp", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -141,5 +139,4 @@ public class UserController {
 
         return userService.getUserMainInfo(userSeq);
     }
-
 }
