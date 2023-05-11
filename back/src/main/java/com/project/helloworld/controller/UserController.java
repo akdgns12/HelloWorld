@@ -61,7 +61,7 @@ public class UserController {
         return userService.getUserInfo(userSeq);
     }
 
-    @ApiOperation(value = "회원정보 수정", notes = "name, nickName, phoneNumber 입력받음")
+    @ApiOperation(value = "회원정보 수정", notes = "userSeq, name, nickName, comment, phoneNumber 입력받음")
     @PutMapping(value = "/modify")
     public ResponseEntity<?> modify(@Validated @RequestBody UserRequestDto.Modify modify) throws Exception{
         log.debug("modifyInfo", modify);
@@ -69,7 +69,7 @@ public class UserController {
         return userService.modify(modify);
     }
 
-    @ApiOperation(value = "아바타 수정", notes = "MultipartFile 입력받음")
+    @ApiOperation(value = "아바타 수정", notes = "userSeq, MultipartFile 입력받음")
     @PutMapping(value = "/modify-avatar/{userSeq}")
     public ResponseEntity<?> modifyAvatar(@Validated @ModelAttribute(value = "img") MultipartFile img,
                                           @PathVariable Long userSeq) throws Exception{

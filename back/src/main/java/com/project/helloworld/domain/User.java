@@ -87,6 +87,7 @@ public class User extends BaseTimeEntity implements UserDetails {
   List<Family> families = new ArrayList<>();
 
   @OneToOne(fetch = FetchType.LAZY)
+  @JsonIgnore
   @JoinColumn(name = "avatar_seq")
   private Avatar avatar;
 
