@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.project.helloworld.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
@@ -33,14 +35,18 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private AppProperties appProperties;
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private UserRepository userRepository;
+    private RedisTemplate redisTemplate;
+
 
     @Autowired
     Oauth2AuthenticationSuccessHandler(JwtTokenProvider jwtTokenProvider, AppProperties appProperties,
-                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository, UserRepository userRepository) {
+                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository, UserRepository userRepository,
+                                       RedisTemplate redisTemplate) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.appProperties = appProperties;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
         this.userRepository = userRepository;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -56,6 +62,13 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
+    /**
+     * 소셜 인증 성공시 호출
+     * 마지막으로 서버에 저장된 redirectUri와 호출된 redirectUri가 동일한지 검사하고
+     * AT, RT 생성과 함께 RT는 redis에 저장한다(RT 만료시간 7일)
+     *
+     * @queryParam에 userSeq, accessToken, refreshToken 담아 return
+     */
     @SneakyThrows
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
@@ -66,12 +79,16 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-        UserResponseDto.TokenInfo token = jwtTokenProvider.generateToken(authentication);
+        UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + authentication.getName()));
 
+        redisTemplate.opsForValue()
+                .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
+
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token.getAccessToken())
                 .queryParam("userSeq", user.getUserSeq())
+                .queryParam("accessToken", tokenInfo.getAccessToken())
+                .queryParam("refreshToken", tokenInfo.getRefreshToken())
                 .build().toUriString();
     }
 

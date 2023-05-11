@@ -3,7 +3,9 @@ package com.project.helloworld.controller;
 import com.project.helloworld.dto.AuthResponse;
 import com.project.helloworld.dto.UserRequestDto;
 import com.project.helloworld.dto.UserResponseDto;
+import com.project.helloworld.repository.UserRepository;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
+import com.project.helloworld.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,9 @@ public class AuthController {
         UserResponseDto.TokenInfo token = jwtTokenProvider.generateToken(authentication);
 
         String accessToken = token.getAccessToken();
-        System.out.println("auth controller" + accessToken);
-        return ResponseEntity.ok(new AuthResponse(accessToken));
+        String refreshToken = token.getRefreshToken();
+        Long userSeq = token.getUserSeq();
+
+        return ResponseEntity.ok(new AuthResponse(userSeq, refreshToken, accessToken));
     }
 }

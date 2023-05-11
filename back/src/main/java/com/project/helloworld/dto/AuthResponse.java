@@ -6,10 +6,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthResponse {
+    private Long userSeq;
     private String accessToken;
-    private String tokenTyp = "Bearer ";
+    private String refreshToken;
 
-    public AuthResponse(String accessToken){
+    public AuthResponse(Long userSeq, String accessToken, String refreshToken){
+        this.userSeq = userSeq;
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }
