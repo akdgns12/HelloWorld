@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     Optional<User> findByUserSeq(Long userSeq);
     Optional<User> findByPhoneNumber(String phoneNumber);
-    boolean deleteByUserSeq(Long userSeq);
+    void deleteByUserSeq(Long userSeq);
     boolean existsByEmail(String email);
 
     @Query(value="select * from user where user_seq in (:arr)", nativeQuery = true)
