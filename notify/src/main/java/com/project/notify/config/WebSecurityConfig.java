@@ -27,23 +27,6 @@ public class WebSecurityConfig {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  @Bean
-  public CorsWebFilter corsWebFilter() {
-    CorsConfiguration corsConfig = new CorsConfiguration();
-    corsConfig.applyPermitDefaultValues();
-    corsConfig.addAllowedMethod(HttpMethod.PUT);
-    corsConfig.addAllowedMethod(HttpMethod.DELETE);
-    corsConfig.setAllowCredentials(true);
-    corsConfig.addAllowedOrigin("http://localhost:3000"); // 여기서 '*' 대신 허용하려는 도메인을 명시할 수 있습니다.
-    corsConfig.addAllowedHeader("*");
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", corsConfig);
-
-    return new CorsWebFilter(source);
-  }
-
-
 
   @Bean
   public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
