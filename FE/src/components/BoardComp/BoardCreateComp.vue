@@ -3,13 +3,13 @@
         <UserTitleComp />
         <div class="boardWrapper">
             <div id ="boardheader">
-                <input type="text" placeholder="제목 쓰기">
-                <select name="boardCategory" id="boardCategory">
-                    <option value="cs">CS</option>
-                    <option value="algorithm">Algorithm</option>
-                    <option value="pjt">Project</option>
-                    <option value="pjt">Language</option>
-                    <option value="pjt">Etc</option>
+                <input type="text" placeholder="제목 쓰기" v-model="title">
+                <select name="boardCategory" id="boardCategory" v-model="category">
+                    <option value=1>CS</option>
+                    <option value=2>Algorithm</option>
+                    <option value=3>Project</option>
+                    <option value=4>Language</option>
+                    <option value=5>Etc</option>
                 </select>
             </div>
             <div id="boardMD">
@@ -32,17 +32,40 @@ import {ref} from 'vue'
 import { VMarkdownEditor } from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+import axios from 'axios';
 
-const content = ref('')
+const title = ref('');
+const content = ref('');
+const category = ref(0);
 const handleUpload = (file) => {
     console.log(file)
     return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
 }
 
+const headers = {
+    "Content-Type": "application/json;charset=utf-8",
+    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+  };
+
 const createBoard = () => {
-    console.log(content);
+    console.log(category.value);
+    console.log(title.value);
     console.log(content.value);
-    return;
+    const requestDto = {
+        "content" : content.value,
+        "title" : title.value,
+        "category" : category.value,
+        "userSeq" : `${localStorage.getItem("user-seq")}`
+    }
+    axios.post(`/api/board`, {headers}, requestDto)
+    .then((response) => {
+        console.log(response.data);
+        
+    })
+    .catch((error) => {
+        console.error(error);
+        alert("게시글이 왜 안만들어짐...?");
+    })
 }
 </script>
 

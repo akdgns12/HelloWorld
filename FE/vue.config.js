@@ -8,11 +8,11 @@ module.exports = defineConfig({
         changeOrigin : true,
         logLevel : 'debug'
       },
-      "/notify" : {
-        target : 'https://k8a308.p.ssafy.io',
-        changeOrigin : true,
-        logLevel : 'debug'
-      }
+      // "/notify/" : {
+      //   target : 'https://k8a308.p.ssafy.io',
+      //   changeOrigin : true,
+      //   logLevel : 'debug'
+      // }
     }
   }
 })

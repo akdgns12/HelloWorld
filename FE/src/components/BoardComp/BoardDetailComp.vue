@@ -11,7 +11,7 @@
                 <div class="temp">
                     <VMarkdownView 
                         :mode="mode"
-                        :content="content"
+                        v-model="content"
                         class="vm-view"
                     />
                 </div>
@@ -51,65 +51,73 @@ import UserTitleComp from "../BasicComp/UserTitleComp.vue";
 import { ref } from 'vue';
 import { VMarkdownView }  from 'vue3-markdown';
 import 'vue3-markdown/dist/style.css';
+// import axios from 'axios';
 
 const mode = ref('light');
+const content = ref('');
 
-const content = ref(`## Markdown Basic Syntax
+// const headers = {
+//     "Content-Type": "application/json;charset=utf-8",
+//     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+//   };
 
-I just love **bold text**. Italicized text is the _cat's meow_. At the command prompt, type \`nano\`.
 
-My favorite markdown editor is [vue3-markdown](https://www.npmjs.com/package/vue3-markdown).
+// const content = ref(`## Markdown Basic Syntax
 
-1. First item
-2. Second item
-3. Third item
+// I just love **bold text**. Italicized text is the _cat's meow_. At the command prompt, type \`nano\`.
 
-> Dorothy followed her through many of the beautiful rooms in her castle.
+// My favorite markdown editor is [vue3-markdown](https://www.npmjs.com/package/vue3-markdown).
 
-\`\`\`js
-import { ref } from 'vue'
-import { VMarkdownEditor } from 'vue3-markdown'
-import 'vue3-markdown/dist/style.css'
+// 1. First item
+// 2. Second item
+// 3. Third item
 
-const handleUpload = (file) => {
-  console.log(file)
-  return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
-}
-\`\`\`
+// > Dorothy followed her through many of the beautiful rooms in her castle.
 
-## GFM Extended Syntax
+// \`\`\`js
+// import { ref } from 'vue'
+// import { VMarkdownEditor } from 'vue3-markdown'
+// import 'vue3-markdown/dist/style.css'
 
-Automatic URL Linking: https://www.npmjs.com/package/vue3-markdown
+// const handleUpload = (file) => {
+//   console.log(file)
+//   return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
+// }
+// \`\`\`
 
-~~The world is flat.~~ We now know that the world is round.
+// ## GFM Extended Syntax
 
-- [x] Write the press release
-- [ ] Update the website
-- [ ] Contact the media
+// Automatic URL Linking: https://www.npmjs.com/package/vue3-markdown
 
-| Syntax    | Description |
-| --------- | ----------- |
-| Header    | Title       |
-| Paragraph | Text        |
+// ~~The world is flat.~~ We now know that the world is round.
 
-## Footnotes
+// - [x] Write the press release
+// - [ ] Update the website
+// - [ ] Contact the media
 
-Here's a simple footnote,[^1] and here's a longer one.[^bignote]
+// | Syntax    | Description |
+// | --------- | ----------- |
+// | Header    | Title       |
+// | Paragraph | Text        |
 
-[^1]: This is the first footnote.
-[^bignote]: Here's one with multiple paragraphs and code.
+// ## Footnotes
 
-    Indent paragraphs to include them in the footnote.
+// Here's a simple footnote,[^1] and here's a longer one.[^bignote]
 
-    \`{ my code }\`
+// [^1]: This is the first footnote.
+// [^bignote]: Here's one with multiple paragraphs and code.
 
-    Add as many paragraphs as you like.
+//     Indent paragraphs to include them in the footnote.
 
-## Math Equation
+//     \`{ my code }\`
 
-Inline math equation: $a+b$
+//     Add as many paragraphs as you like.
 
-`);
+// ## Math Equation
+
+// Inline math equation: $a+b$
+
+// `);
 
 
 </script>
