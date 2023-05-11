@@ -13,6 +13,8 @@ public interface FamilyService {
 
     public ResponseEntity<?> getFamily(Long familySeq) throws Exception;
 
+    public Integer getFamilyByUser(Long fromUserSeq,Long toUserSeq ) throws Exception;
+
     public ResponseEntity<?> requestFamily(Long userSeq, Long toUserSeq,String fromRelationName,String toRelationName ,String requestMessage) throws Exception;
 
     public ResponseEntity<?> acceptFamily(Long familySeq) throws Exception;

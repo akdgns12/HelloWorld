@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,15 @@ public class FamilyServiceImpl implements FamilyService {
     public ResponseEntity<?> getFamily(Long familySeq) throws Exception {
         Family family = familyRepository.findById(familySeq).orElseThrow(() -> new Exception("not exist user : " + familySeq));
         return ResponseEntity.ok().body(family);
+    }
+
+    @Override
+    public Integer getFamilyByUser(Long fromUserSeq, Long toUserSeq) throws Exception {
+        Integer accept = 3;
+
+            accept = familyRepository.findByUsersAccept(fromUserSeq,toUserSeq);
+        if(accept == null) accept =3;
+        return accept;
     }
 
 
@@ -210,7 +220,10 @@ public class FamilyServiceImpl implements FamilyService {
             arr[i] = index;
         }
 
-        return ResponseEntity.ok().body(userRepository.findUserRecommend(arr).stream().map(x -> x.getName()));
+        return ResponseEntity.ok().body(userRepository.findUserRecommend(arr).stream().map(x -> new HashMap<String,Object>(){{
+            put("userSeq",x.getUserSeq());
+            put("nickname",x.getNickname());
+        }}));
     }
 
 

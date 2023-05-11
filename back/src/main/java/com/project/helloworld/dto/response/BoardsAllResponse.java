@@ -17,7 +17,7 @@ public class BoardsAllResponse {
 
     private String content;
 
-    private String thumbnailImgUrl;
+    private String imgUrl;
 
     private int likeCnt;
 
@@ -26,12 +26,12 @@ public class BoardsAllResponse {
 
 
     @Builder
-    public BoardsAllResponse(Long boardSeq, String title, String writer, String content, String thumbnailImgUrl, int likeCnt, int commentCnt) {
+    public BoardsAllResponse(Long boardSeq, String title, String writer, String content, String imgUrl, int likeCnt, int commentCnt) {
         this.boardSeq = boardSeq;
         this.title = title;
         this.writer = writer;
         this.content = content;
-        this.thumbnailImgUrl = thumbnailImgUrl;
+        this.imgUrl = imgUrl;
         this.likeCnt = likeCnt;
         this.commentCnt = commentCnt;
     }

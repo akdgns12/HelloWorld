@@ -118,7 +118,7 @@ public class BoardServiceImpl implements BoardService{
         PageRequest pageRequest = PageRequest.of(start,size);
         List<BoardsAllResponse> boardList = boardRepository.findAll(pageRequest)
                 .stream().map(x -> new BoardsAllResponse(x.getBoardSeq(),x.getTitle(),x.getUser().getName()
-                        ,x.getContent(),x.getThumbnailImgUrl(),x.getLikeCnt(),x.getCommentCnt())).collect(Collectors.toList());
+                        ,x.getContent(),x.getImgUrl(),x.getLikeCnt(),x.getCommentCnt())).collect(Collectors.toList());
 
         int boardListCount = boardRepository.findAll().size();
         HashMap<String,Object> boardInformation = new HashMap<>();
