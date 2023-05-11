@@ -88,13 +88,13 @@ public class FamilyServiceImpl implements FamilyService {
     public ResponseEntity<?> requestFamily(Long userSeq, Long toUserSeq,String fromRelationName,String toRelationName,String requestMessage) throws Exception {
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : " + userSeq));
         User userReverse = userRepository.findById(toUserSeq).orElseThrow(() -> new Exception("not exist user: " + toUserSeq));
-        Family family = Family.builder().relationName(fromRelationName).isAccepted(1).user(user).familyUser(userReverse).requestMessage("호호호").
+        Family family = Family.builder().relationName(fromRelationName).isAccepted(1).user(user).familyUser(userReverse).requestMessage(requestMessage).
                 build();
         Family newFamilySaved = familyRepository.save(family);
         // 반대방향도 저장
 
 
-        Family familyReverse = Family.builder().relationName(toRelationName).isAccepted(0).user(userReverse).familyUser(user).requestMessage("호호호").build();
+        Family familyReverse = Family.builder().relationName(toRelationName).isAccepted(0).user(userReverse).familyUser(user).requestMessage(requestMessage).build();
        familyRepository.save(familyReverse);
         MessageResponse messageResponse = MessageResponse.builder().type(3).typeSeq(newFamilySaved.getFamilySeq())
                 .title(newFamilySaved.getUser().getName()+"님이 친구 요청을 하였습니다.").content(newFamilySaved.getRequestMessage())

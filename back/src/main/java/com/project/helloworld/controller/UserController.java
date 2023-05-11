@@ -26,6 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @ApiOperation(value = "회원가입", notes = "id, email, password, nickname, name")
     @PostMapping(value = "/signUp", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -61,12 +62,20 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원정보 수정", notes = "name, nickName, phoneNumber 입력받음")
-    @PutMapping(value = "/modify",  consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> modify(@Validated @ModelAttribute(value = "user") UserRequestDto.Modify modify,
-                                    @RequestPart(value = "img", required = false) MultipartFile img) throws Exception{
+    @PutMapping(value = "/modify")
+    public ResponseEntity<?> modify(@Validated @RequestBody UserRequestDto.Modify modify) throws Exception{
         log.debug("modifyInfo", modify);
 
-        return userService.modify(modify, img);
+        return userService.modify(modify);
+    }
+
+    @ApiOperation(value = "아바타 수정", notes = "MultipartFile 입력받음")
+    @PutMapping(value = "/modify-avatar/{userSeq}")
+    public ResponseEntity<?> modifyAvatar(@Validated @ModelAttribute(value = "img") MultipartFile img,
+                                          @PathVariable Long userSeq) throws Exception{
+        log.debug("userSeq", userSeq);
+
+        return userService.modifyAvatar(userSeq, img);
     }
 
     @ApiOperation(value = "비밀번호 변경", notes = "userSeq, password 전달받음")
@@ -87,8 +96,10 @@ public class UserController {
 
     @ApiOperation(value = "회원 탈퇴", notes = "token")
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestHeader("Authorization") String token) throws Exception{
-        log.debug("token", token);
+    public ResponseEntity<?> delete(HttpServletRequest request) throws Exception{
+        log.debug("request", request);
+
+        String token = jwtAuthenticationFilter.parseBearerToken(request);
         Long userSeq = jwtTokenProvider.getUserSeq(token);
 
         return userService.delete(userSeq);

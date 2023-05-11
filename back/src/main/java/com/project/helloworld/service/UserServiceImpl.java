@@ -30,6 +30,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -191,6 +193,7 @@ public class UserServiceImpl implements UserService{
         Long todayCnt = visitorService.getTodayVisitors(String.valueOf(userSeq));
         Long totalCnt = visitorService.getTotalVisitors(String.valueOf(userSeq));
 
+        SecurityContextHolder.getContext().getAuthentication();
         UserResponseDto.UserMainInfo userMainInfo = UserResponseDto.UserMainInfo.builder()
                 .userSeq(user.getUserSeq())
                 .email(user.getEmail())
@@ -227,37 +230,61 @@ public class UserServiceImpl implements UserService{
         // 회원가입일과 올해 1월1일 중 더 최신날짜 선택
         LocalDate olderDate = firstDayOfYear.isBefore(signUpDate) ? firstDayOfYear : signUpDate;
 
+        // 잔디 정보 매핑
         ResponseEntity<?> grassInfoList = grassService.getGrass(olderDate, today, userSeq);
+        userMainInfo.getGrassList(grassInfoList.getBody());
+
+        /**
+         * 일촌 정보 매핑
+         * 0 : 관계 없는 사람
+         * 1 : 내가 신청 받은 상태
+         * 2 : 내가 신청 한 상태
+         * 3 : 이미 일촌인 상태
+         */
         ResponseEntity familiesCommentInfo = familyService.getFamilies(userSeq, "accepted", true);
         userMainInfo.getFamilyResponseDtos(familiesCommentInfo.getBody());
-        userMainInfo.getGrassList(grassInfoList.getBody());
+
+        String userEmail = SecurityUtil.getCurrentUserEmail();
+        user = userRepository.findByEmail(userEmail).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
+        Long visitorSeq = user.getUserSeq();
+        Long masterSEq = userSeq;
+        userMainInfo.setIsFamily(familyService.getFamilyByUser(masterSEq, visitorSeq));
 
         return response.success(userMainInfo, "유저 메인페이지 정보 조회가 성공했습니다.", HttpStatus.OK);
     }
 
     // 회원정보 수정
     @Override
-    public ResponseEntity<?> modify(UserRequestDto.Modify modify, MultipartFile img) throws Exception{
+    public ResponseEntity<?> modify(UserRequestDto.Modify modify) throws Exception{
         User user = userRepository.findById(modify.getUserSeq()).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + modify.getUserSeq()));
-
-        String avatarUrl = null;
-        Avatar avatar = new Avatar();
-        try{
-            avatarUrl = s3Uploader.uploadFiles(img, "avatar");
-            avatar.setImgUrl(avatarUrl);
-            em.persist(avatar);
-        }catch (Exception e){
-            return response.fail("아바타 이미지 업로드 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
         user.setName(modify.getName());
         user.setNickname(modify.getNickname());
         user.setPhoneNumber(modify.getPhoneNumber());
         user.setComment(modify.getComment());
-        user.setAvatar(avatar);
 
         userRepository.save(user);
         return response.success(user, "유저 정보가 수정되었습니다.", HttpStatus.OK);
+    }
+
+    // 아바타 이미지 수정
+    @Override
+    public ResponseEntity<?> modifyAvatar(Long userSeq, MultipartFile img) throws Exception {
+        User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
+        
+        String avatarUrl = null;
+        Avatar avatar = new Avatar();
+        if(img.isEmpty()) return response.fail("아바타가 비었습니다.", HttpStatus.BAD_REQUEST);
+        try{
+            avatarUrl = s3Uploader.uploadFiles(img, "avatar");
+            avatar.setImgUrl(avatarUrl);
+            em.persist(avatar);
+            user.setAvatar(avatar);
+        }catch (Exception e){
+            return response.fail("아바타 이미지 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return response.success(avatarUrl, "아바타 이미지 수정 성공", HttpStatus.OK);
     }
 
     // 비밀번호 변경

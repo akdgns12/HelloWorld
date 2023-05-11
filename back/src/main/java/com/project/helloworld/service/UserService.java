@@ -13,7 +13,8 @@ public interface UserService {
     ResponseEntity<?> reissue(UserRequestDto.Reissue reissue);
     ResponseEntity<?> getUserInfo(Long userSeq) throws Exception;
     ResponseEntity<?> getUserMainInfo(Long userSeq) throws Exception;
-    ResponseEntity<?> modify(UserRequestDto.Modify modify, MultipartFile img) throws Exception;
+    ResponseEntity<?> modify(UserRequestDto.Modify modify) throws Exception;
+    ResponseEntity<?> modifyAvatar(Long userSeq, MultipartFile img) throws Exception;
     ResponseEntity<?> changePassword(UserRequestDto.ChangePassword changePassword) throws Exception;
     ResponseEntity<?> delete(Long userSeq) throws Exception;
     ResponseEntity<?> certifiedEmail(String email) throws Exception;

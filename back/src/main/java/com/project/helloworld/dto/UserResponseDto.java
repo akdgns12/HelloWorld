@@ -66,6 +66,7 @@ public class UserResponseDto {
         private Long total;
         private String avatarUrl;
         private String backgroundUrl;
+        private int isFamily;
         private List<GrassResponse> grassList;
         private List<FamilyResponseDto> familyResponseDtos;
         private List<BgmList> bgmList;

@@ -17,6 +17,8 @@ public class FamilyResponseDto {
 
     private Long familyUserSeq;
 
+    private String familyNickName;
+
 
 
 
@@ -30,6 +32,6 @@ public class FamilyResponseDto {
         this.relationComment = family.getRelationComment();
         this.familyUserSeq = family.getFamilyUser().getUserSeq();
         this.isAccepted = family.getIsAccepted();
-
+        this.familyNickName = family.getFamilyUserNickname();
     }
 }
