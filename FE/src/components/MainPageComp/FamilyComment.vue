@@ -41,7 +41,13 @@ export default {
         //     console.log(error);
         // });
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
+            console.log(result.data.data);
             this.familyComment = result.data.data.familyResponseDtos;
+        }, (error)=>{
+            console.log(error);
+        });
+        http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
+            console.log(result.data.data);
             this.nickname = result.data.data.nickname
         }, (error)=>{
             console.log(error);

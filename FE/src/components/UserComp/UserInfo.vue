@@ -20,11 +20,11 @@
 
                 <div class="user-info-container">
                     <div class="user-info-title">닉네임</div>
-                    <input class="user-info-content" :value="`${this.userNickname}`" />
+                    <input class="user-info-content" v-model="this.modifyNickname" :placeholder="`${this.userNickname}`"/>
                 </div>
                 <div class="user-info-container">
                     <div class="user-info-title">이름</div>
-                    <input class="user-info-content" :value="`${this.userName}`"/>
+                    <input class="user-info-content"  v-model="this.modifyName" :placeholder="`${this.userName}`"/>
                 </div>
                 <!-- <div class="user-info-container">
                     <div class="user-info-title">BGM</div>
@@ -37,7 +37,11 @@
                 </div> -->
                 <div class="user-info-container">
                     <div class="user-info-title">한 줄 소개</div>
-                    <input class="user-info-content" :value="`${this.oneLineDesc}`" />
+                    <input class="user-info-content" v-model="this.modifyOneLineDesc" :placeholder="`${this.oneLineDesc}`"/>
+                </div>
+                <div class="user-info-container">
+                    <div class="user-info-title">핸드폰 번호</div>
+                    <input class="user-info-content" v-model="this.modifyPhoneNum" :placeholder="`${this.phoneNum}`"/>
                 </div>
                 <div class="user-info-container">
                     <div class="delete-user-btn" @click="showModal = true">
@@ -50,7 +54,7 @@
                     </div>
                 </div>
                 <div class="user-info-container">
-                    <div class="modify-user-btn">
+                    <div class="modify-user-btn" @click="modify">
                         수정
                     </div>
                 </div>
@@ -79,8 +83,13 @@ export default {
             userNickname: null,
             userName: null,
             oneLineDesc: null,
+            phoneNum: null,
             userAvatar: null,
             showModal: false,
+            modifyNickname: null,
+            modifyName: null,
+            modifyOneLineDesc: null,
+            modifyPhoneNum: null,
         }
     },
     methods: {
@@ -108,12 +117,24 @@ export default {
                 }
             )
         },
+
+        modify: function() {
+            var info = {
+                comment: this.modifyOneLineDesc,
+                name: this.modifyName,
+                nickname: this.modifyNickname,
+                phoneNumber: this.modifyPhoneNum,
+                userSeq: localStorage.getItem('user-seq'),
+            }
+            http.put(`/user/modify`, JSON.stringify(info)).then((result) => {
+                console.log(result);
+            }, (error) => {
+                console.log(error);
+            })
+        }
     },
     created() {
-        var link = document.location.href; 
-        console.log(link);
         http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
-            console.log(result.data.data);
             this.userEmail = result.data.data.email;
             this.userNickname = result.data.data.nickname;
             this.userName = result.data.data.name;
@@ -121,6 +142,7 @@ export default {
             if(this.oneLineDesc==null) {
                 this.oneLineDesc="";
             }
+            this.phoneNum = result.data.data.phoneNumber;
             this.userAvatar = result.data.data.avatarUrl;
         }, (error)=>{
             console.log(error);
