@@ -21,8 +21,15 @@ export default {
                     localStorage.setItem("access-token", response.data.data.accessToken);
                     localStorage.setItem("refresh-token", response.data.data.refreshToken);
                     localStorage.setItem("user-seq", response.data.data.userSeq);
-                    // window.location.replace('https://k8a308.p.ssafy.io/mainpage');
-                    this.$router.replace({path: `/mainpage/${response.data.data.userSeq}`});
+                    var link = document.location.href; 
+                    if(link.includes('localhost')) {
+                        window.location.replace(`http://localhost:8081/mainpage/${localStorage.getItem('user-seq')}`);
+                    }
+                    else {
+                        window.location.replace(`https://k8a308.p.ssafy.io/mainpage/${localStorage.getItem('user-seq')}`);
+                    }
+                    // window.location.replace(`https://k8a308.p.ssafy.io/mainpage/${localStorage.getItem('user-seq')}`)
+                    // this.$router.replace({path: `/mainpage/${response.data.data.userSeq}`});
                 },
                 (error) => {
                     console.log(error);

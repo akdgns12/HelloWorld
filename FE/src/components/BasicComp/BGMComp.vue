@@ -58,8 +58,8 @@ export default {
             )
         },
         goHome: function() {
-            console.log(this.myHomeId)
-            this.$router.push({ path: this.myHomeId });
+            window.location.replace(`http://localhost:8081/mainpage/${localStorage.getItem('user-seq')}`);
+            // window.location.replace(`https://k8a308.p.ssafy.io/${localStorage.getItem('user-seq')}`);
         }
         // play(sound) {
         //     if (sound) {

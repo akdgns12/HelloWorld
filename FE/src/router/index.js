@@ -66,7 +66,7 @@ const routes = [
     component: GuestBookListView,
   },
   {
-    path: "/modify-user",
+    path: "/modify-user/:userSeq",
     name: "modify-user",
     component: ModifyUser,
   },

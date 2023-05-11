@@ -1,57 +1,12 @@
 <template>
     <div class="family-comment-title">일촌평</div>
     <div class="comments">
-        <div class="comment">
+        <div class="comment" v-for="comment in this.familyComment" :key="comment.id">
             <div class="comment-author">
-                이싸피 (싸피친구)
+                {{comment.relationName}}
             </div>
             <div class="comment-content">
-                하이~ 오랜만에 놀러왔다
-            </div>
-            <div class="comment-created-time">
-                2023.04.13&nbsp;&nbsp;&nbsp;&nbsp;14:10
-            </div>
-        </div>
-        <div class="comment">
-            <div class="comment-author">
-                이싸피 (내평생의넘버원)
-            </div>
-            <div class="comment-content">
-                하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~
-                오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다하이~ 오랜만에 놀러왔다
-            </div>
-            <div class="comment-created-time">
-                2023.04.13&nbsp;&nbsp;&nbsp;&nbsp;14:10
-            </div>
-        </div>
-        <div class="comment">
-            <div class="comment-author">
-                이싸피 (싸피친구)
-            </div>
-            <div class="comment-content">
-                하이~ 오랜만에 놀러왔다
-            </div>
-            <div class="comment-created-time">
-                2023.04.13&nbsp;&nbsp;&nbsp;&nbsp;14:10
-            </div>
-        </div>
-        <div class="comment">
-            <div class="comment-author">
-                이싸피 (싸피친구)
-            </div>
-            <div class="comment-content">
-                하이~ 오랜만에 놀러왔다
-            </div>
-            <div class="comment-created-time">
-                2023.04.13&nbsp;&nbsp;&nbsp;&nbsp;14:10
-            </div>
-        </div>
-        <div class="comment">
-            <div class="comment-author">
-                이싸피 (싸피친구)
-            </div>
-            <div class="comment-content">
-                하이~ 오랜만에 놀러왔다
+                {{comment.relationComment}}
             </div>
             <div class="comment-created-time">
                 2023.04.13&nbsp;&nbsp;&nbsp;&nbsp;14:10
@@ -76,23 +31,19 @@ export default {
             userSeq: localStorage.getItem('user-seq'),
             nickname: null,
             postMsg: null,
+            familyComment: [],
         }
     },
     created() {
-        // http.get(`/user/mainpage/${this.userSeq}`).then((result) => {
-        //     // console.log(result.data.data)
-        //     this.nickname = result.data.data.nickname;
-        // }, (error)=>{
-        //     console.log(error);
-        // });
-        // http.get(`/user/mainpage/${this.masterSeq}`).then((result)=> {
-        //     console.log(result.data.data);
+        // http.get(`/family?userSeq=${this.userSeq}&status=all&hasComment=false`).then((result) => {
+        //     console.log(result.data.body);
         // }, (error) => {
         //     console.log(error);
         // });
-        http.get(`/family?userSeq=${this.userSeq}&status=all&hasComment=false`).then((result) => {
-            console.log(result.data.body);
-        }, (error) => {
+        http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
+            this.familyComment = result.data.data.familyResponseDtos;
+            this.nickname = result.data.data.nickname
+        }, (error)=>{
             console.log(error);
         });
     },
@@ -154,7 +105,7 @@ export default {
 }
 
 .comment-author {
-    width: 11%;
+    width: 16%;
     color: #82ACC1;
     margin-left: 5px;
     overflow: hidden;
@@ -171,7 +122,7 @@ export default {
 }
 
 .comment-content {
-    width: 70%;
+    width: 65%;
     color: #6A6A6A;
     margin-left: 7px;
     /* zoom: 0.8; */

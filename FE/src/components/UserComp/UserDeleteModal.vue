@@ -6,44 +6,33 @@ export default {
     },
     data() {
         return {
-            myNickname: null,
-            otherNickname: null,
-            fromRelationName: null,
-            toRelationName: null,
-            requestMessage: null,
             userSeq: localStorage.getItem('user-seq'),
-            masterSeq: this.$route.params.userSeq,
+            nickname: null,
             userAvatar: null,
         }
     },
     methods: {
-        requestFamily: function () {
-            var info = {
-                "fromRelationName": this.fromRelationName,
-                "fromUserSeq": this.userSeq,
-                "requestMessage": this.requestMessage,
-                "toRelationName": this.toRelationName,
-                "toUserSeq": this.masterSeq,
-            };
-            http.post(`/family`, JSON.stringify(info)).then((response) => {
+        deleteUser: function () {
+            http.delete(`/user/delete`).then((response) => {
                 console.log(response);
-                this.$emit('close');
+                localStorage.clear();
+                var link = document.location.href; 
+                    if(link.includes('localhost')) {
+                        window.location.replace(`http://localhost:8081/`);
+                    }
+                    else {
+                        window.location.replace(`https://k8a308.p.ssafy.io/`);
+                    }
             }, (error) => {
                 console.log(error);
-                alert("일촌 요청 실패!")
-            });
+            })
         }
     },
     created() {
         http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
-            this.myNickname = result.data.data.nickname;
-        }, (error)=>{
-            console.log(error);
-        });
-        http.get(`/user/userInfo/${this.masterSeq}`).then((result) => {
-            this.otherNickname = result.data.data.nickname;
+            this.nickname = result.data.data.nickname;
             this.userAvatar = result.data.data.avatarUrl;
-        }, (error)=>{
+        }, (error) => {
             console.log(error);
         });
     }
@@ -55,42 +44,22 @@ export default {
         <div v-if="show" class="modal-mask">
             <div class="modal-container">
                 <div class="modal-header">
-                    일촌을 신청해요!
+                    서비스를 탈퇴해요 ㅠㅅㅠ
                 </div>
                 <div class="modal-body">
                     <div class="user-info">
                         <div class="profile-img-container">
                             <img class="profile-img" :src="`${this.userAvatar}`" />
+                            
                         </div>
-                        <div class="user-name">{{this.otherNickname}}</div>
-                        <div class="request-msg">&nbsp;님께 일촌을 신청합니다</div>
                     </div>
-                    <div class="select-name">
-                        <div class="user-name">{{this.otherNickname}}</div>
-                        <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">{{this.myNickname}} (나)</div>
-                        <div class="request-msg">&nbsp;님의</div>
-                        <input class="family-name-input" placeholder="일촌명" v-model="this.toRelationName" />
-                        <div class="request-msg">&nbsp;로,</div>
-                    </div>
-                    <div class="select-name">
-                        <div class="user-name">{{this.myNickname}} (나)</div>
-                        <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">{{this.otherNickname}}</div>
-                        <div class="request-msg">&nbsp;님의</div>
-                        <input class="family-name-input" placeholder="일촌명" v-model="this.fromRelationName" />
-                        <div class="request-msg">&nbsp;로,</div>
-                    </div>
-                    <div class="request-msg-container">
-                        <textarea class="request-msg-input" placeholder="일촌 신청 메시지를 작성해주세요"
-                            v-model="this.requestMessage"></textarea>
-                    </div>
-                    <div class="notice-msg">
-                        상대방이 동의하면 일촌이 맺어집니다
-                    </div>
+
+                    <div class="nickname-msg">{{this.nickname}}님!</div>
+                    <div class="request-msg">회원님의 모든 정보가 삭제됩니다</div>
+                    <div class="request-msg">그래도 탈퇴하시겠습니까?</div>
                     <div class="btn-list">
-                        <div class="send-btn" @click="requestFamily">
-                            보내기
+                        <div class="send-btn" @click="deleteUser">
+                            탈퇴하기
                         </div>
                         <div class="close-btn" @click="$emit('close')">
                             닫기
@@ -111,7 +80,7 @@ export default {
 
 .user-info {
     display: flex;
-    /* justify-content: start; */
+    justify-content: center;
     line-height: 80px;
     margin-bottom: 20px;
 }
@@ -122,16 +91,22 @@ export default {
     font-weight: 600;
 }
 
+.nickname-msg {
+    color: #6A6A6A;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
 .request-msg {
     color: #6A6A6A;
     font-size: 12px;
+    text-align: center;
 }
 
 .profile-img-container {
     width: 80px;
     height: 80px;
-    /* border: 1px solid #6A6A6A;
-    border-radius: 5px; */
     margin-right: 10px;
 }
 

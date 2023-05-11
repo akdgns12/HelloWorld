@@ -2,16 +2,15 @@
     <div class="wrapper">
         <div>
             <div class="wrap">
-                <router-link to="/mainpage">
-                    <div id="username">{{this.nickname}} 님의 미니홈피</div>
-                </router-link>
+                <div id="username">{{ this.nickname }} 님의 미니홈피</div>
                 <div class="follow-request-btn" id="show-modal" @click="showModal = true">
                     일촌 신청
                 </div>
                 <div class="bgm-btn">
                     ♬ 가을 아침 - 아이유 🔊
                 </div>
-                <VueYtframe video-id="6ZUIwj3FgUY" height=0 width=0 :player-vars="{ loop: 1, autoplay: 1, listType: 'user_uploads'}" />
+                <VueYtframe video-id="6ZUIwj3FgUY" height=0 width=0
+                    :player-vars="{ loop: 1, autoplay: 1, listType: 'user_uploads' }" />
             </div>
             <Teleport to="body">
                 <modal :show="showModal" @close="showModal = false">
@@ -40,10 +39,10 @@ export default {
             nickname: null,
         }
     },
-    created() {
+    mounted() {
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
             this.nickname = result.data.data.nickname;
-        }, (error)=>{
+        }, (error) => {
             console.log(error);
         });
     }

@@ -40,9 +40,6 @@ export default {
             selected2: "",
             selectList: [
                 { name: "파도타기", value: "" },
-                { name: "name1", value: "a" },
-                { name: "name2", value: "b" },
-                { name: "name3", value: "c" },
             ],
             userSeq: localStorage.getItem('user-seq'),
             masterSeq: this.$route.params.userSeq,
@@ -50,13 +47,21 @@ export default {
             oneLineDesc: null,
         };
     },
-    created() {
+    mounted() {
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
             this.avatarUrl = result.data.data.avatarUrl;
             this.oneLineDesc = result.data.data.comment;
         }, (error)=>{
             console.log(error);
         });
+        http.get(`/family/recommend?userSeq=${this.masterSeq}`).then((result) => {
+            var temp = result.data.body;
+            for(var i = 0; i < temp.length; i++) {
+                this.selectList.push({name: temp[i], value: ''});
+            }
+        }, (error) => {
+            console.log(error);
+        })
     }
 };
 </script>

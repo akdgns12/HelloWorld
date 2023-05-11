@@ -4,8 +4,8 @@
         <UserTitleComp />
         <div class="right-body">
             <div class="profile-img-container">
-                <img class="profile-img" src="@/assets/image/Person.png" alt="프로필 사진" />
-                <div class="select-profile-img-btn" for="file">사진 변경하기
+                <img class="profile-img" :src="`${this.userAvatar}`" alt="프로필 사진" />
+                <div class="select-profile-img-btn" for="file">아바타 변경하기
                     <input type="file" style="display: none;" id="file" />
                 </div>
             </div>
@@ -14,42 +14,33 @@
             </ModalView>
             <div class="user-info-whole-container">
                 <div class="user-info-container">
-                    <div class="user-info-title">아이디</div>
-                    <div class="user-info-content">ssafy1234</div>
-                </div>
-                <div class="user-info-container">
                     <div class="user-info-title">이메일</div>
-                    <input class="user-info-content" value="ssafy1234@gmail.com" />
+                    <div class="user-info-content">{{this.userEmail}}</div>
                 </div>
+
                 <div class="user-info-container">
                     <div class="user-info-title">닉네임</div>
-                    <input class="user-info-content" value="나는야김싸피" />
+                    <input class="user-info-content" :value="`${this.userNickname}`" />
                 </div>
                 <div class="user-info-container">
                     <div class="user-info-title">이름</div>
-                    <input class="user-info-content" value="김싸피" />
+                    <input class="user-info-content" :value="`${this.userName}`"/>
                 </div>
-                <div class="user-info-container">
+                <!-- <div class="user-info-container">
                     <div class="user-info-title">BGM</div>
                     <div class="user-info-content">♬ 복숭아 - 아이유</div>
                     <div class="select-bgm-btn">변경</div>
-                    <!-- <audio controls autoplay loop style="display: none;">
-                        <source src="http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3"
-                            type="audio/mp3">
-                        이 문장은 사용자의 웹 브라우저가 audio 요소를 지원하지 않을 때 나타납니다!
-                    </audio> -->
-
-                </div>
-                <div class="user-info-container">
+                </div> -->
+                <!-- <div class="user-info-container">
                     <div class="user-info-title">미니홈피명</div>
                     <input class="user-info-content" value="김싸피 님의 미니홈피" />
-                </div>
+                </div> -->
                 <div class="user-info-container">
                     <div class="user-info-title">한 줄 소개</div>
-                    <input class="user-info-content" value="안녕하세요 꿈꾸는 개발자 입니다!" />
+                    <input class="user-info-content" :value="`${this.oneLineDesc}`" />
                 </div>
                 <div class="user-info-container">
-                    <div class="delete-user-btn">
+                    <div class="delete-user-btn" @click="showModal = true">
                         회원 탈퇴
                     </div>
                 </div>
@@ -65,40 +56,75 @@
                 </div>
             </div>
         </div>
+        <Teleport to="body">
+                <modal :show="showModal" @close="showModal = false">
+                    <template #header>
+                        <h3>custom header</h3>
+                    </template>
+                </modal>
+            </Teleport>
     </div>
 </template>
 
 <script>
 import http from '@/api/httpWithAccessToken';
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
+import Modal from '@/components/UserComp/UserDeleteModal.vue'
 export default {
-    components: { UserTitleComp },
+    components: { UserTitleComp, Modal },
+    data() {
+        return {
+            userSeq: localStorage.getItem('user-seq'),
+            userEmail: null,
+            userNickname: null,
+            userName: null,
+            oneLineDesc: null,
+            userAvatar: null,
+            showModal: false,
+        }
+    },
     methods: {
-        logout: async function () {
+        logout: function () {
             var tokens = {
-                accessToken: window.localStorage.getItem('access-token'),
+                accessToken: localStorage.getItem('access-token'),
             }
-            console.log(tokens);
             http.post(`/user/logout`, JSON.stringify(tokens)).then(
                 (response) => {
                     console.log(response);
-                    window.localStorage.removeItem("access-token");
-                    window.localStorage.removeItem("refresh-token");
-                    window.localStorage.removeItem("user-seq");
-                    this.$router.push({ name: 'before-login' });
+                    localStorage.removeItem("access-token");
+                    localStorage.removeItem("user-seq");
+                    localStorage.removeItem("refresh-token");
+                    var link = document.location.href; 
+                    if(link.includes('localhost')) {
+                        window.location.replace('http://localhost:8081/');
+                    }
+                    else {
+                        window.location.replace('https://k8a308.p.ssafy.io/');
+                    }
                 },
                 (error) => {
                     console.log(error);
                     alert("로그아웃 실패!");
                 }
             )
-        }
-        // play(sound) {
-        //     if (sound) {
-        //         var audio = new Audio(sound);
-        //         audio.play();
-        //     }
-        // }
+        },
+    },
+    created() {
+        var link = document.location.href; 
+        console.log(link);
+        http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
+            console.log(result.data.data);
+            this.userEmail = result.data.data.email;
+            this.userNickname = result.data.data.nickname;
+            this.userName = result.data.data.name;
+            this.oneLineDesc = result.data.data.comment;
+            if(this.oneLineDesc==null) {
+                this.oneLineDesc="";
+            }
+            this.userAvatar = result.data.data.avatarUrl;
+        }, (error)=>{
+            console.log(error);
+        });
     }
 }
 
@@ -121,9 +147,7 @@ export default {
 .profile-img-container {
     width: 10vw;
     height: 20vh;
-    border: 1px solid #6A6A6A;
-    border-radius: 5px;
-    margin-top: 10vh;
+    margin-top: 18vh;
     margin-left: 10vw;
 }
 
@@ -134,7 +158,7 @@ export default {
 }
 
 .user-info-whole-container {
-    margin-top: 6vh;
+    margin-top: 13vh;
 }
 
 .user-info-container {
