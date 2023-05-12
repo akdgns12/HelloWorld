@@ -44,7 +44,7 @@ export default {
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
             this.nickname = result.data.data.nickname;
             this.isFamily = result.data.data.isFamily;
-            console.log(this.isFamily);
+            // console.log(result.data.data)
         }, (error) => {
             console.log(error);
         });

@@ -10,12 +10,15 @@
 
 <script>
 import VueApexCharts from "vue3-apexcharts";
+import http from '@/api/httpWithAccessToken'
 export default {
     components: {
         apexchart: VueApexCharts,
     },
     data() {
         return {
+            categoryInfo: null,
+            categoryCount: [0, 0, 0, 0, 0],
             options: {
                 chart: {
                     type: 'donut',
@@ -33,10 +36,10 @@ export default {
                         }
                     },
                 },
-                labels: ["CS", "Algorithm", "Project"],
-                colors: ['#C18282', '#A1C182', '#82ACC1'],
+                labels: ["CS", "Algorithm", "Project", "Language", "etc"],
+                colors: ['#C18282', '#A1C182', '#82ACC1', '#8297C1', '#B882C1'],
                 fill: {
-                    colors: ['#C18282', '#A1C182', '#82ACC1']
+                    colors: ['#C18282', '#A1C182', '#82ACC1', '#8297C1', '#B882C1']
                 },
                 plotOptions: {
                     pie: {
@@ -55,9 +58,24 @@ export default {
                     }
                 }
             },
-            series: [10, 22, 31],
+            series: null,
         }
     },
+    created() {
+        var masterSeq = this.$route.params.userSeq;
+        http.get(`/statistic/${masterSeq}?userSeq=${masterSeq}`).then((result) => {
+            console.log(result.data.data.categoryInfo);
+            this.categoryInfo = result.data.data.categoryInfo;
+            for(var i = 0; i < this.categoryInfo.length; i++) {
+                this.categoryCount[this.categoryInfo[i].categorySeq] = this.categoryInfo[i].count;
+                // console.log(this.categoryInfo[i]);
+            }
+            console.log(this.categoryCount)
+            this.series = this.categoryCount
+        }, (error) => {
+            console.log(error);
+        })
+    }
 }
 </script>
 

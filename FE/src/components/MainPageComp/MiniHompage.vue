@@ -70,6 +70,7 @@ import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
 import GrassComp from "@/components/MainPageComp/GrassComp.vue"
 import FamilyComment from "@/components/MainPageComp/FamilyComment.vue"
 import http from '@/api/httpWithAccessToken';
+import httpStory from '@/api/httpStory';
 
 export default {
     components: { UserTitleComp, GrassComp, FamilyComment },
@@ -99,6 +100,11 @@ export default {
         }, (error)=>{
             console.log(error);
         });
+        httpStory.get(`/story/all/${userSeq}`).then((result) => {
+            console.log(result)
+        }, (error) => {
+            console.log(error);
+        })
     }
 }
 

@@ -27,7 +27,7 @@ export default {
     }
   },
   created() {
-    console.log(this.userSeq);
+    // console.log(this.userSeq);
   }
 }
 </script>
