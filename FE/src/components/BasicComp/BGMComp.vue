@@ -40,7 +40,6 @@ export default {
             var tokens = {
                 accessToken: temp,
             }
-            console.log(tokens);
             http.post(`/user/logout`, JSON.stringify(tokens)).then(
                 (response) => {
                     console.log(response);
@@ -49,7 +48,14 @@ export default {
                     localStorage.removeItem("refresh-token");
                     // localStorage.clear();
                     // window.location.replace('https://k8a308.p.ssafy.io/');
-                    this.$router.replace({ name: 'before-login' });
+                    // this.$router.replace({ name: 'before-login' });
+                    var link = document.location.href;
+            if (link.includes('localhost')) {
+                window.location.replace(`http://localhost:8081`);
+            }
+            else {
+                window.location.replace(`https://k8a308.p.ssafy.io`);
+            }
                 },
                 (error) => {
                     console.log(error);

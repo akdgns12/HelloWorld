@@ -41,13 +41,13 @@ export default {
         //     console.log(error);
         // });
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
-            console.log(result.data.data);
+            // console.log(result.data.data);
             this.familyComment = result.data.data.familyResponseDtos;
         }, (error)=>{
             console.log(error);
         });
         http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
-            console.log(result.data.data);
+            // console.log(result.data.data);
             this.nickname = result.data.data.nickname
         }, (error)=>{
             console.log(error);
@@ -60,7 +60,7 @@ export default {
                 content: this.postMsg,
             };
             console.log(info);
-            http.put(`/family/comment/`, JSON.stringify(info)).then((result) => {
+            http.put(`/family/comment`, JSON.stringify(info)).then((result) => {
                 console.log(result);
             }, (error) => {
                 console.log(error);

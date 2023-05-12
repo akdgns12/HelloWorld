@@ -119,6 +119,18 @@ export default {
         },
 
         modify: function() {
+            if(this.modifyOneLineDesc=="" || this.modifyOneLineDesc==null) {
+                this.modifyOneLineDesc=this.oneLineDesc;
+            }
+            if(this.modifyName=="" || this.modifyName==null) {
+                this.modifyName=this.userName;
+            }
+            if(this.modifyNickname=="" || this.modifyNickname==null) {
+                this.modifyNickname=this.userNickname;
+            }
+            if(this.modifyPhoneNum=="" || this.modifyPhoneNum==null) {
+                this.modifyPhoneNum=this.phoneNum;
+            }
             var info = {
                 comment: this.modifyOneLineDesc,
                 name: this.modifyName,
@@ -128,6 +140,15 @@ export default {
             }
             http.put(`/user/modify`, JSON.stringify(info)).then((result) => {
                 console.log(result);
+                var link = document.location.href;
+                if (link.includes('localhost')) {
+                    // window.location.replace(`http://localhost:8081/mainpage/${localStorage.getItem('user-seq')}`);
+                    this.$router.push({name: 'mainpage', params: { userSeq: localStorage.getItem('user-seq') }})
+                }
+                else {
+                    // window.location.replace(`https://k8a308.p.ssafy.io/mainpage/${localStorage.getItem('user-seq')}`);
+                    this.$router.push({name: 'mainpage', params: { userSeq: localStorage.getItem('user-seq') }})
+                }
             }, (error) => {
                 console.log(error);
             })
@@ -139,6 +160,7 @@ export default {
             this.userNickname = result.data.data.nickname;
             this.userName = result.data.data.name;
             this.oneLineDesc = result.data.data.comment;
+            console.log(result.data.data)
             if(this.oneLineDesc==null) {
                 this.oneLineDesc="";
             }
