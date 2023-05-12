@@ -12,7 +12,12 @@ import java.util.List;
 @Data
 public class BoardDetailResponse {
 
+    private Long boardSeq;
     private String writer;
+
+    private Long userSeq;
+
+
 
     private String title;
 
@@ -32,23 +37,31 @@ public class BoardDetailResponse {
     @Data
     // 왜 static 아니면 못할까?
     public static class Comment{
+
+        private Long commentSeq;
         private String writer;
+
+        private Long userSeq;
         private String content;
 
         private LocalDateTime createTime;
 
         @Builder
-        public Comment(String writer, String content, LocalDateTime createTime) {
+        public Comment(Long commentSeq,String writer,Long userSeq, String content, LocalDateTime createTime) {
+            this.commentSeq = commentSeq;
             this.writer = writer;
+            this.userSeq = userSeq;
             this.content = content;
             this.createTime = createTime;
         }
     }
 
     @Builder
-    public BoardDetailResponse(String writer, String title, String imgUrl, String content, Integer categorySeq,
+    public BoardDetailResponse(Long boardSeq, String writer,Long userSeq, String title, String imgUrl, String content, Integer categorySeq,
                                Boolean[] sticker, LocalDateTime createTime, List<Comment> comments) {
+        this.boardSeq = boardSeq;
         this.writer = writer;
+        this.userSeq = userSeq;
         this.title = title;
         this.imgUrl = imgUrl;
         this.content = content;

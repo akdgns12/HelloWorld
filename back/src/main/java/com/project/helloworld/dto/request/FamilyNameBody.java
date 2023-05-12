@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class FamilyNameBody {
 
-    private Long familySeq;
+    private Long fromUserSeq;
+    private Long toUserSeq;
     private String name;
 
     @Builder
-    public FamilyNameBody(Long familySeq, String name) {
-        this.familySeq = familySeq;
+    public FamilyNameBody(Long fromUserSeq,Long toUserSeq, String name) {
+        this.fromUserSeq = fromUserSeq;
+        this.toUserSeq = toUserSeq;
         this.name = name;
     }
 }

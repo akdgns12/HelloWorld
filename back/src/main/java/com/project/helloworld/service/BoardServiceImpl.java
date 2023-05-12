@@ -102,9 +102,9 @@ public class BoardServiceImpl implements BoardService{
             }
 
         }
-        List<BoardDetailResponse.Comment> comments = board.getComments().stream().map(x -> new BoardDetailResponse.Comment(x.getUser().getName(),x.getContent(),x.getCreateTime()) ).collect(Collectors.toList());
-        BoardDetailResponse boardDetailResponse = BoardDetailResponse.builder()
-        .title(board.getTitle()).content(board.getContent()).writer(board.getUser().getName()).categorySeq(board.getCategorySeq())
+        List<BoardDetailResponse.Comment> comments = board.getComments().stream().map(x -> new BoardDetailResponse.Comment(x.getCommentSeq(),x.getUser().getName(),x.getUser().getUserSeq(),x.getContent(),x.getCreateTime()) ).collect(Collectors.toList());
+        BoardDetailResponse boardDetailResponse = BoardDetailResponse.builder().boardSeq(board.getBoardSeq())
+        .title(board.getTitle()).content(board.getContent()).writer(board.getUser().getName()).userSeq(board.getUser().getUserSeq()).categorySeq(board.getCategorySeq())
                 .sticker(sticker).imgUrl(board.getImgUrl())
                 .createTime(board.getCreateTime()).comments(comments)
                 .build();

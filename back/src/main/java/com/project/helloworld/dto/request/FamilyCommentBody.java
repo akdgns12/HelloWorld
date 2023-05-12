@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class FamilyCommentBody {
 
-    private Long familySeq;
+    private Long fromUserSeq;
+    private Long toUserSeq;
     private String comment;
 
     @Builder
-    public FamilyCommentBody(Long familySeq, String comment) {
-        this.familySeq = familySeq;
+    public FamilyCommentBody(Long fromUserSeq,Long toUserSeq, String comment) {
+        this.fromUserSeq = fromUserSeq;
+        this.toUserSeq = toUserSeq;
         this.comment = comment;
     }
 }

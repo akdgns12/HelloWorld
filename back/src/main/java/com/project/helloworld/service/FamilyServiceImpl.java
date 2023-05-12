@@ -148,7 +148,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public ResponseEntity<?> updateFamilyRelationComment(FamilyCommentBody familyCommentBody) throws Exception {
-        Family family = familyRepository.findById(familyCommentBody.getFamilySeq()).orElseThrow(() -> new Exception("not exist familySeq : "+familyCommentBody.getFamilySeq()));
+        Family family = familyRepository.findFamilyByUsers(familyCommentBody.getFromUserSeq(),familyCommentBody.getToUserSeq());
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                 .relationName(family.getRelationName()).relationComment(familyCommentBody.getComment())
                 .familyUser(family.getFamilyUser()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
@@ -164,7 +164,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public ResponseEntity<?> updateFamilyRelationName(FamilyNameBody familyNameBody) throws Exception {
-        Family family = familyRepository.findById(familyNameBody.getFamilySeq()).orElseThrow(() -> new Exception("not exist familySeq : "+familyNameBody.getFamilySeq()));
+        Family family = familyRepository.findFamilyByUsers(familyNameBody.getFromUserSeq(),familyNameBody.getToUserSeq());
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                         .relationName(familyNameBody.getName()).relationComment(family.getRelationComment())
                         .familyUser(family.getFamilyUser()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
