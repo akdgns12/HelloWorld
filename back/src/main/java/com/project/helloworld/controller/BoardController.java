@@ -93,9 +93,9 @@ public class BoardController {
     }
 
     // Category 실험
-//    @GetMapping("/aaa")
-//    ResponseEntity<?> aaa(@RequestParam Long userSeq ) throws Exception {
-//        return ResponseEntity.ok().body(boardService.getCategoryByUser(userSeq));
-//    }
+    @GetMapping("/aaa")
+    ResponseEntity<?> aaa(@RequestParam Long userSeq ) throws Exception {
+        return ResponseEntity.ok().body(boardService.getCategoryByUser(userSeq));
+    }
 
 }

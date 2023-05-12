@@ -16,6 +16,8 @@ public class BoardDetailResponse {
 
     private String title;
 
+    private Integer categorySeq;
+
     private String imgUrl;
 
     private String content;
@@ -44,12 +46,13 @@ public class BoardDetailResponse {
     }
 
     @Builder
-    public BoardDetailResponse(String writer, String title, String imgUrl, String content,
+    public BoardDetailResponse(String writer, String title, String imgUrl, String content, Integer categorySeq,
                                Boolean[] sticker, LocalDateTime createTime, List<Comment> comments) {
         this.writer = writer;
         this.title = title;
         this.imgUrl = imgUrl;
         this.content = content;
+        this.categorySeq = categorySeq;
         this.sticker = sticker;
         this.createTime = createTime;
         this.comments = comments;

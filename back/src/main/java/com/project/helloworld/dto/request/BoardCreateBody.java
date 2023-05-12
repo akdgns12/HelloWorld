@@ -16,13 +16,16 @@ public class BoardCreateBody {
 
     String content;
 
+    Integer categorySeq;
+
 
 
     @Builder
-    public BoardCreateBody(Long userSeq, String title, String content) {
+    public BoardCreateBody(Long userSeq, String title, String content, Integer categorySeq) {
         this.userSeq = userSeq;
         this.title = title;
         this.content = content;
+        this.categorySeq = categorySeq;
 
     }
 }

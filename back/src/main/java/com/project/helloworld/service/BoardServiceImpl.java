@@ -62,8 +62,8 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public ResponseEntity<?> createBoard(BoardCreateBody boardCreateBody) throws Exception {
         User user = userRepository.findById(boardCreateBody.getUserSeq()).orElseThrow(()-> new Exception("not exist user : "+boardCreateBody.getUserSeq()));
-        Board board = Board.builder().title(boardCreateBody.getTitle()).content(boardCreateBody.getContent()).
-                imgUrl("").likeCnt(0).helpfulCnt(0).commentCnt(0).understandCnt(0)
+        Board board = Board.builder().title(boardCreateBody.getTitle()).content(boardCreateBody.getContent())
+                .categorySeq(boardCreateBody.getCategorySeq()).imgUrl("").likeCnt(0).helpfulCnt(0).commentCnt(0).understandCnt(0)
                 .user(user).build();
         Board newBoardSaved = boardRepository.save(board);
         String content = newBoardSaved.getContent();
@@ -104,7 +104,7 @@ public class BoardServiceImpl implements BoardService{
         }
         List<BoardDetailResponse.Comment> comments = board.getComments().stream().map(x -> new BoardDetailResponse.Comment(x.getUser().getName(),x.getContent(),x.getCreateTime()) ).collect(Collectors.toList());
         BoardDetailResponse boardDetailResponse = BoardDetailResponse.builder()
-        .title(board.getTitle()).content(board.getContent()).writer(board.getUser().getName())
+        .title(board.getTitle()).content(board.getContent()).writer(board.getUser().getName()).categorySeq(board.getCategorySeq())
                 .sticker(sticker).imgUrl(board.getImgUrl())
                 .createTime(board.getCreateTime()).comments(comments)
                 .build();
@@ -118,7 +118,7 @@ public class BoardServiceImpl implements BoardService{
         PageRequest pageRequest = PageRequest.of(start,size);
         List<BoardsAllResponse> boardList = boardRepository.findAll(pageRequest)
                 .stream().map(x -> new BoardsAllResponse(x.getBoardSeq(),x.getTitle(),x.getUser().getName()
-                        ,x.getContent(),x.getImgUrl(),x.getLikeCnt(),x.getCommentCnt())).collect(Collectors.toList());
+                        ,x.getContent(),x.getImgUrl(),x.getCategorySeq(),x.getLikeCnt(),x.getCommentCnt())).collect(Collectors.toList());
 
         int boardListCount = boardRepository.findAll().size();
         HashMap<String,Object> boardInformation = new HashMap<>();
@@ -138,7 +138,7 @@ public class BoardServiceImpl implements BoardService{
                         ,"grasses","stickers","bookMarks");
         Example<Board> example = Example.of(board, matcher);
         List<BoardsByUserResponse> boardList = boardRepository.findAll(example,pageRequest)
-                .stream().map(x -> new BoardsByUserResponse(x.getBoardSeq(),x.getTitle(),x.getUser().getName(),x.getCreateTime(),x.getViewCnt())).collect(Collectors.toList());
+                .stream().map(x -> new BoardsByUserResponse(x.getBoardSeq(),x.getTitle(),x.getUser().getName(),x.getCategorySeq(),x.getCreateTime(),x.getViewCnt())).collect(Collectors.toList());
         int boardListCount = boardRepository.findAll(example).size();
         HashMap<String,Object> boardInformation = new HashMap<>();
         boardInformation.put("boardList",boardList);

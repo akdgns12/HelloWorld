@@ -17,8 +17,8 @@ public interface FamilyService {
 
     public ResponseEntity<?> requestFamily(Long userSeq, Long toUserSeq,String fromRelationName,String toRelationName ,String requestMessage) throws Exception;
 
-    public ResponseEntity<?> acceptFamily(Long familySeq) throws Exception;
-    public ResponseEntity<?> deleteFamily(Long familySeq) throws Exception;
+    public ResponseEntity<?> acceptFamily(Long fromUserSeq,Long toUserSeq) throws Exception;
+    public ResponseEntity<?> deleteFamily(Long fromUserSeq, Long toUserSeq) throws Exception;
 
 
 

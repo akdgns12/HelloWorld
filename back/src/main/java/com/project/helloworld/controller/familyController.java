@@ -42,16 +42,16 @@ public class familyController {
 
     //일촌 수락
     @PutMapping("")
-    ResponseEntity<?> acceptFamily( @RequestParam("familySeq") Long familySeq) throws Exception {
+    ResponseEntity<?> acceptFamily( @RequestParam("fromUserSeq") Long fromUserSeq, @RequestParam("toUserSeq") Long toUserSeq) throws Exception {
 
 //        @RequestHeader("Authorization") String token,
-        return ResponseEntity.ok().body(familyService.acceptFamily(familySeq));
+        return ResponseEntity.ok().body(familyService.acceptFamily(fromUserSeq,toUserSeq));
     }
     // 일촌 거절
     @DeleteMapping("")
-    ResponseEntity<?> deleteFamily( @RequestParam("familySeq") Long familySeq) throws Exception{
+    ResponseEntity<?> deleteFamily( @RequestParam("fromUserSeq") Long fromUserSeq, @RequestParam("toUserSeq") Long toUserSeq) throws Exception{
 //        @RequestHeader("Authorization") String token,
-        return ResponseEntity.ok().body(familyService.deleteFamily(familySeq));
+        return ResponseEntity.ok().body(familyService.deleteFamily(fromUserSeq,toUserSeq));
     }
 
     // 일촌평 작성
@@ -98,7 +98,7 @@ public class familyController {
         return ResponseEntity.ok().body(familyService.recommendFamily(userSeq));
     }
 
-   
+
 
 
 

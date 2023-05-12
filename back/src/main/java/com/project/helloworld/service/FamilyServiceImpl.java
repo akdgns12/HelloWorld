@@ -104,20 +104,18 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public ResponseEntity<?> acceptFamily(Long familySeq) throws Exception {
+    public ResponseEntity<?> acceptFamily(Long fromUserSeq,Long toUserSeq) throws Exception {
         // 정방향 수락
-        Family family = familyRepository.findById(familySeq).orElseThrow(() -> new Exception("not exist family relation : "+familySeq));
+        Family family = familyRepository.findFamilyByUsers(fromUserSeq,toUserSeq);
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                 .relationName(family.getRelationName()).relationComment(family.getRelationComment())
                 .familyUser(family.getFamilyUser()).isAccepted(2).familyUserNickname(family.getFamilyUserNickname())
                 .requestMessage(family.getRequestMessage()).user(family.getUser())
                 .build();
         Family newFamilySaved = familyRepository.save(newFamily);
-        // 반대 방향도 수락 해야지 familySeq 구한다음
-        Long familySeqReverse = familyRepository.findByUsers(family.getFamilyUser().getUserSeq(),family.getUser().getUserSeq());
-        // 그다음 진행
+        // 반대 방향
 
-        Family familyReverse = familyRepository.findById(familySeqReverse).orElseThrow(() -> new Exception("not exist family relation : "+family.getFamilyUser().getUserSeq()));
+        Family familyReverse = familyRepository.findFamilyByUsers(toUserSeq,fromUserSeq);
         Family newFamilyReverse = family.builder().familySeq(familyReverse.getFamilySeq())
                         .relationName(familyReverse.getRelationName()).relationComment(familyReverse.getRelationComment())
                 .familyUser(familyReverse.getFamilyUser()).isAccepted(2).familyUserNickname(familyReverse.getFamilyUserNickname())
@@ -133,15 +131,15 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public ResponseEntity<?> deleteFamily(Long familySeq) throws Exception {
-        Family family = familyRepository.findById(familySeq).orElseThrow(() ->new Exception("not exist family relation : "+familySeq));
-        Long familySeqReverse = familyRepository.findByUsers(family.getFamilyUser().getUserSeq(),family.getUser().getUserSeq());
-        System.out.println(familySeq);
-        System.out.println(familySeqReverse);
+    public ResponseEntity<?> deleteFamily(Long fromUserSeq, Long toUserSeq) throws Exception {
+//        Family family = familyRepository.findById(familySeq).orElseThrow(() ->new Exception("not exist family relation : "+familySeq));
+        Family family = familyRepository.findFamilyByUsers(fromUserSeq,toUserSeq);
+
+        Family familyReverse = familyRepository.findFamilyByUsers(toUserSeq,fromUserSeq);
         // 정방향
-        familyRepository.deleteById(familySeq);
+        familyRepository.delete(family);
         // 역방향
-        familyRepository.deleteById(familySeqReverse);
+        familyRepository.delete(familyReverse);
         MessageResponse messageResponse = MessageResponse.builder().type(-1).title("일촌이 끊어졌습니다.").build();
         return ResponseEntity.ok().body(messageResponse);
     }
