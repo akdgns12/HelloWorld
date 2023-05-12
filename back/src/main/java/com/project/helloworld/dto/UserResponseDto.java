@@ -45,6 +45,7 @@ public class UserResponseDto {
         private String avatarUrl;
         private String backgroundUrl;
         private String bgmUrl;
+        private int isFamily;
     }
 
     @Getter

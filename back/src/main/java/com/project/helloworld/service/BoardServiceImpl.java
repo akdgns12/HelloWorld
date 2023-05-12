@@ -360,9 +360,9 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public ResponseEntity<?> getCategoryByUser(Long userSeq) throws Exception {
+    public List<BoardCategoryCountResponse> getCategoryByUser(Long userSeq) throws Exception {
         List<BoardCategoryCountResponse> categoryList = boardRepository.boardCategoryCount(userSeq);
-        return ResponseEntity.ok().body(categoryList);
+        return categoryList;
     }
 
     public ResponseEntity<Set<Object>> getTop10KeywordsByRedis() {

@@ -4,6 +4,8 @@ import com.project.helloworld.dto.request.*;
 
 import java.util.List;
 import java.util.Set;
+
+import com.project.helloworld.dto.response.BoardCategoryCountResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface BoardService {
@@ -34,5 +36,5 @@ public interface BoardService {
 
     ResponseEntity<?> searchByKeyword(String searchTerm, int page)throws Exception;
 
-    ResponseEntity<?> getCategoryByUser(Long userSeq) throws Exception;
+    List<BoardCategoryCountResponse> getCategoryByUser(Long userSeq) throws Exception;
 }

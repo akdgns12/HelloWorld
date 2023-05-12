@@ -4,6 +4,7 @@ import com.project.helloworld.domain.User;
 import com.project.helloworld.dto.Response;
 import com.project.helloworld.dto.StatisticResponseDto;
 import com.project.helloworld.dto.VisitorResponseDto;
+import com.project.helloworld.dto.response.BoardCategoryCountResponse;
 import com.project.helloworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class StatisticServiceImpl implements StatisticService{
     private final Response response;
     private final UserRepository userRepository;
     private final VisitorService visitorService;
+    private final BoardServiceImpl boardService;
 
     @Override
     public ResponseEntity<?> getStatisticInfo(Long userSeq) throws Exception{
@@ -36,6 +38,9 @@ public class StatisticServiceImpl implements StatisticService{
         StatisticResponseDto statisticResponseDto = new StatisticResponseDto();
         statisticResponseDto.setStatisticInfo(statisticInfo);
         statisticResponseDto.setWeeklyTodayInfoList(weeklyTodayInfoList);
+
+        // 카테고리 정보
+        statisticInfo.setCategoryInfo(boardService.getCategoryByUser(userSeq));
 
         return response.success(statisticInfo, "통계 정보 조회를 성공했습니다.", HttpStatus.OK);
     }

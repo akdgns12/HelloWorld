@@ -1,5 +1,6 @@
 package com.project.helloworld.dto;
 
+import com.project.helloworld.dto.response.BoardCategoryCountResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class StatisticResponseDto {
         private int likeCnt;
         private int helpfulCnt;
         private int understandCnt;
+        private List<BoardCategoryCountResponse> categoryInfo;
         private List<VisitorResponseDto.WeeklyTodayInfo> weeklyTodayInfoList;
     }
 
@@ -28,6 +30,11 @@ public class StatisticResponseDto {
     public void setWeeklyTodayInfoList(List<VisitorResponseDto.WeeklyTodayInfo> weeklyTodayInfoList) {
         this.statisticInfo.setWeeklyTodayInfoList(weeklyTodayInfoList);
     }
+
+    public void setCategoryInfo(List<BoardCategoryCountResponse> categoryInfo){
+        this.statisticInfo.setCategoryInfo(categoryInfo);
+    }
+
     public List<VisitorResponseDto.WeeklyTodayInfo> getWeeklyTodayInfoList() {
         return this.statisticInfo.getWeeklyTodayInfoList();
     }
