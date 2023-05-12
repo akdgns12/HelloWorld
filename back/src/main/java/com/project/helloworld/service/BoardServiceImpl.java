@@ -334,7 +334,7 @@ public class BoardServiceImpl implements BoardService{
     @Cacheable(value = "searchResults", key = "#searchTerm")
     public ResponseEntity<?> searchByKeyword(String searchTerm, int page) {
         // 로그 메시지 추가
-        log.info("Searching by searchTerm: {}", searchTerm);
+        //log.info("Searching by searchTerm: {}", searchTerm);
 
         // 레디스에 검색어 빈도를 저장
         keywordCount.incrementSearchTermCount(searchTerm);
