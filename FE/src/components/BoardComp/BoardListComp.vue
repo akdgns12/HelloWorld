@@ -42,16 +42,17 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useRouter} from "vue-router";
 import { defineProps, reactive, computed } from 'vue';
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
 
 const categoryName = ["CS", "Algorithm", "Project", "Language", "Etc"];
+const createUser = `${localStorage.getItem("user-seq")}`;
 
 const router = useRouter();
 const WriteBoard = () => {
     router.push({
-        path: "/board/create",
+        path: `/board/${createUser}/create`,
     });
 }
 

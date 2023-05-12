@@ -13,17 +13,18 @@
 
 <script setup>
 import axios from 'axios';
+import { useRoute } from 'vue-router';
 import { ref, getCurrentInstance, computed } from 'vue';
 
 const emit = getCurrentInstance().emit;
 const newGuestBookContent = ref('');
-//const baseURL = "https://k8a308.p.ssafy.io/api";
+const baseURL = "https://k8a308.p.ssafy.io/api";
 const headers = {
     "Content-Type": "application/json;charset=utf-8",
     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
   };
-const minihomeMaster = ref(1);
-//const minihomeMaster = ref(`${route.params.userSeq}`);
+const route = useRoute();
+const minihomeMaster = computed(() => route.params.userSeq);
 const userSeq = ref(`${localStorage.getItem("user-seq")}`);
 
 const showCreateComp = computed(() => {
@@ -34,11 +35,11 @@ const addGuestBook = () => {
     const requestDto = {
         "content" : newGuestBookContent.value,
         "isSecret" : 0,
-        "readSeq" : 1,
+        "readSeq" : Number(minihomeMaster.value),
         "writeSeq" : Number(userSeq.value),
     };
     newGuestBookContent.value = '';
-    axios.post(`/api/guestbook`, requestDto, {headers})
+    axios.post(`${baseURL}/guestbook`, requestDto, {headers})
         .then(response => {
             console.log(response.data);
             emit('addGuestBook');

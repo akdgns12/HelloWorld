@@ -3,40 +3,36 @@
         <UserTitleComp />
         <div id="Wrapper">
             <div id = "boardWrapper">
-                <div id = "boardTitle">Git 이슈 정리</div>
+                <div id = "boardTitle">{{ board?.title }}</div>
                 <div id = "boardInfo">
-                    <p id="author">김싸피</p>
-                    <p id="createdDate">2023.04.19 09:29</p>
+                    <p id="author">{{ board?.writer }}</p>
+                    <p id="createdDate">{{ board?.createTime }}</p>
                 </div>
-                <div class="temp">
-                    <VMarkdownView 
-                        :mode="mode"
-                        v-model="content"
-                        class="vm-view"
-                    />
-                </div>
+                <div v-html="changeMarkdown" class="content"></div>
                 <div class="boardFooter">
                     <div class="checkSticker">
-                        <p class="sticker">스티커</p>
-                        <div class="sub_nav">
-                            <p>좋아요</p>
+                        <div class="sticker">
+                            <p style="color : #D7AA71; cursor: pointer;">좋아요</p>
                             <p style="padding : 0 0.3rem;">|</p>
-                            <p>도움되요</p>
+                            <p style="color : #D7AA71; cursor: pointer;">도움되요</p>
                             <p style="padding : 0 0.3rem;">|</p>
-                            <p>이해가 쏙쏙되요</p>
+                            <p style="color : #D7AA71; cursor: pointer;">이해가 쏙쏙되요</p>
                         </div>
                     </div>
                     <div id="boardUD">
-                        <p id="boardShare">퍼가기</p>
-                        <p>|</p>
-                        <p id="boardUpdate">수정</p>
-                        <p>|</p>
-                        <p id="boardDelete">삭제</p>
+                        <div>
+                            <p id="boardShare">퍼가기</p>
+                        </div>
+                        <div class="myUpdate">
+                            <p id="boardUpdate">수정</p>
+                            <p>|</p>
+                            <p id="boardDelete">삭제</p>
+                        </div>
                     </div>
                 </div>
                 <div id = "comment">
-                    <CommentListComp />
-                    <CommentCreateComp/>
+                    <CommentListComp :comments="board.comments"/>
+                    <CommentCreateComp @addBoardComment="addBoardComment"/>
                 </div>
             </div>
         </div>
@@ -48,77 +44,65 @@
 import CommentListComp from '@/components/BoardComp/CommentComp/CommentListComp.vue'
 import CommentCreateComp from '@/components/BoardComp/CommentComp/CommentCreateComp.vue'
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
-import { ref } from 'vue';
-import { VMarkdownView }  from 'vue3-markdown';
-import 'vue3-markdown/dist/style.css';
-// import axios from 'axios';
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
+import { marked } from 'marked';
+import { useRoute } from 'vue-router';
 
-const mode = ref('light');
-const content = ref('');
+const content = ref(``);
+const board = ref({});
 
-// const headers = {
-//     "Content-Type": "application/json;charset=utf-8",
-//     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-//   };
+const route = useRoute();
+const minihomeMaster = computed(() => route.params.userSeq);
+const boardSeq = computed(() => route.params.boardSeq);
+const baseUrl = `https://k8a308.p.ssafy.io/api`;
+const headers = {
+    "Content-Type": "application/json;charset=utf-8",
+    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+  };
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const hours = ("0" + date.getHours()).slice(-2);
+  const minutes = ("0" + date.getMinutes()).slice(-2);
+  const seconds = ("0" + date.getSeconds()).slice(-2);
 
-// const content = ref(`## Markdown Basic Syntax
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 
-// I just love **bold text**. Italicized text is the _cat's meow_. At the command prompt, type \`nano\`.
+const getBoardDetail = () => {
+    axios.get(`${baseUrl}/board?userSeq=${minihomeMaster.value}&boardSeq=${boardSeq.value}`,{headers})
+    .then((response) => {
+        console.log(response.data.body);
+        board.value = response.data.body;
+        content.value = board.value?.content;
+        board.value.createTime = formatDate(board.value?.createTime);
+    })
+    .catch((error) => {
+        console.error(error);
+        alert("게시글을 불러올 수 없습니다");
+    })
+}
 
-// My favorite markdown editor is [vue3-markdown](https://www.npmjs.com/package/vue3-markdown).
+onMounted (() => {
+    getBoardDetail();
+});
 
-// 1. First item
-// 2. Second item
-// 3. Third item
+const changeMarkdown = computed(() => {
+    let changedText = marked.parse(content.value);
+    changedText = changedText.replaceAll("&lt;", "<");
+    changedText = changedText.replaceAll("&gt;", ">");
+    changedText = changedText.replaceAll("&quot;", '"');
+    return changedText; 
+});
 
-// > Dorothy followed her through many of the beautiful rooms in her castle.
-
-// \`\`\`js
-// import { ref } from 'vue'
-// import { VMarkdownEditor } from 'vue3-markdown'
-// import 'vue3-markdown/dist/style.css'
-
-// const handleUpload = (file) => {
-//   console.log(file)
-//   return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
-// }
-// \`\`\`
-
-// ## GFM Extended Syntax
-
-// Automatic URL Linking: https://www.npmjs.com/package/vue3-markdown
-
-// ~~The world is flat.~~ We now know that the world is round.
-
-// - [x] Write the press release
-// - [ ] Update the website
-// - [ ] Contact the media
-
-// | Syntax    | Description |
-// | --------- | ----------- |
-// | Header    | Title       |
-// | Paragraph | Text        |
-
-// ## Footnotes
-
-// Here's a simple footnote,[^1] and here's a longer one.[^bignote]
-
-// [^1]: This is the first footnote.
-// [^bignote]: Here's one with multiple paragraphs and code.
-
-//     Indent paragraphs to include them in the footnote.
-
-//     \`{ my code }\`
-
-//     Add as many paragraphs as you like.
-
-// ## Math Equation
-
-// Inline math equation: $a+b$
-
-// `);
-
+const addBoardComment = () => {
+    board.value = {};
+    getBoardDetail();
+}
 
 </script>
 
@@ -175,17 +159,7 @@ const content = ref('');
     #createdDate {
         font-size : 0.8rem;
     }
-    .vm-view{
-        display: inline-block;
-    vertical-align: top;
-    overflow: auto;
-    flex-grow: 1;
-    flex-basis: 0;
-    text-align: left;
-    font-size: 14px;
-    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-    padding: 0.8rem;
-    } 
+
     .boardFooter{
         display : flex;
         flex-direction: row;
@@ -197,9 +171,12 @@ const content = ref('');
         font-size : 0.8rem;
     }
     .sticker {
-        color : #D7AA71;
+        
         font-weight: bold;
         cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     .checkSticker {
         display: flex;
@@ -222,6 +199,12 @@ const content = ref('');
         display : flex;
         flex-direction: row;
         width : 8rem;
+        justify-content: space-between;
+    }
+    .myUpdate {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         justify-content: space-between;
     }
     #boardUpdate, #boardDelete, #boardShare {

@@ -1,12 +1,46 @@
 <template>
     <div id = "createComments">
         <p style="font-weight:bold">댓글</p>
-        <input type="search">
+        <input type="search" v-model="content">
         <button @click="createComment">확인</button>
     </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, getCurrentInstance } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+
+const emit =getCurrentInstance().emit;
+
+const content = ref('');
+const baseUrl = `https://k8a308.p.ssafy.io/api`;
+const headers = {
+    "Content-Type": "application/json;charset=utf-8",
+    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+};
+const route = useRoute();
+const boardSeq = computed(() => route.params.boardSeq);
+
+const createComment = () => {
+    const requestDto = {
+        "boardSeq": boardSeq.value,
+        "content": content.value,
+        "userSeq": localStorage.getItem('user-seq')
+    };
+    console.log(requestDto);
+    axios.post(`${baseUrl}/board/comment`, requestDto, {headers})
+    .then(response => {
+        content.value = '';
+        console.log(response.data.body);
+        emit('addBoardComment');
+    })
+    .catch(error => {
+        console.error(error);
+        alert("댓글 달기 실패");
+    })
+}
+
 </script>
 
 <style scoped>

@@ -10,6 +10,7 @@ import { ko } from 'date-fns/locale';
 import Tabs from 'vue3-tabs';
 import VueYtframe from "vue3-ytframe";
 import VueSSE from 'vue-sse';
+import InfintiedLoading from "v3-infinite-loading";
 
 //createApp(App).mount('#app')
 
@@ -43,5 +44,6 @@ app.use(
 app.use(Tabs);
 // app.component('apexChart', VueApexChart)
 
-app.use(timeago, timeagoOptions)
+app.use(timeago, timeagoOptions);
+app.component("infinite-loading", InfintiedLoading);
 app.mount("#app")

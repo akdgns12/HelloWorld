@@ -48,6 +48,7 @@
 import axios from 'axios';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 
+
 const baseURL = `https://k8a308.p.ssafy.io/notify/`;
 const notifyURL = baseURL + `${localStorage.getItem("user-seq")}`;
 const headers = {
@@ -81,47 +82,54 @@ export default {
             };
         },
         putNotification(notifySeq, type, typeSeq) {
-            console.log(type, typeSeq);
-            const header = {
-                "Content-Type": "application/json;charset=utf-8",
-                Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-            }
-            const requestDto = {
-                notifySeq : notifySeq
-            }
-            axios.put(`/notify/`, {header}, requestDto)
-            .then((response) => {
-                console.log(response.data);
-                const updateNotification = this.notifications.map(notification => {
-                if (notification.notifySeq === notifySeq) {
-                    notification.readState = true;
+            const putNotify = axios.create({
+                baseURL : `https://k8a308.p.ssafy.io/notify/`,
+                headers : {
+                    Authorization : `Bearer ${localStorage.getItem("access-token")}`,
+                    "Content-Type": "application/json;charset=utf-8"
                 }
-                return notification;
-            })
-            console.log(updateNotification);
-                
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("알람을 읽지 못했습니다")
-            })
+            });
+            console.log(type, typeSeq);
+            console.log(notifySeq);
+            
+            const notifyIdx = {
+                "notifySeq" : notifySeq
+            }
+            putNotify.put("", notifyIdx)
+                .then(response => {
+                    console.log(response.data)
+                    const updateNotification = this.notifications.map(notification => {
+                        if (notification.notifySeq === notifySeq) {
+                            notification.readState = true;
+                        }
+                        return notification;
+                    })
+                    console.log(updateNotification);
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("알림을 읽지 못했습니다");
+                })
         },
         deleteNotification(notifySeq, index) {
-            const header = {
-                "Content-Type": "application/json;charset=utf-8",
-                Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-            };
-            const requestDto = {
-                notifySeq : notifySeq
-            };
+            const deleteNotify = axios.create({
+                baseURL : `https://k8a308.p.ssafy.io/notify/`,
+                headers : {
+                    Authorization : `Bearer ${localStorage.getItem("access-token")}`,
+                    //"Content-Type": "application/json;charset=utf-8"
+                }
+            });
+            const notifyIdx = {
+                "notifySeq" : notifySeq
+            }
             try {
                 if (confirm('정말 삭제하시겠습니까?')) {
-                    axios.delete("https://k8a308.p.ssafy.io/notify/", {header}, requestDto)
-                    .then((response) => {
+                    deleteNotify.delete("", {data : notifyIdx})
+                    .then(response => {
                         console.log(response.data);
                         this.notifications.splice(index,1);
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         console.error(error);
                         alert("알림 삭제가 되지 않습니다!");
                     })

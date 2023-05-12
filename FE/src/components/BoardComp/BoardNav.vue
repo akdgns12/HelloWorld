@@ -23,29 +23,40 @@
 
 <script>
 import { router } from '@/router';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
+
 export default {
     components: { TodayCnt },
-    data( ) {
-        return {
-            selectedCategory : 'all',
-            categories : [
-                {id : 0, name : 'CS'},
-                {id : 1, name : 'Algorithm'},
-                {id : 2, name : 'Project'},
-                {id : 3, name : 'Language'},
-                {id : 4, name : 'Etc'},
-                {id : 5, name : 'Share'},
-            ]
-        }
-    },
-    methods: {
-        handleClick(category) {
-            this.selectedCategory = category;
+    setup() {
+        const route = useRoute();
+        const userSeq = route.params.userSeq || ""; // 초기값 할당
+
+        const selectedCategory = ref('all');
+        const categories = [
+            {id : 0, name : 'CS'},
+            {id : 1, name : 'Algorithm'},
+            {id : 2, name : 'Project'},
+            {id : 3, name : 'Language'},
+            {id : 4, name : 'Etc'},
+            {id : 5, name : 'Share'},
+        ];
+
+        const handleClick = (category) => {
+            selectedCategory.value = category;
             this.$emit('category-selected', category);
-            if (category != 'all') category = this.categories[category].name;
-            router.push(`/board/boardlist/${category}`);
-        }
+            if (category !== 'all') {
+                category = categories[category].name;
+            }
+            router.push(`/board/${userSeq}/boardlist/${category}`);
+        };
+
+        return {
+            selectedCategory,
+            categories,
+            handleClick
+        };
     }
 }
 </script>

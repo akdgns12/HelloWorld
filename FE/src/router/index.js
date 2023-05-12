@@ -49,20 +49,20 @@ const routes = [
     component: MainPage,
   },
   {
-    path: "/board/boardlist/:category",
+    path: "/board/:userSeq/boardlist/:category",
     name : 'boardlist',
     component: BoardListView
   },
   {
-    path : "/board/create",
+    path : "/board/:userSeq/create",
     component : BoardCreateView,
   },
   {
-    path : '/board/detail',
+    path : '/board/:userSeq/:boardSeq',
     component : BoardDetailView,
   },
   {
-    path: "/guestbook",
+    path: "/guestbook/:userSeq",
     component: GuestBookListView,
   },
   {

@@ -17,11 +17,14 @@
     "event-source-polyfill": "^1.0.31",
     "html2canvas": "^1.4.1",
     "i": "^0.3.7",
+    "jwt-decode": "^3.1.2",
     "simple-vue3-validator": "^1.0.0-beta.2",
     "url-search-params-polyfill": "^8.1.1",
+    "v3-infinite-loading": "^1.2.2",
     "vue": "^3.2.13",
     "vue-apexcharts": "^1.6.2",
     "vue-chat-bot": "^1.1.1",
+    "vue-infinite-scroll": "^2.0.2",
     "vue-plyr": "^7.0.0",
     "vue-router": "^4.0.13",
     "vue-see": "^1.2.2",
@@ -49,6 +52,7 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "file-loader": "^6.2.0",
+    "marked": "^5.0.2",
     "unplugin-icons": "^0.16.1"
   },
   "eslintConfig": {

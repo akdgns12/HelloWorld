@@ -4,6 +4,7 @@
         <div id = guestBookWrapper>
             <div id = "guestBook">
                 <GuestBookCreateComp v-if="showCreateComp" @addGuestBook="addGuestBook"/>
+                <div v-if="guestBooks.length !== 0">
                 <div id = "guestBookList" v-for="guestBook in guestBooks" :key=guestBook?.guestBookSeq>
                     <div id="guestBookOne" v-if="showSecretGuestBook(guestBook?.guestBookUserSeq, guestBook?.secret)">
                         <div :class="{'guestBookHeader_secret' : guestBook?.secret , 'guestBookHeader' : guestBook?.secret === false}">
@@ -13,7 +14,7 @@
                                 <span class="GBCreatedDate">{{ formatDate(guestBook?.createdTime) }}</span>
                             </p>
                             <p class="GBEditor">
-                                <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" class="secret" style="font-weight: bold; cursor: pointer;" @click="isSecretGuestBook(guestBook?.guestBookSeq, guestBook?.secret, guestBook?.content)">{{ guestBook?.secret ? "비밀로 하기" : "공개로 하기" }}</span>
+                                <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" class="secret" style="font-weight: bold; cursor: pointer;" @click="isSecretGuestBook(guestBook?.guestBookSeq, guestBook?.secret, guestBook?.content)">{{ !guestBook?.secret ? "비밀로 하기" : "공개로 하기" }}</span>
                                 <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" style="padding: 0 0.5vw 0 0.5vw;" class="secret">|</span>
                                 <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" class="modify" style="font-weight: bold; cursor: pointer;" @click="showEditArea(guestBook?.guestBookSeq)">수정</span>
                                 <span v-if="!showCreateComp || showEditGuestBook(guestBook?.guestBookUserSeq)" style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
@@ -50,20 +51,21 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button
-                        @click="loadDown"
-                        :class="{ 'backButton': start > 0, 'disabled': start === 0 }"
-                    >
-                        이전 페이지
-                    </button>
-                    <button
-                        @click="loadMore"
-                        :class="{'nextButton': guestBooks.length >= size, 'disabled': guestBooks.length < size}"
-                    >
-                        다음 페이지
-                    </button>
-                </div>
+                <InfiniteLoading
+                    @infinite="loadMore"
+                    target="#guestBookList"
+                >
+                    <template #no-more>
+                        <div class="infinite-end">
+                            방명록을 모두 불러왔습니다!
+                        </div>
+                    </template>
+                </InfiniteLoading>
+            </div>
+            <div v-else class="nonegb">
+                <img src="@/assets/noneGB.png" alt="" class="noneImg">
+                <div class="noneText">방명록○l 없습LI⊂ト!</div>                
+            </div>
             </div>
         </div>
     </div>
@@ -73,13 +75,16 @@
 import GuestBookCreateComp from '@/components/GuestBookComp/GuestBookCreateComp.vue';
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
 import { ref, onMounted, computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
+import InfiniteLoading from 'v3-infinite-loading';
 
-//const baseURL = "https://k8a308.p.ssafy.io/api";
 const headers = {
     "Content-Type" : "application/json;charset=utf-8",
     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
   };
+const baseURL = "https://k8a308.p.ssafy.io/api";
+const route = useRoute();
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -93,14 +98,15 @@ const formatDate = (dateString) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-const minihomeMaster = ref(1);
-//const minihomeMaster = ref(`${route.params.userSeq}`);
+const minihomeMaster = computed(() => route.params.userSeq);
 const userSeq = ref(`${localStorage.getItem("user-seq")}`);
 const start = ref(0);
 const size = ref(10);
 const updateContent = ref({});
 const newComment = ref({});
 const guestBooks = ref([]);
+
+const busy = ref(false);
 
 const showCreateComp = computed(() => {
     return minihomeMaster.value != userSeq.value;
@@ -129,29 +135,37 @@ watch(showEditArea, (newValue) => {
 
 const getGuestBooks = () => {
     axios
-        .get(`/api/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`, {headers})
+        .get(`${baseURL}/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`, {headers})
         .then(response => {
             guestBooks.value = response.data;
         })
         .catch(error => {
             console.error(error);
-            alert("에러 발생..왜지?");
         })
 };
-const loadDown = () => {
-    start.value -= 1;
-    getGuestBooks();
-}
+
 const loadMore = () => {
-    start.value += 1;
-    getGuestBooks();
-}
+    if (busy.value) return;
+
+    busy.value = true;
+    axios
+    .get(`${baseURL}/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`, {headers})
+    .then(response => {
+      guestBooks.value = guestBooks.value.concat(response.data);  // 기존 데이터에 새로운 데이터 추가
+      busy.value = false;  // 데이터 로딩 상태 해제
+      start.value += 1;  // 다음 데이터를 가져오기 위해 start 값 증가
+    })
+    .catch(error => {
+      console.error(error);
+      busy.value = false;  // 데이터 로딩 상태 해제
+    });
+};
 
 const addGuestBook = () => {
     start.value = 0;
     guestBooks.value = ref([]);
     axios
-        .get(`/api/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`,{headers})
+        .get(`${baseURL}/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`,{headers})
         .then(response => {
             guestBooks.value = response.data;
         })
@@ -175,7 +189,7 @@ const isSecretGuestBook = (guestBookSeq, secret, content) => {
     };
     console.log(updateGuestBook);
     axios
-    .patch( `/api/guestbook`, requestDto, {headers})
+    .patch( `${baseURL}/guestbook`, requestDto, {headers})
     .then((response) => {
         console.log(response.data);
     })
@@ -199,7 +213,7 @@ const updateGuestBook = (updateContentValue, guestBookSeq, secret) => {
         guestBookSeq : guestBookSeq
     };
     axios
-        .patch(`/api/guestbook`, requestDto, {headers})
+        .patch(`${baseURL}/guestbook`, requestDto, {headers})
         .then((reponse) => {
             console.log(reponse);
             edit.value[guestBookSeq] = !edit.value[guestBookSeq];
@@ -218,9 +232,10 @@ onMounted(() => {
 
 const deleteGuestBook = (guestBookSeq) => {
     axios
-        .delete(`/api/guestbook/${guestBookSeq}`,{headers})
+        .delete(`${baseURL}/guestbook/${guestBookSeq}`,{headers})
         .then(response => {
             console.log(response.data);
+            start.value = 0;
             getGuestBooks();
             alert("방명록이 삭제되었습니다!");
         })
@@ -238,10 +253,10 @@ const addGuestBookComment = (newCommentValue, guestBookSeq) => {
     };
     newComment.value[guestBookSeq] = '';
     axios
-        .post(`/api/guestbook/comment/${guestBookSeq}`, requestDto, {headers})
+        .post(`${baseURL}/guestbook/comment/${guestBookSeq}`, requestDto, {headers})
         .then(response => {
             console.log(response.data);
-            axios.get(`/api/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`,{headers})
+            axios.get(`${baseURL}/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`,{headers})
             .then(response => {
                 guestBooks.value = response.data;
             })
@@ -258,7 +273,7 @@ const addGuestBookComment = (newCommentValue, guestBookSeq) => {
 
 const removeGuestBookComment = (guestBookSeq) => {
     axios
-        .delete(`/api/guestbook/comment/${guestBookSeq}`, {headers})
+        .delete(`${baseURL}/guestbook/comment/${guestBookSeq}`, {headers})
         .then(response => {
             console.log(response.data);
             getGuestBooks();
@@ -460,5 +475,21 @@ const removeGuestBookComment = (guestBookSeq) => {
         background-color: white;
         border-radius: 5px;
         cursor: not-allowed;
+    }
+
+    .nonegb {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .noneText {
+        font-size : 2rem;
+        font-weight: bold;
+    }
+    .noneImg {
+        width : 8rem;
+        padding-top : 1rem;
+        margin : 1rem 0;
     }
 </style>

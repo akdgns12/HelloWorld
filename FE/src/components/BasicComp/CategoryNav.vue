@@ -5,13 +5,13 @@
                 <router-link :to="`/mainpage/${this.masterSeq}`" class="nav-link">홈</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/board/boardlist/all" class="nav-link">게시글</router-link>
+                <router-link :to="`/board/${this.masterSeq}/boardlist/all`" class="nav-link">게시글</router-link>
             </li>
             <li class="navitem">
                 <router-link :to="`/community/${this.masterSeq}`" class="nav-link">커뮤니티</router-link>
             </li>
             <li class="navitem">
-                <router-link to="/guestbook" class="nav-link">방명록</router-link>
+                <router-link :to="`/guestbook/${this.masterSeq}`" class="nav-link">방명록</router-link>
             </li>
             <li class="navitem">
                 <router-link :to="`/statistic/${this.masterSeq}`" class="nav-link">통계</router-link>

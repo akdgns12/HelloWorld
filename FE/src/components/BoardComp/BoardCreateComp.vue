@@ -5,11 +5,11 @@
             <div id ="boardheader">
                 <input type="text" placeholder="제목 쓰기" v-model="title">
                 <select name="boardCategory" id="boardCategory" v-model="category">
-                    <option value=1>CS</option>
-                    <option value=2>Algorithm</option>
-                    <option value=3>Project</option>
-                    <option value=4>Language</option>
-                    <option value=5>Etc</option>
+                    <option value=0>CS</option>
+                    <option value=1>Algorithm</option>
+                    <option value=2>Project</option>
+                    <option value=3>Language</option>
+                    <option value=4>Etc</option>
                 </select>
             </div>
             <div id="boardMD">
@@ -33,6 +33,7 @@ import { VMarkdownEditor } from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
 import axios from 'axios';
+import { router } from '@/router';
 
 const title = ref('');
 const content = ref('');
@@ -41,30 +42,30 @@ const handleUpload = (file) => {
     console.log(file)
     return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
 }
-
+const baseUrl = `https://k8a308.p.ssafy.io/api`;
 const headers = {
     "Content-Type": "application/json;charset=utf-8",
     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
   };
 
 const createBoard = () => {
-    console.log(category.value);
-    console.log(title.value);
-    console.log(content.value);
+    const userSeq = `${localStorage.getItem("user-seq")}`;
     const requestDto = {
         "content" : content.value,
         "title" : title.value,
         "category" : category.value,
-        "userSeq" : `${localStorage.getItem("user-seq")}`
+        "userSeq" : userSeq,
     }
-    axios.post(`/api/board`, {headers}, requestDto)
+    axios.post(`${baseUrl}/board`, requestDto, {headers})
     .then((response) => {
-        console.log(response.data);
-        
+        const boardSeq = response.data.body.typeSeq;
+        console.log(boardSeq);
+        alert(`${response.data.body.title} 😎`);
+        router.push(`/board/${userSeq}/${boardSeq}`);
     })
     .catch((error) => {
         console.error(error);
-        alert("게시글이 왜 안만들어짐...?");
+        alert("게시글 생성에 실패하셨습니다😢");
     })
 }
 </script>
