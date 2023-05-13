@@ -346,7 +346,7 @@ public class BoardServiceImpl implements BoardService{
         Query searchQuery = new NativeSearchQueryBuilder()
             .withQuery(boolQuery)
             .withSort(SortBuilders.fieldSort("likeCnt").order(SortOrder.DESC)) // likes 필드를 기준으로 내림차순 정렬
-            .withPageable(PageRequest.of(page, 3)) // 요청한 페이지의 결과 반환
+            .withPageable(PageRequest.of(page, 18)) // 요청한 페이지의 결과 반환
             .build();
 
         SearchHits<BoardDocument> searchHits = elasticsearchOperations.search(

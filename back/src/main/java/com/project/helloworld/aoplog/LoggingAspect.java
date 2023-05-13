@@ -17,25 +17,72 @@ import java.util.Arrays;
 @Slf4j
 public class LoggingAspect {
 
+  @Around("execution(* com.project.helloworld.controller.*.*(..))")
+  public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
 
-  @Around("execution(* com.project.helloworld.service.*.*(..))")
-  public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
-    log.info("Service Enter - Method: " + joinPoint.getSignature().getName());
-    log.info("   Arguments: " + Arrays.toString(joinPoint.getArgs()));
+    log.info("--> {} : {}() | Arguments: {}", joinPoint.getTarget().getClass().getSimpleName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
 
-    long startTime = System.currentTimeMillis(); // 추가
+    long startTime = System.currentTimeMillis();
 
     Object result = null;
     try {
       result = joinPoint.proceed();
     } catch (Exception ex) {
-      log.error("Exception caught in Service: " + ex.getMessage());
-      throw ex; // re-throw the exception after logging
+      log.error("!!! Exception caught in Controller: " + ex.getMessage());
+      throw ex;
     }
 
-    long endTime = System.currentTimeMillis(); // 추가
-    log.info("   Performance Measurement: " + (endTime - startTime) + " milliseconds"); // 추가
-    log.info("Service Exit - Method: " + joinPoint.getSignature().getName());
+    long endTime = System.currentTimeMillis();
+
+    log.info("<-- {} : {}() | Performance Measurement: {} milliseconds", joinPoint.getTarget().getClass().getSimpleName(), joinPoint.getSignature().getName(), (endTime - startTime));
+
+    return result;
+  }
+
+
+
+  @Around("execution(* com.project.helloworld.service.*.*(..))")
+  public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
+
+
+
+    log.info("--------> {} : {}() | Arguments: {}" , joinPoint.getTarget().getClass().getSimpleName(),joinPoint.getSignature().getName(),Arrays.toString(joinPoint.getArgs()));
+
+    long startTime = System.currentTimeMillis();
+
+    Object result = null;
+    try {
+      result = joinPoint.proceed();
+    } catch (Exception ex) {
+      log.error("!!!!!!!!! Exception caught in Service: " + ex.getMessage());
+      throw ex;
+    }
+
+    long endTime = System.currentTimeMillis();
+
+    log.info("<-------- {} : {}() | Performance Measurement: {} milliseconds", joinPoint.getTarget().getClass().getSimpleName(), joinPoint.getSignature().getName(), (endTime - startTime));
+
+    return result;
+  }
+
+
+  @Around("execution(* com.project.helloworld.repository.*Repository.*(..))")
+  public Object logRepository(ProceedingJoinPoint joinPoint) throws Throwable {
+
+    log.info("--------------> {} : {}() | Arguments: {}" , joinPoint.getTarget().getClass().getSimpleName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+
+    long startTime = System.currentTimeMillis();
+
+    Object result = null;
+    try {
+      result = joinPoint.proceed();
+    } catch (Exception ex) {
+      log.error("!!!!!!!!!!!!!!! Exception caught in Repository: " + ex.getMessage());
+      throw ex;
+    }
+
+    long endTime = System.currentTimeMillis();
+    log.info("<-------------- {} : {}() | Performance Measurement: {} milliseconds",  joinPoint.getTarget().getClass().getSimpleName(), joinPoint.getSignature().getName(), (endTime - startTime));
 
     return result;
   }
