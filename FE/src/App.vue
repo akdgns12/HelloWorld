@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div style="margin-top: 50px;">
-    <!-- <iframe src="https://www.youtube.com/embed/EkRuV-h6Bv0?autoplay=1&mute=1&loop=1 " title="YouTube video player"
+      <!-- <iframe src="https://www.youtube.com/embed/EkRuV-h6Bv0?autoplay=1&mute=1&loop=1 " title="YouTube video player"
       frameborder="0"
       height="25px"
       width="400px"
@@ -10,12 +10,13 @@
       width="500" height="40" autohide="0" /> -->
     </div>
     <router-view></router-view>
-    <VueYtframe video-id="6ZUIwj3FgUY" height=0 width=0
-                    :player-vars="{ loop: 1, autoplay: 1, listType: 'user_uploads'}" v-if="this.userSeq!=null"/>
+    <VueYtframe :video-id="`${this.videoId}`" height=0 width=0
+      :player-vars="{ loop: 1, autoplay: 1, listType: 'user_uploads' }" v-if="this.userSeq != null" />
   </div>
 </template>
 
 <script>
+import http from '@/api/httpWithAccessToken';
 export default {
   name: 'App',
   components: {
@@ -24,10 +25,18 @@ export default {
   data() {
     return {
       userSeq: localStorage.getItem('user-seq'),
+      videoId: null,
     }
   },
-  created() {
+  mounted() {
     // console.log(this.userSeq);
+    http.get(`/user/mainpage/${this.userSeq}`).then((result) => {
+      console.log(result.data.data.bgmList[0])
+      this.videoId = result.data.data.bgmList[0].videoId;
+    }, (error) => {
+      console.log(error);
+    });
+
   }
 }
 </script>

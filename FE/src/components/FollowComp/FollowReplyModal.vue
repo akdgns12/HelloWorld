@@ -1,7 +1,40 @@
 <script>
+import http from '@/api/httpWithAccessToken'
 export default {
     props: {
         show: Boolean
+    },
+    data() {
+        return {
+            userSeq: localStorage.getItem('user-seq'),
+            masterSeq: this.$route.params.userSeq,
+            myNickname: null,
+            otherNickname: null,
+            userAvatar: null,
+        }
+    },
+    created() {
+        http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
+            this.myNickname = result.data.data.nickname;
+        }, (error)=>{
+            console.log(error);
+        });
+        http.get(`/user/userInfo/${this.masterSeq}`).then((result) => {
+            this.otherNickname = result.data.data.nickname;
+            this.userAvatar = result.data.data.avatarUrl;
+        }, (error)=>{
+            console.log(error);
+        });
+    },
+    methods: {
+        acceptFamily: function() {
+            http.put(`/family?fromUserSeq=${this.masterSeq}&toUserSeq=${this.userSeq}`).then(() => {
+                // console.log(result);
+                this.$emit('close')
+            }, (error) => {
+                console.log(error);
+            })
+        }
     }
 }
 </script>
@@ -16,23 +49,23 @@ export default {
                 <div class="modal-body">
                     <div class="user-info">
                         <div class="profile-img-container">
-                            <img class="profile-img" src="@/assets/image/Person.png" />
+                            <img class="profile-img" :src="`${this.userAvatar}`" />
                         </div>
-                        <div class="user-name">김싸피</div>
+                        <div class="user-name">{{this.otherNickname}}</div>
                         <div class="request-msg">&nbsp;님으로부터 일촌 요청이 왔습니다</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">최싸피 (나)</div>
+                        <div class="user-name">{{this.myNickname}} (나)</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">김싸피</div>
+                        <div class="user-name">{{ this.otherNickname }}</div>
                         <div class="request-msg">&nbsp;님의 최씨 로,</div>
                         <!-- <input class="family-name-input" placeholder="일촌명" />
                         <div class="request-msg">&nbsp;로,</div> -->
                     </div>
                     <div class="select-name">
-                        <div class="user-name">김싸피</div>
+                        <div class="user-name">{{this.otherNickname}}</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">최싸피 (나)</div>
+                        <div class="user-name">{{this.myNickname}} (나)</div>
                         <div class="request-msg">&nbsp;님의 김씨 로,</div>
                         <!-- <input class="family-name-input" placeholder="일촌명" />
                         <div class="request-msg">&nbsp;로,</div> -->
@@ -47,7 +80,7 @@ export default {
                         수락하면 일촌이 맺어집니다
                     </div>
                     <div class="btn-list">
-                        <div class="send-btn">
+                        <div class="send-btn" @click="acceptFamily">
                             수락하기
                         </div>
                         <div class="reject-btn">
@@ -91,8 +124,8 @@ export default {
 .profile-img-container {
     width: 80px;
     height: 80px;
-    border: 1px solid #6A6A6A;
-    border-radius: 5px;
+    /* border: 1px solid #6A6A6A;
+    border-radius: 5px; */
     margin-right: 10px;
 }
 

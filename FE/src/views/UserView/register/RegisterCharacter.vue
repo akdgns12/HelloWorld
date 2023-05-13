@@ -725,7 +725,7 @@ export default {
                 headers: { 'Content-Type': 'multipart/form-data' },
             }).then((response) => {
                 console.log(response);
-                this.$router.location({ name: 'login' });
+                this.$router.replace({ name: 'login' });
             }, (error) => {
                 console.log(error);
             });

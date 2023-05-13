@@ -6,10 +6,12 @@
                 <div v-if="this.isFamily==3 && this.masterSeq!=this.userSeq" class="follow-request-btn" id="show-modal" @click="showModal = true">
                     일촌 신청
                 </div>
-                <div class="bgm-btn">
-                    ♬ 가을 아침 - 아이유 🔊
+                <div v-if="this.isFamily==1 && this.masterSeq!=this.userSeq" class="follow-reply-btn" id="show-modal" @click="showModal2 = true">
+                    일촌 수락
                 </div>
-                
+                <!-- <div class="bgm-btn">
+                    ♬ {{this.songName}} - {{this.singerName}}
+                </div> -->
             </div>
             <Teleport to="body">
                 <modal :show="showModal" @close="showModal = false">
@@ -17,6 +19,13 @@
                         <h3>custom header</h3>
                     </template>
                 </modal>
+            </Teleport>
+            <Teleport to="body">
+                <Modal2 :show="showModal2" @close="showModal2 = false">
+                    <template #header>
+                        <h3>custom header</h3>
+                    </template>
+                </Modal2>
             </Teleport>
         </div>
         <BGMComp />
@@ -26,18 +35,22 @@
 
 <script>
 import Modal from '@/components/FollowComp/FollowRequestModal.vue'
+import Modal2 from '@/components/FollowComp/FollowReplyModal.vue'
 import BGMComp from '@/components/BasicComp/BGMComp.vue'
 import http from '@/api/httpWithAccessToken'
 
 export default {
-    components: { Modal, BGMComp },
+    components: { Modal, Modal2, BGMComp },
     data() {
         return {
             showModal: false,
+            showModal2: false,
             masterSeq: this.$route.params.userSeq,
             userSeq: localStorage.getItem('user-seq'),
             nickname: null,
             isFamily: null,
+            songName: null,
+            singerName: null,
         }
     },
     mounted() {
@@ -48,6 +61,12 @@ export default {
         }, (error) => {
             console.log(error);
         });
+        http.get(`/user/mainpage/${this.userSeq}`).then((result) => {
+            this.songName = result.data.data.bgmList[0].title;
+            this.singerName = result.data.data.bgmList[0].artist;
+        }, (error) => {
+            console.log(error)
+        })
     }
 }
 </script>
@@ -83,6 +102,24 @@ a:hover {
 }
 
 .follow-request-btn {
+    cursor: pointer;
+    font-size: 10px;
+    background-color: #82ACC1;
+    color: #FFFFFF;
+    width: 60px;
+    /* height: 20px; */
+    padding: 2px 4px;
+    text-align: center;
+    /* zoom: 0.8; */
+    font-weight: bold;
+    border-radius: 20px;
+    margin-left: 15px;
+    /* line-height: 20px; */
+    /* margin-top: 6px; */
+    margin-bottom: 5px;
+}
+
+.follow-reply-btn {
     cursor: pointer;
     font-size: 10px;
     background-color: #82ACC1;

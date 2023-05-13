@@ -7,24 +7,9 @@
                     <splide :options="options" class="slider">
                         <splide-slide class="splide-slide">
                             <div class="one-slide">
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
-                                <div class="story-element-container"><img class="story-element"
-                                        src="@/assets/image/Person.png" alt="스토리" /></div>
+                                <div class="story-element-container" v-for="rs in this.readStory" :key="rs">
+                                    <img class="story-element" :src="`${rs.imgUrl}`" alt="스토리" />
+                                </div>
                             </div>
                         </splide-slide>
                         <splide-slide class="splide-slide">
@@ -59,7 +44,7 @@
                 <FamilyComment />
             </div>
             <div class="room-container">
-                <img class="room" src="@/assets/image/MiniRoom.png"/>
+                <img class="room" src="@/assets/image/MiniRoom.png" />
             </div>
         </div>
     </div>
@@ -91,17 +76,31 @@ export default {
                 pagination: false,
             },
             avatarUrl: null,
+            readStory: [],
+            newStory: [],
         };
     },
     created() {
         var userSeq = localStorage.getItem('user-seq');
         http.get(`/user/mainpage/${userSeq}`).then((result) => {
             this.avatraUrl = result.data.data.avatarUrl;
-        }, (error)=>{
+        }, (error) => {
             console.log(error);
         });
         httpStory.get(`/story/all/${userSeq}`).then((result) => {
-            console.log(result)
+            this.readStory = result.data.readStory;
+            this.newStory = result.data.newStory;
+            // console.log(result.data)
+            // console.log(this.newStory)
+            // console.log(this.readStory)
+            // for(var i = 0; i < result.data.readStory.length; i++) {
+            //     this.story.push(result.data.readStory[i])
+            // }
+            // for(var j = 0; i < result.data.newStory.length; j++) {
+            //     this.story.push(result.data.newStory[j])
+            // }
+            // console.log(result.data)
+            // console.log(this.story)
         }, (error) => {
             console.log(error);
         })
@@ -111,7 +110,6 @@ export default {
 </script>
 
 <style scoped>
-
 .right-body {
     background-color: white;
     width: 62vw;
@@ -219,4 +217,5 @@ export default {
     border-radius: 3px;
     border: 1.5px solid #6A6A6A;
 
-}</style>
+}
+</style>
