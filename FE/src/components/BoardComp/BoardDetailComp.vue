@@ -10,23 +10,24 @@
                 </div>
                 <div v-html="changeMarkdown" class="content"></div>
                 <div class="boardFooter">
-                    <div class="checkSticker">
+                    <div class="checkSticker" v-if="board && board.sticker">
                         <div class="sticker">
-                            <p style="color : #D7AA71; cursor: pointer;">좋아요</p>
-                            <p style="padding : 0 0.3rem;">|</p>
-                            <p style="color : #D7AA71; cursor: pointer;">도움되요</p>
-                            <p style="padding : 0 0.3rem;">|</p>
-                            <p style="color : #D7AA71; cursor: pointer;">이해가 쏙쏙되요</p>
+                            <img src="@/assets/boardIcon/heart.png" alt="heart" v-if="board.sticker[0] === true" @click="toggleSticker(0)">
+                            <img src="@/assets/boardIcon/heart_no.png" alt="heart_no" v-else @click="toggleSticker(0)">
+                            <img src="@/assets/boardIcon/help.png" alt="plus" v-if="board.sticker[1] === true" @click="toggleSticker(1)">
+                            <img src="@/assets/boardIcon/help_no.png" alt="plus_no" v-else @click="toggleSticker(1)">
+                            <img src="@/assets/boardIcon/bulb.png" alt="idea" v-if="board.sticker[2] === true" @click="toggleSticker(2)">
+                            <img src="@/assets/boardIcon/bulb_no.png" alt="idea_no" v-else @click="toggleSticker(2)">
                         </div>
                     </div>
                     <div id="boardUD">
-                        <div>
-                            <p id="boardShare">퍼가기</p>
+                        <div v-if="board.userSeq !== userSeq">
+                            <p id="boardShare" @click="shareBoard(board.boardSeq)">퍼가기</p>
                         </div>
-                        <div class="myUpdate">
-                            <p id="boardUpdate">수정</p>
-                            <p>|</p>
-                            <p id="boardDelete">삭제</p>
+                        <div class="myUpdate" v-else>
+                            <p id="boardUpdate" @click="updateBoard(board.boardSeq)">수정</p>
+                            <p style="padding : 0 0.5rem">|</p>
+                            <p id="boardDelete" @click="deleteBoard(board.boardSeq)">삭제</p>
                         </div>
                     </div>
                 </div>
@@ -48,6 +49,7 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import { marked } from 'marked';
 import { useRoute } from 'vue-router';
+import { router } from '@/router';
 
 const content = ref(``);
 const board = ref({});
@@ -60,6 +62,7 @@ const headers = {
     "Content-Type": "application/json;charset=utf-8",
     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
   };
+const userSeq = Number(localStorage.getItem('user-seq'));
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -102,6 +105,72 @@ const changeMarkdown = computed(() => {
 const addBoardComment = () => {
     board.value = {};
     getBoardDetail();
+}
+
+const updateBoard = (boardSeq) => {
+    router.push(`/board/${userSeq}/create/${boardSeq}`);
+}
+
+const deleteBoard = (boardSeq) => {
+    console.log(boardSeq);
+    axios.delete(`${baseUrl}/board?boardSeq=${boardSeq}`, {headers})
+    .then(response => {
+        console.log(response);
+        alert("게시글 삭제 완료!");
+        router.push(`/board/${userSeq}/boardlist`);
+    })
+    .catch(error => {
+        console.error(error);
+        alert("게시글 삭제 불가");
+    })
+}
+
+const toggleSticker = (index) => {
+    const requestDto = {
+        boardSeq : boardSeq.value,
+        type : index,
+        userSeq : userSeq,
+    };
+
+    if (board.value.sticker[index]) {
+        axios
+            .delete(`${baseUrl}/board/sticker`, requestDto, {headers})
+            .then(response => {
+                console.log(response);
+                board.value.sticker[index] = false;
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    } else {
+        axios
+            .post(`${baseUrl}/board/sticker`, requestDto, {headers})
+            .then(response => {
+                console.log(response);
+                board.value.sticker[index] = true;
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
+}
+
+const shareBoard = (boardSeq) => {
+    const requestDto = {
+        content : "share",
+        isSecret : 0,
+        readSeq : userSeq,
+        writeSeq : boardSeq
+    }
+
+    axios
+        .post(`${baseUrl}/bookmark`, requestDto, {headers})
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        })
 }
 
 </script>
@@ -160,6 +229,13 @@ const addBoardComment = () => {
         font-size : 0.8rem;
     }
 
+    .content {
+        display: flex;
+        flex-direction: column;
+        text-align : justify;
+        padding : 0 1rem;
+    }
+
     .boardFooter{
         display : flex;
         flex-direction: row;
@@ -198,8 +274,6 @@ const addBoardComment = () => {
     #boardUD {
         display : flex;
         flex-direction: row;
-        width : 8rem;
-        justify-content: space-between;
     }
     .myUpdate {
         display: flex;
@@ -220,5 +294,13 @@ const addBoardComment = () => {
         align-items: center;
         text-align :justify;
         padding : 1rem 0 0.5rem 0;
+    }
+    img {
+        width : 1.2rem;
+        padding-right : 0.7rem;
+        cursor: pointer;
+    }
+    .temp {
+        width : 1.5rem;
     }
 </style>

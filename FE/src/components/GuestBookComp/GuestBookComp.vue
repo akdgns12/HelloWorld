@@ -4,7 +4,7 @@
         <div id = guestBookWrapper>
             <div id = "guestBook">
                 <GuestBookCreateComp v-if="showCreateComp" @addGuestBook="addGuestBook"/>
-                <div v-if="guestBooks.length !== 0">
+                <!-- <div v-if="guestBooks.length !== 0"> -->
                 <div id = "guestBookList" v-for="guestBook in guestBooks" :key=guestBook?.guestBookSeq>
                     <div id="guestBookOne" v-if="showSecretGuestBook(guestBook?.guestBookUserSeq, guestBook?.secret)">
                         <div :class="{'guestBookHeader_secret' : guestBook?.secret , 'guestBookHeader' : guestBook?.secret === false}">
@@ -61,8 +61,8 @@
                         </div>
                     </template>
                 </InfiniteLoading>
-            </div>
-            <div v-else class="nonegb">
+            <!-- </div> -->
+            <div v-if="guestBooks.length === 0" class="nonegb">
                 <img src="@/assets/noneGB.png" alt="" class="noneImg">
                 <div class="noneText">방명록○l 없습LI⊂ト!</div>                
             </div>

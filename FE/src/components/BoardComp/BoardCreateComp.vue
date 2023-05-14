@@ -28,11 +28,12 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import { VMarkdownEditor } from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
 import axios from 'axios';
+import { useRoute } from 'vue-router';
 import { router } from '@/router';
 
 const title = ref('');
@@ -48,26 +49,67 @@ const headers = {
     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
   };
 
+const route = useRoute();
+const boardSeq = computed(() => route.params.boardSeq);
+
 const createBoard = () => {
     const userSeq = `${localStorage.getItem("user-seq")}`;
-    const requestDto = {
-        "content" : content.value,
-        "title" : title.value,
-        "category" : category.value,
-        "userSeq" : userSeq,
+
+    if (boardSeq.value) {
+        const requestDto = {
+            "content" : content.value,
+            "title" : title.value,
+            "categorySeq" : category.value,
+            "boardSeq" : boardSeq.value
+        };
+        axios.patch(`${baseUrl}/board`, requestDto, {headers})
+            .then(response => {
+                console.log(response.data);
+                alert("게시글이 수정되었습니다!");
+                router.push(`/board/${userSeq}/${boardSeq.value}`);
+            })
+            .catch(error => {
+                console.error(error);
+                alert("게시글 수정에 실패하였습니다!");
+            });
     }
-    axios.post(`${baseUrl}/board`, requestDto, {headers})
-    .then((response) => {
-        const boardSeq = response.data.body.typeSeq;
-        console.log(boardSeq);
-        alert(`${response.data.body.title} 😎`);
-        router.push(`/board/${userSeq}/${boardSeq}`);
-    })
-    .catch((error) => {
-        console.error(error);
-        alert("게시글 생성에 실패하셨습니다😢");
-    })
+    else {
+        const requestDto = {
+            "content" : content.value,
+            "title" : title.value,
+            "categorySeq" : category.value,
+            "userSeq" : userSeq,
+        };
+        axios.post(`${baseUrl}/board`, requestDto, {headers})
+        .then((response) => {
+            const boardSeq = response.data.body.typeSeq;
+            console.log(boardSeq);
+            alert(`${response.data.body.title} 😎`);
+            router.push(`/board/${userSeq}/${boardSeq}`);
+        })
+        .catch((error) => {
+            console.error(error);
+            alert("게시글 생성에 실패하셨습니다😢");
+        })
+    }
 }
+
+onMounted(() => {
+    if (boardSeq.value) {
+        axios.get(`${baseUrl}/board?userSeq=${localStorage.getItem("user-seq")}&boardSeq=${boardSeq.value}`, {headers})
+        .then(response => {
+            title.value = response.data.body.title;
+            content.value = response.data.body.content;
+            category.value = response.data.body.categorySeq;
+        })
+        .catch((error) => {
+            console.error(error);
+            alert("게시글 수정이 불가능합니다");
+            router.push(`/board/${localStorage.getItem("user-seq")}/${boardSeq.value}`);
+        })
+    }
+})
+
 </script>
 
 <style scoped>

@@ -67,16 +67,6 @@ const props = defineProps({
 });
 const state = reactive ({
     boards: [
-        // {boardSeq : 20, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 19, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 18, userSeq : 20, nickname : '한싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 17, userSeq : 20, nickname : '한싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 16, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 15, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 14, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 13, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 12, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
-        // {boardSeq : 11, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
         {boardSeq : 10, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
         {boardSeq : 9, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
         {boardSeq : 8, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},

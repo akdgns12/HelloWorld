@@ -1,7 +1,7 @@
 <template>
     <div id = "line">
         <div id = "Board">
-            <BoardNav @category-selected="selectCategory"/>
+            <BoardNav @category-selected="selectedCategory"/>
             <div>
                 <div id = "MainBoard">
                     <div v-if="selectedCategory === 5">
@@ -21,22 +21,21 @@
 import BoardNav from "@/components/BoardComp/BoardNav.vue";
 import BoardListComp from "@/components/BoardComp/BoardListComp.vue";
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue";
-// import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
-//import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue";
-//import BGMComp from "@/components/BasicComp/BGMComp.vue";
 import BoardShareList from "@/components/BoardComp/BoardShareList.vue";
+import { inject } from 'vue';
 export default {
     components : { BoardNav, BoardListComp, BoardShareList, CategoryNav},
-    data() {
+    setup() {
+        const selectedCategory = inject('seletedCategory');
         return {
-            selectedCategory : 'all'
-        }
-    },
-    methods : {
-        selectCategory(categoryId) {
-            this.selectedCategory = categoryId;
-        }
+            selectedCategory,
+        };
     }
+    // methods : {
+    //     selectCategory(categoryId) {
+    //         this.selectedCategory = categoryId;
+    //     }
+    // }
 };
 </script>
 

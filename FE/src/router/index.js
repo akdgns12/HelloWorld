@@ -54,7 +54,7 @@ const routes = [
     component: BoardListView
   },
   {
-    path : "/board/:userSeq/create",
+    path : "/board/:userSeq/create/:boardSeq?",
     component : BoardCreateView,
   },
   {
