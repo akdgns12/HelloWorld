@@ -247,13 +247,10 @@ public class UserServiceImpl implements UserService{
 
         userMainInfo.setBgmList(bgmList);
         LocalDate today = LocalDate.now();
-        LocalDate firstDayOfYear = today.withDayOfYear(1);
-        LocalDate signUpDate = user.getCreateTime().toLocalDate();
-        // 회원가입일과 올해 1월1일 중 더 최신날짜 선택
-        LocalDate olderDate = firstDayOfYear.isBefore(signUpDate) ? firstDayOfYear : signUpDate;
+        LocalDate oneYearAgo = today.minusYears(1);
 
         // 잔디 정보 매핑
-        ResponseEntity<?> grassInfoList = grassService.getGrass(olderDate, today, userSeq);
+        ResponseEntity<?> grassInfoList = grassService.getGrass(oneYearAgo, today, userSeq);
         userMainInfo.getGrassList(grassInfoList.getBody());
 
         /**
