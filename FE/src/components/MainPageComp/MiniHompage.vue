@@ -3,17 +3,22 @@
         <UserTitleComp />
         <div class="right-body">
             <div class="story">
-                <div class="select-story" >
+                <div class="select-story">
                     <!-- {{ this.story }} -->
                     <splide :options="options" class="slider">
                         <splide-slide class="splide-slide" v-for="stories in this.story" :key="stories">
                             <div class="one-slide">
-                                <div :class="`story-element-container isRead_${oneStory.isRead}`" v-for="oneStory in stories" :key="oneStory" @click="showStoryInfo" :id="`${oneStory.boardSeq}`">
-                                    <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리" v-if="oneStory.imgUrl==''" :id="`${oneStory.boardSeq}`"/>
-                                    <img class="story-element" :src="`${oneStory.imgUrl}`" alt="스토리" v-if="oneStory.imgUrl!=''" :id="`${oneStory.boardSeq}`"/>
+                                <div :class="`story-element-container isRead_${oneStory.isRead}`"
+                                    v-for="oneStory in stories" :key="oneStory" @click="showStoryInfo"
+                                    :id="`${oneStory.storySeq}`">
+                                    <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
+                                        v-if="oneStory.imgUrl == ''" :id="`${oneStory.storySeq}`" />
+                                    <img class="story-element" :src="`${oneStory.imgUrl}`" alt="스토리"
+                                        v-if="oneStory.imgUrl != ''" :id="`${oneStory.storySeq}`" />
                                 </div>
-                                <div class="story-element-container" v-for="i in (10-stories.length)" :key="i">
-                                    <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리" hidden/>
+                                <div class="story-element-container" v-for="i in (10 - stories.length)" :key="i">
+                                    <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
+                                        hidden />
                                 </div>
                             </div>
                         </splide-slide>
@@ -31,6 +36,13 @@
             </div>
         </div>
     </div>
+    <Teleport to="body">
+        <modal :show="showModal" @close="showModal = false" :title="title" :author="author" :imgUrl="imgUrl" :boardSeq="boardSeq">
+            <template #header>
+                <h3>custom header</h3>
+            </template>
+        </modal>
+    </Teleport>
 </template>
 
 <script>
@@ -39,9 +51,10 @@ import GrassComp from "@/components/MainPageComp/GrassComp.vue"
 import FamilyComment from "@/components/MainPageComp/FamilyComment.vue"
 import http from '@/api/httpWithAccessToken';
 import httpStory from '@/api/httpStory';
+import Modal from '@/components/MainPageComp/StoryModal.vue'
 
 export default {
-    components: { UserTitleComp, GrassComp, FamilyComment },
+    components: { UserTitleComp, GrassComp, FamilyComment, Modal },
     data() {
         return {
             options: {
@@ -63,12 +76,27 @@ export default {
             newStory: [],
             story: [],
             masterSeq: this.$route.params.userSeq,
+            showModal: false,
+            title: null,
+            author: null,
+            boardSeq: null,
+            imgUrl: null,
         };
     },
     methods: {
-        showStoryInfo: function(e) {
+        showStoryInfo: function (e) {
             e.preventDefault();
-            console.log(e.target.id)
+            // console.log(e.target.id)
+            httpStory.get(`/story/${e.target.id}`).then((result) => {
+                console.log(result.data)
+                this.title=result.data.title;
+                this.author=result.data.nickname;
+                this.boardSeq=result.data.boardSeq;
+                this.imgUrl=result.data.imgUrl;
+            }, (error) => {
+                console.log(error)
+            })
+            this.showModal=true;
         }
     },
     created() {
@@ -83,13 +111,13 @@ export default {
             this.readStory = result.data.readStory;
             this.newStory = result.data.newStory;
             var temp = []
-            for(var i = 0; i < this.readStory.length+this.newStory.length; i++) {
-                if(i%10==9) {
+            for (var i = 0; i < this.readStory.length + this.newStory.length; i++) {
+                if (i % 10 == 9) {
                     this.story.push(temp);
-                    temp=[]
+                    temp = []
                 }
                 else {
-                    if(i < this.newStory.length) {
+                    if (i < this.newStory.length) {
                         temp.push(this.newStory[i])
                     }
                     else {
@@ -146,11 +174,12 @@ export default {
 }
 
 .isRead_0 {
-    border: 1px solid #6A6A6A;
+    border: 2px solid red;
 }
 
 .isRead_1 {
-    border: 1px solid red;
+    border: 2px solid #D9D9D9;
+    filter: grayscale(0.5);
 }
 
 .story-element {
@@ -218,7 +247,4 @@ export default {
     border-radius: 3px;
     border: 1.5px solid #6A6A6A;
 
-}
-
-
-</style>
+}</style>
