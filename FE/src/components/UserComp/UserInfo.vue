@@ -5,8 +5,7 @@
         <div class="right-body">
             <div class="profile-img-container">
                 <img class="profile-img" :src="`${this.userAvatar}`" alt="프로필 사진" />
-                <div class="select-profile-img-btn" for="file">아바타 변경하기
-                    <input type="file" style="display: none;" id="file" />
+                <div class="select-profile-img-btn" for="file" @click="mvModifyAvatar">아바타 변경하기
                 </div>
             </div>
             <ModalView>
@@ -93,6 +92,9 @@ export default {
         }
     },
     methods: {
+        mvModifyAvatar: function() {
+            this.$router.push({name: 'modify-avatar'})
+        },
         logout: function () {
             var tokens = {
                 accessToken: localStorage.getItem('access-token'),
@@ -160,12 +162,17 @@ export default {
             this.userNickname = result.data.data.nickname;
             this.userName = result.data.data.name;
             this.oneLineDesc = result.data.data.comment;
-            console.log(result.data.data)
+            this.phoneNum = result.data.data.phoneNumber;
+            this.userAvatar = result.data.data.avatarUrl;
+            if(this.userName==null) {
+                this.userName="";
+            }
             if(this.oneLineDesc==null) {
                 this.oneLineDesc="";
             }
-            this.phoneNum = result.data.data.phoneNumber;
-            this.userAvatar = result.data.data.avatarUrl;
+            if(this.phoneNum==null) {
+                this.phoneNum="";
+            }
         }, (error)=>{
             console.log(error);
         });

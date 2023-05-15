@@ -13,6 +13,7 @@ import ModifyUser from '@/views/UserView/modify/ModifyUser.vue'
 import Statistic from '@/views/StatisticView.vue'
 import RedirectHandler from '@/views/UserView/login/RedirectHandle.vue'
 import Community from '@/views/CommunityView.vue';
+import ModifyAvatar from '@/components/UserComp/UserAvatarModify.vue'
 
 
 const routes = [
@@ -74,6 +75,11 @@ const routes = [
     path: "/statistic/:userSeq",
     name: "statistic",
     component: Statistic,
+  },
+  {
+    path: "/modify-avatar",
+    name: "modify-avatar",
+    component: ModifyAvatar,
   },
   {
     path: "/redirect-handler",
