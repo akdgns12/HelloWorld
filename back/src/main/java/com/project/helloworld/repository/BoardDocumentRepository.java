@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface BoardDocumentRepository extends ElasticsearchRepository<BoardDocument, Long> {
 
   List<BoardDocument> findByTitleContaining(String keyword);
+  void deleteAllByUserSeq(Long userSeq);
 }

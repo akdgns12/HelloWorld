@@ -1,12 +1,9 @@
 package com.project.helloworld.service;
 
-import com.project.helloworld.domain.Avatar;
-import com.project.helloworld.domain.Bgm;
-import com.project.helloworld.domain.User;
+import com.project.helloworld.domain.*;
 import com.project.helloworld.dto.*;
 import com.project.helloworld.dto.response.BgmList;
-import com.project.helloworld.repository.BgmRepository;
-import com.project.helloworld.repository.UserRepository;
+import com.project.helloworld.repository.*;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
 import com.project.helloworld.security.oauth2.AuthProvider;
 import com.project.helloworld.util.Authority;
@@ -31,7 +28,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -77,6 +73,18 @@ public class UserServiceImpl implements UserService{
     private final S3Uploader s3Uploader;
     private final EntityManager em;
     DefaultMessageService messageService;
+    private final BoardRepository boardRepository;
+    private final GuestBookRepository guestBookRepository;
+    private final GuestbookCommentRepository guestbookCommentRepository;
+    private final FamilyRepository familyRepository;
+    private final GrassRepository grassRepository;
+    private final BookMarkRepository bookMarkRepository;
+    private final StickerRepository stickerRepository;
+    private final CommentRepository commentRepository;
+    private final TodayVisitRepository todayVisitRepository;
+    private final BoardDocumentRepository boardDocumentRepository;
+    private final AvatarRepository avatarRepository;
+    private final AccessoriesRepository accessoriesRepository;
     private String ownerPrefix = "owner:";
     private String todayVisitor = " todayVisitor";
     private String totalVisitor = " totalVisitor";
@@ -314,6 +322,20 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<?> delete(Long userSeq) throws Exception{
         User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
+
+        commentRepository.deleteAllByUserSeq(userSeq);
+        boardDocumentRepository.deleteAllByUserSeq(userSeq);
+        boardRepository.deleteAllByUserSeq(userSeq);
+        guestbookCommentRepository.deleteAllByUserSeq(userSeq);
+        guestBookRepository.deleteAllByUserSeq(userSeq);
+        familyRepository.deleteAllByUserSeq(userSeq);
+        grassRepository.deleteAllByUserSeq(userSeq);
+        bookMarkRepository.deleteAllByUserSeq(userSeq);
+        stickerRepository.deleteAllByUserSeq(userSeq);
+        todayVisitRepository.deleteAllByUserSeq(userSeq);
+        accessoriesRepository.deleteAllByUserSeq(userSeq);
+        avatarRepository.deleteAllByUserSeq(userSeq);
+
         userRepository.deleteByUserSeq(userSeq);
         // 회원탈퇴와 함께 redis에 저장된 RT, Today, Total 모두 만료
         redisTemplate.expire("RT:" + user.getEmail(), 0, TimeUnit.SECONDS);

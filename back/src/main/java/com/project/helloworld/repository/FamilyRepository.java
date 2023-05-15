@@ -18,4 +18,5 @@ public interface FamilyRepository extends JpaRepository<Family,Long> {
     @Query(value="select accept from family where user_seq= :fromSeq and family_user_seq= :toSeq", nativeQuery = true)
     public Integer findByUsersAccept(@Param(value="fromSeq") Long fromSeq, @Param(value="toSeq") Long toSeq);
 
+    void deleteAllByUserSeq(Long userSeq);
 }
