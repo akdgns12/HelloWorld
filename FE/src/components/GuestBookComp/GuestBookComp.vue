@@ -74,7 +74,7 @@
 <script setup>
 import GuestBookCreateComp from '@/components/GuestBookComp/GuestBookCreateComp.vue';
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed, watch, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import InfiniteLoading from 'v3-infinite-loading';
@@ -142,6 +142,7 @@ const getGuestBooks = () => {
         .catch(error => {
             console.error(error);
         })
+    
 };
 
 const loadMore = () => {
@@ -224,11 +225,23 @@ const updateGuestBook = (updateContentValue, guestBookSeq, secret) => {
     })
 }
 
-onMounted(() => {
+// onMounted(() => {
+//     start.value = 0;
+//     guestBooks.value = [];
+//     getGuestBooks();
+// });
+
+onBeforeMount(() => {
     start.value = 0;
     guestBooks.value = [];
     getGuestBooks();
-});
+})
+
+// created(() => {
+//     start.value = 0;
+//     guestBooks.value = [];
+//     getGuestBooks();
+// })
 
 const deleteGuestBook = (guestBookSeq) => {
     axios

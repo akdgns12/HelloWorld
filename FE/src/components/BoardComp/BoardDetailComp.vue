@@ -79,8 +79,8 @@ const formatDate = (dateString) => {
 const getBoardDetail = () => {
     axios.get(`${baseUrl}/board?userSeq=${minihomeMaster.value}&boardSeq=${boardSeq.value}`,{headers})
     .then((response) => {
-        console.log(response.data.body);
-        board.value = response.data.body;
+        console.log(response.data);
+        board.value = response.data;
         content.value = board.value?.content;
         board.value.createTime = formatDate(board.value?.createTime);
     })
@@ -157,19 +157,20 @@ const toggleSticker = (index) => {
 
 const shareBoard = (boardSeq) => {
     const requestDto = {
-        content : "share",
-        isSecret : 0,
-        readSeq : userSeq,
-        writeSeq : boardSeq
-    }
-
+        userSeq : userSeq,
+        boardSeq : boardSeq
+    };
     axios
         .post(`${baseUrl}/bookmark`, requestDto, {headers})
         .then(response => {
             console.log(response.data);
+            if(confirm("북마크로 이동하시겠습니까?")) {
+                router.push(`/board/${userSeq}/boardlist/Share`);
+            }
         })
         .catch(error => {
             console.error(error);
+            alert("북마크에 담지 못했습니다");
         })
 }
 

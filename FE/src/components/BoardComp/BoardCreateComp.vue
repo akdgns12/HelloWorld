@@ -17,7 +17,7 @@
                     id = "mdeditor"
                     v-model="content"
                     locale="en"
-                    :upload-action="handleUpload"
+                    @upload-action="handleUpload"
                 />
             </div>
             <div id="boardfooter">
@@ -41,8 +41,12 @@ const content = ref('');
 const category = ref(0);
 const handleUpload = (file) => {
     console.log(file)
-    return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
-}
+
+    return new Promise((resolve) => {
+        resolve('https://i.postimg.cc/52qCzTVw/pngwing-com.png');
+    })
+   //. return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
+};
 const baseUrl = `https://k8a308.p.ssafy.io/api`;
 const headers = {
     "Content-Type": "application/json;charset=utf-8",
@@ -80,11 +84,11 @@ const createBoard = () => {
             "categorySeq" : category.value,
             "userSeq" : userSeq,
         };
+        console.log(requestDto);
         axios.post(`${baseUrl}/board`, requestDto, {headers})
         .then((response) => {
-            const boardSeq = response.data.body.typeSeq;
-            console.log(boardSeq);
-            alert(`${response.data.body.title} 😎`);
+            const boardSeq = response.data.typeSeq;
+            alert(`${response.data.title} 😎`);
             router.push(`/board/${userSeq}/${boardSeq}`);
         })
         .catch((error) => {

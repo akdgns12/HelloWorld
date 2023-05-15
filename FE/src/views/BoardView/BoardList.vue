@@ -1,10 +1,10 @@
 <template>
     <div id = "line">
         <div id = "Board">
-            <BoardNav @category-selected="selectedCategory"/>
+            <BoardNav @category-selected="selectCategory"/>
             <div>
                 <div id = "MainBoard">
-                    <div v-if="selectedCategory === 5">
+                    <div v-if="selectedCategory === 5 || categoryNameIndex === 5">
                         <BoardShareList />
                     </div>
                     <div v-else>
@@ -22,20 +22,31 @@ import BoardNav from "@/components/BoardComp/BoardNav.vue";
 import BoardListComp from "@/components/BoardComp/BoardListComp.vue";
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue";
 import BoardShareList from "@/components/BoardComp/BoardShareList.vue";
-import { inject } from 'vue';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+
 export default {
     components : { BoardNav, BoardListComp, BoardShareList, CategoryNav},
     setup() {
-        const selectedCategory = inject('seletedCategory');
-        return {
-            selectedCategory,
+
+        const route = useRoute();
+        const categoryName = computed(() => route.params.category);
+        const categoryList = ["CS", "Algorithm", "Project", "Language", "Etc", "Share"];
+        const categoryNameIndex = computed(() => {
+            return categoryList.findIndex((item) => item === categoryName.value);
+        });
+
+        const selectedCategory = ref('all');
+        console.log(selectedCategory);
+        const selectCategory = (category) => {
+            selectedCategory.value = category;
         };
+        return {
+            categoryNameIndex,
+            selectedCategory,
+            selectCategory
+        }
     }
-    // methods : {
-    //     selectCategory(categoryId) {
-    //         this.selectedCategory = categoryId;
-    //     }
-    // }
 };
 </script>
 

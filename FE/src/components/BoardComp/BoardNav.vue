@@ -23,7 +23,7 @@
 
 <script>
 import { router } from '@/router';
-import { ref, provide } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import TodayCnt from "@/components/BasicComp/TodayCnt.vue";
 
@@ -42,23 +42,20 @@ export default {
             {id : 4, name : 'Etc'},
             {id : 5, name : 'Share'},
         ];
+        const emits = getCurrentInstance().emit;
 
-        //const categorySelected = ref(null);
         const handleClick = (category) => {
             selectedCategory.value = category;
-            //categorySelected.value = category;
-            // this.$emit('category-selected', category);
+            emits('category-selected', category);
             if (category !== 'all') {
                 category = categories[category].name;
             }
             router.push(`/board/${userSeq}/boardlist/${category}`);
         };
-        provide('seletedCategory', selectedCategory);
         return {
             selectedCategory,
             categories,
             handleClick,
-            //categorySelected
         };
     }
 }

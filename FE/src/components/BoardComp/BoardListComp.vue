@@ -21,20 +21,15 @@
                     <tbody >
                         <tr v-for="board in visibleBoards" :key="board.boardSeq" style="cursor: pointer;">
                             <td id = "boardNum">{{ board.boardSeq }}</td>
-                            <td id = "boardTitle" @click="goDetail()">{{ board.title }}</td>
+                            <td id = "boardTitle" @click="goDetail(board.boardSeq)">{{ board.title }}</td>
                             <td id = "boardWriter">{{ board.nickname }}</td>
                             <td id = "boardDate">{{ board.createdTime.slice(0,10) }}</td>
                             <td id = "boardCnt">{{ board.cnt }}</td>
                         </tr>
                     </tbody>
                 </table>
-                <div id = "writeboard">
+                <div id = "writeboard" v-if="minihomeMaster === userSeq">
                     <button @click="WriteBoard()">글쓰기</button>
-                </div>
-                <div id = "searchboard">
-                    <p style="font-size:0.9rem;">검색</p>
-                    <input type="search">
-                    <button @click="searchBoard">확인</button>
                 </div>
             </div>
         </div>
@@ -42,42 +37,32 @@
 </template>
 
 <script setup>
-import { useRouter} from "vue-router";
+import { useRoute } from "vue-router";
 import { defineProps, reactive, computed } from 'vue';
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
+import { router } from '@/router';
 
+const route = useRoute();
 const categoryName = ["CS", "Algorithm", "Project", "Language", "Etc"];
 const createUser = `${localStorage.getItem("user-seq")}`;
+const minihomeMaster = computed(() => route.params.userSeq);
+const userSeq = localStorage.getItem('user-seq');
 
-const router = useRouter();
 const WriteBoard = () => {
     router.push({
         path: `/board/${createUser}/create`,
     });
 }
 
-const goDetail = () => {
-    router.push({
-        path:"/board/detail",
-    })
+const goDetail = (boardSeq) => {
+    router.push(`/board/${minihomeMaster.value}/${boardSeq}`)
 }
 
 const props = defineProps({
     category : String,
 });
 const state = reactive ({
-    boards: [
-        {boardSeq : 10, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 9, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 8, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 7, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 6, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 5, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '0', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 4, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '1', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 3, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '2', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 2, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '3', title : '싸이월드 구현하기', cnt : 5},
-        {boardSeq : 1, userSeq : 20, nickname : '김싸피', createdTime : '2023-04-26T14:25:43.511+09:00', categoryId : '4', title : '싸이월드 구현하기', cnt : 5},
-    ]
+    boards: []
 });
 
 const visibleBoards = computed(() => {
@@ -90,6 +75,9 @@ const visibleBoards = computed(() => {
         );
     }
 });
+
+
+
 </script>
 
 <style scoped>
@@ -158,17 +146,4 @@ const visibleBoards = computed(() => {
         cursor: pointer;
     }
 
-    #searchboard {
-        display: flex;
-        width : 65%;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom : 0.5rem;
-    }
-    input {
-        width : 27rem;
-        height: 1.8rem;
-        background-color: #FFF9F9;
-        border : 0;
-    }
 </style>

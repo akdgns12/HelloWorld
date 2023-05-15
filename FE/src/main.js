@@ -11,6 +11,8 @@ import Tabs from 'vue3-tabs';
 import VueYtframe from "vue3-ytframe";
 import VueSSE from 'vue-sse';
 import InfintiedLoading from "v3-infinite-loading";
+import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
+import ContextMenu from '@imengyu/vue3-context-menu'
 
 //createApp(App).mount('#app')
 
@@ -21,6 +23,7 @@ app.use(VueSplide);
 app.use(VueApexCharts);
 app.use(VueYtframe);
 app.use(VueSSE);
+app.use(ContextMenu);
 const timeagoOptions = {
     converterOptions: {
         includeSeconds : true,
