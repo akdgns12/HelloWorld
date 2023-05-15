@@ -44,9 +44,9 @@ public class BoardController {
     }
 
     @GetMapping("/board-list-by-user")
-    public ResponseEntity<Map<String,Object>> getBoardsByUser(@RequestParam Long userSeq, @RequestParam int start, @RequestParam int size ) throws Exception{
+    public ResponseEntity<Map<String,Object>> getBoardsByUser(@RequestParam Long userSeq,@RequestParam(required = false) Integer categorySeq, @RequestParam int start, @RequestParam int size ) throws Exception{
 
-        return ResponseEntity.ok().body(boardService.getBoardsByUser(userSeq,start,size));
+        return ResponseEntity.ok().body(boardService.getBoardsByUser(userSeq,categorySeq,start,size));
     }
     @PatchMapping("")
     public ResponseEntity<MessageResponse> modifyBoard(@RequestBody BoardModifyBody boardModifyBody) throws Exception {
@@ -82,8 +82,8 @@ public class BoardController {
     }
 
     @DeleteMapping("/sticker")
-    public ResponseEntity<MessageResponse> removeSticker(@RequestParam("stickerSeq") Long stickerSeq) throws Exception {
-        return ResponseEntity.ok().body(boardService.removeSticker(stickerSeq));
+    public ResponseEntity<MessageResponse> removeSticker(@RequestBody StickerRequest stickerRequest) throws Exception {
+        return ResponseEntity.ok().body(boardService.removeSticker(stickerRequest));
     }
 
     @GetMapping("/getTopTen")

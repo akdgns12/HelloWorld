@@ -22,7 +22,7 @@ public interface BoardService {
 
     Map<String,Object> getBoardsAll(int start , int size) throws Exception;
 
-    HashMap<String,Object> getBoardsByUser(Long userSeq, int start, int size) throws Exception;
+    HashMap<String,Object> getBoardsByUser(Long userSeq,Integer categorySeq, int start, int size) throws Exception;
     MessageResponse modifyBoard(BoardModifyBody boardModifyBody) throws Exception;
 
     MessageResponse removeBoard(Long boardSeq) throws Exception;
@@ -35,7 +35,7 @@ public interface BoardService {
 
     MessageResponse createSticker(StickerCreateBody stickerCreateBody) throws Exception;
 
-    MessageResponse removeSticker(Long stickerSeq) throws Exception;
+    MessageResponse removeSticker(StickerRequest stickerRequest) throws Exception;
 
     Set<Object> getTop10KeywordsByRedis() throws Exception;
 

@@ -34,7 +34,8 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public ResponseEntity<?> getFamilies(Long userSeq,String status,Boolean hasComment) throws Exception {
         User user = userRepository.findById(userSeq).orElseThrow(()-> new Exception("not exist user : " + userSeq));
-        List<Family> family = user.getFamilies();
+        // 얘를 고쳐야되
+        List<Family> family = familyRepository.findFamiliesByUser(userSeq);
         List<FamilyResponseDto> familyResponseDtos;
         switch(status){
             case "accepted":

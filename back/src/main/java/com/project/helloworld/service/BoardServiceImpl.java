@@ -131,14 +131,27 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public HashMap<String,Object> getBoardsByUser(Long userSeq, int start, int size) throws Exception {
+    public HashMap<String,Object> getBoardsByUser(Long userSeq,Integer categorySeq, int start, int size) throws Exception {
         // 제목, 작성자, 작성일, 조회수 , 카테고리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : "+userSeq));
         PageRequest pageRequest = PageRequest.of(start,size);
-        Board board = Board.builder().user(user).build();
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("user",ExampleMatcher.GenericPropertyMatchers.exact())
-                .withIgnorePaths("boardSeq","title","content","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","categorySeq","comments"
-                        ,"grasses","stickers","bookMarks");
+
+        ExampleMatcher matcher;
+        Board board;
+        if(categorySeq == null){
+            board = Board.builder().user(user).build();
+            matcher = ExampleMatcher.matching().withMatcher("user",ExampleMatcher.GenericPropertyMatchers.exact())
+                    .withMatcher("categorySeq",ExampleMatcher.GenericPropertyMatchers.exact())
+                    .withIgnorePaths("boardSeq","title","content","categorySeq","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
+                            ,"grasses","stickers","bookMarks");
+        }else{
+            board = Board.builder().user(user).categorySeq(categorySeq).build();
+            matcher = ExampleMatcher.matching().withMatcher("user",ExampleMatcher.GenericPropertyMatchers.exact())
+                    .withMatcher("categorySeq",ExampleMatcher.GenericPropertyMatchers.exact())
+                    .withIgnorePaths("boardSeq","title","content","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
+                            ,"grasses","stickers","bookMarks");
+        }
+
         Example<Board> example = Example.of(board, matcher);
         List<BoardsByUserResponse> boardList = boardRepository.findAll(example,pageRequest)
                 .stream().map(x -> new BoardsByUserResponse(x.getBoardSeq(),x.getTitle(),x.getUser().getName(),x.getCategorySeq(),x.getCreateTime(),x.getViewCnt())).collect(Collectors.toList());
@@ -189,9 +202,9 @@ public class BoardServiceImpl implements BoardService{
                 .bookMarks(board.getBookMarks()).build();
         boardRepository.save(newBoard);
 
-        MessageResponse messageResponse = MessageResponse.builder().type(2).typeSeq(newCommentSaved.getCommentSeq())
+        MessageResponse messageResponse = MessageResponse.builder().type(2).typeSeq(newBoard.getBoardSeq())
                 .title(newCommentSaved.getUser().getName()+"님이 댓글을 등록하였습니다.").content("댓글댓글댓글")
-                .receiveUserSeq(newCommentSaved.getUser().getUserSeq()).build();
+                .receiveUserSeq(newBoard.getUser().getUserSeq()).build();
         return messageResponse;
     }
 
@@ -284,8 +297,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public MessageResponse removeSticker(Long stickerSeq) throws Exception {
-        Sticker sticker = stickerRepository.findById(stickerSeq).orElseThrow(() -> new Exception("not exist sticker : "+stickerSeq));
+    public MessageResponse removeSticker(StickerRequest stickerRequest) throws Exception {
+        Sticker sticker = stickerRepository.stickerByBoardAndUser(stickerRequest.getUserSeq(),stickerRequest.getBoardSeq(),stickerRequest.getType());
         Board board = boardRepository.findById(sticker.getBoard().getBoardSeq()).orElseThrow(() -> new Exception("not exist board : "+sticker.getBoard().getBoardSeq()));
 
         stickerRepository.delete(sticker);
