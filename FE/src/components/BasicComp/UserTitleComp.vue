@@ -9,6 +9,9 @@
                 <div v-if="this.isFamily==1 && this.masterSeq!=this.userSeq" class="follow-reply-btn" id="show-modal" @click="showModal2 = true">
                     일촌 수락
                 </div>
+                <div v-if="this.isFamily==2 && this.masterSeq!=this.userSeq" class="follow-reply-btn" id="show-modal" @click="deleteFamily">
+                    일촌 삭제
+                </div>
                 <!-- <div class="bgm-btn">
                     ♬ {{this.songName}} - {{this.singerName}}
                 </div> -->
@@ -67,6 +70,16 @@ export default {
         }, (error) => {
             console.log(error)
         })
+    },
+    methods: {
+        deleteFamily: function() {
+            http.delete(`/family?fromUserSeq=${this.userSeq}&toUserSeq=${this.masterSeq}`).then((result) => {
+                console.log(result)
+                this.$forceUpdate();
+            }, (error) => {
+                console.log(error)
+            })
+        }
     }
 }
 </script>

@@ -131,8 +131,8 @@ export default {
             http.get(
                 `/board/searchByKeyword?keyword=${this.searchKeyword}&page=0`
             ).then((response) => {
-                this.searchResult = response.data.body;
-                console.log(response.data.body);
+                this.searchResult = response.data;
+                console.log(this.searchResult)
             },
                 (error) => {
                     console.log(error);
@@ -141,13 +141,11 @@ export default {
             );
         },
         searchWithKeyword: async function () {
-            console.log(this.searchKeyword);
             this.searchDecisionKeyword = this.searchKeyword;
             http.get(
                 `/board/searchByKeyword?keyword=${this.searchKeyword}&page=0`
             ).then((response) => {
-                this.searchResult = response.data.body;
-                console.log(response.data.body);
+                this.searchResult = response.data;
             },
                 (error) => {
                     console.log(error);
@@ -162,8 +160,9 @@ export default {
     },
     created() {
         http.get(`/board/getTopTen`).then(
-            ({ data }) => {
-                this.topKeywords = data.body;
+            (result) => {
+                // console.log(result.data)
+                this.topKeywords = result.data;
                 console.log(this.topKeywords);
             },
             (error) => {

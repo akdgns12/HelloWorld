@@ -3,10 +3,10 @@
     <div class="comments">
         <div class="comment" v-for="comment in this.familyComment" :key="comment.id">
             <div class="comment-author">
-                {{comment.relationName}}
+                {{ comment.familyNickName }} ({{ comment.relationName }})
             </div>
             <div class="comment-content">
-                {{comment.relationComment}}
+                {{ comment.relationComment }}
             </div>
             <div class="comment-created-time">
                 2023.04.13&nbsp;&nbsp;&nbsp;&nbsp;14:10
@@ -14,11 +14,19 @@
         </div>
     </div>
     <div class="comment-input-container">
-        <div class="author-name">{{this.nickname}} (나)</div>
-        <input class="comment-input" placeholder="일촌평을 등록해보세요" v-model="postMsg"/>
-        <div class="comment-post-btn" @click="postFamilyComment">
+        <div class="author-name">{{ this.nickname }} (나)</div>
+        <input class="comment-input" placeholder="자기 자신은 일촌평을 등록할 수 없어요" v-model="postMsg" v-if="this.userSeq==this.masterSeq" disabled/>
+        <button class="comment-post-btn" disabled v-if="this.userSeq==this.masterSeq">
             등록
-        </div>
+        </button>
+        <input class="comment-input" placeholder="일촌평을 등록해보세요" v-model="postMsg" v-if="isFamily==2 && this.userSeq!=this.masterSeq"/>
+        <button class="comment-post-btn" @click="postFamilyComment" v-if="isFamily==2 && this.userSeq!=this.masterSeq">
+            등록
+        </button>
+        <input class="comment-input" placeholder="우선, 일촌을 맺어주세요" v-model="postMsg" disabled v-if="isFamily!=2 && this.userSeq!=this.masterSeq"/>
+        <button class="comment-post-btn" disabled v-if="isFamily!=2 && this.userSeq!=this.masterSeq">
+            등록
+        </button>
     </div>
 </template>
 
@@ -32,9 +40,10 @@ export default {
             nickname: null,
             postMsg: null,
             familyComment: [],
+            isFamily: null,
         }
     },
-    created() {
+    mounted() {
         // http.get(`/family?userSeq=${this.userSeq}&status=all&hasComment=false`).then((result) => {
         //     console.log(result.data.body);
         // }, (error) => {
@@ -42,26 +51,30 @@ export default {
         // });
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
             // console.log(result.data.data);
+            console.log(result.data.data)
             this.familyComment = result.data.data.familyResponseDtos;
-        }, (error)=>{
+            this.isFamily = result.data.data.isFamily
+        }, (error) => {
             console.log(error);
         });
         http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
             // console.log(result.data.data);
             this.nickname = result.data.data.nickname
-        }, (error)=>{
+        }, (error) => {
             console.log(error);
         });
     },
     methods: {
-        postFamilyComment: function() {
+        postFamilyComment: function () {
             var info = {
-                user_seq: "",
-                content: this.postMsg,
+                comment: this.postMsg,
+                fromUserSeq: this.userSeq,
+                toUserSeq: this.masterSeq,
             };
             console.log(info);
             http.put(`/family/comment`, JSON.stringify(info)).then((result) => {
                 console.log(result);
+                window.location.reload()
             }, (error) => {
                 console.log(error);
             });
@@ -77,18 +90,22 @@ export default {
 }
 
 .comments::-webkit-scrollbar {
-    width: 8px;  /* 스크롤바의 너비 */
+    width: 8px;
+    /* 스크롤바의 너비 */
 }
 
 .comments::-webkit-scrollbar-thumb {
-    height: 20%; /* 스크롤바의 길이 */
-    background: #6A6A6A; /* 스크롤바의 색상 */
-    
+    height: 20%;
+    /* 스크롤바의 길이 */
+    background: #6A6A6A;
+    /* 스크롤바의 색상 */
+
     border-radius: 10px;
 }
 
 .comments::-webkit-scrollbar-track {
-    background: #D9D9D9;  /*스크롤바 뒷 배경 색상*/
+    background: #D9D9D9;
+    /*스크롤바 뒷 배경 색상*/
 }
 
 .family-comment-title {

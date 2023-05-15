@@ -7,7 +7,7 @@
             <router-link to="/"><img class="person-img" src="../../../assets/image/Person.png" alt="logo" /></router-link>
         </div>
     </div>
-    <div class="my-character-container" id="my-character-container" style="position: relative;">
+    <div class="my-character-container" id="my-character-container" style="position: relative; background-color: transparent;">
         <img class="my-character-img" src="../../../assets/image/BasicAvatar.png" alt="내 아바타" />
         <div class="my-character-img" style="position: absolute; top: -2.5px; left: 0px; z-index: 100;">
             <img class="my-character-hair" id="hair" :src="hairSrc" v-if="hairSrc" />
@@ -690,7 +690,7 @@ export default {
             var userAvatar;
             var file;
             var realFile;
-            await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
+            await html2canvas(document.querySelector("#my-character-container"), {backgroundColor: null}).then(function (canvas) {
                 userAvatar = canvas.toDataURL("image/png");
                 var blobBin = atob(userAvatar.split(',')[1]);	// base64 데이터 디코딩
                 var array = [];

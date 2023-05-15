@@ -11,7 +11,7 @@
     </div>
     <router-view></router-view>
     <VueYtframe :video-id="`${this.videoId}`" height=0 width=0
-      :player-vars="{ loop: 1, autoplay: 1, listType: 'user_uploads' }" v-if="this.userSeq != null" />
+      :player-vars="{ loop: 0, autoplay: 1, listType: 'user_uploads' }" v-if="this.userSeq != null" />
   </div>
 </template>
 
