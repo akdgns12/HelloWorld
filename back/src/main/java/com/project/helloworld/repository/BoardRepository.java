@@ -14,5 +14,4 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     // 그냥 배열로 보내줄 수도
     @Query(value="SELECT category_seq categorySeq,COUNT(category_seq) count FROM board WHERE user_seq=:userSeq GROUP BY category_seq;", nativeQuery = true)
     List<BoardCategoryCountResponse> boardCategoryCount(@Param("userSeq") Long userSeq);
-    void deleteAllByUser(User user);
 }

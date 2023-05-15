@@ -15,6 +15,4 @@ public interface GuestBookRepository extends JpaRepository<Guestbook,Long> {
 
     @Query(value = "select * from guestbook where user_seq = :userSeq",nativeQuery = true)
     List<Guestbook> findByUserSeq(@Param("userSeq") Long userSeq, Pageable pageable);
-
-    void deleteAllByUser(User user);
 }

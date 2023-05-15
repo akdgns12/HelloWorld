@@ -75,15 +75,15 @@ public class User extends BaseTimeEntity implements UserDetails {
   private String backgroundUrl;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<Board> boards = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<Guestbook> guestbooks = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<Family> families = new ArrayList<>();
 
   @OneToOne(fetch = FetchType.LAZY)
@@ -92,23 +92,23 @@ public class User extends BaseTimeEntity implements UserDetails {
   private Avatar avatar;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<Grass> grasses = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<Badge> badges = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<BookMark> bookMarks = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<Sticker> stickers = new ArrayList<>();
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<TodayVisit> todayVisits = new ArrayList<>();
 
   /**

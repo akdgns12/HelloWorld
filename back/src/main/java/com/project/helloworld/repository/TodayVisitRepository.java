@@ -15,5 +15,4 @@ public interface TodayVisitRepository extends JpaRepository<TodayVisit, Long> {
     Long findTodayCntByDateAndUserSeq(@Param("date") LocalDate date, @Param("userSeq") Long userSeq);
     @Query("SELECT m.date, m.todayCnt FROM TodayVisit m WHERE m.user.userSeq = :userSeq AND m.date BETWEEN :startDate AND :endDate")
     List<Object []> findByTodayCntListByUserSeq(@Param("userSeq") Long userSeq, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-    void deleteAllByUser(User user);
 }

@@ -73,16 +73,8 @@ public class UserServiceImpl implements UserService{
     private final S3Uploader s3Uploader;
     private final EntityManager em;
     DefaultMessageService messageService;
-    private final BoardRepository boardRepository;
-    private final GuestBookRepository guestBookRepository;
-    private final GuestbookCommentRepository guestbookCommentRepository;
     private final FamilyRepository familyRepository;
-    private final GrassRepository grassRepository;
-    private final BookMarkRepository bookMarkRepository;
     private final StickerRepository stickerRepository;
-    private final CommentRepository commentRepository;
-    private final TodayVisitRepository todayVisitRepository;
-    private final AvatarRepository avatarRepository;
     private String ownerPrefix = "owner:";
     private String todayVisitor = " todayVisitor";
     private String totalVisitor = " totalVisitor";
@@ -335,17 +327,7 @@ public class UserServiceImpl implements UserService{
     public ResponseEntity<?> delete(Long userSeq) throws Exception{
         User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
 
-        commentRepository.deleteAllByUser(user);
-        boardRepository.deleteAllByUser(user);
-        guestbookCommentRepository.deleteAllByUserSeq(userSeq);
-        guestBookRepository.deleteAllByUser(user);
-        familyRepository.deleteAllByUser(user);
-        grassRepository.deleteAllByUser(user);
-        bookMarkRepository.deleteAllByUser(user);
-        stickerRepository.deleteAllByUser(user);
-        todayVisitRepository.deleteAllByUser(user);
-        avatarRepository.deleteAllByUser(user);
-
+        familyRepository.deleteByUserSeq(userSeq);
         userRepository.deleteByUserSeq(userSeq);
         // 회원탈퇴와 함께 redis에 저장된 RT, Today, Total 모두 만료
         redisTemplate.expire("RT:" + user.getEmail(), 0, TimeUnit.SECONDS);
