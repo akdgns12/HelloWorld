@@ -29,7 +29,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final EntityManager em;
-    @Value("${spring.mail.username}")
+    @Value("${spring.baseAvatar}")
     private String baseAvatar;
 
     // OAuth2UserRequest에 있는 accessToken으로 유저정보 가져오기
