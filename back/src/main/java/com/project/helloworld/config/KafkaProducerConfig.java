@@ -1,6 +1,7 @@
 package com.project.helloworld.config;
 
 import com.project.helloworld.dto.StoryDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@Slf4j
 public class KafkaProducerConfig {
     @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServers;
@@ -28,7 +30,7 @@ public class KafkaProducerConfig {
             configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
             return new DefaultKafkaProducerFactory<>(configs);
         } catch (Exception e) {
-            System.out.println("Failed to create Kafka ProducerFactory" + e.getMessage());
+            log.error("Failed to create Kafka ProducerFactory {} ",e.getMessage());
             throw new RuntimeException(e);
         }
     }

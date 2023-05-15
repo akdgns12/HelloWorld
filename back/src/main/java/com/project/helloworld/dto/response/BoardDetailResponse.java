@@ -10,6 +10,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
+@Builder
 public class BoardDetailResponse {
 
     private Long boardSeq;
@@ -32,6 +33,22 @@ public class BoardDetailResponse {
     private LocalDateTime createTime;
 
     private List<Comment> comments;
+
+    @Builder
+    public BoardDetailResponse(Long boardSeq, String writer, Long userSeq, String title, Integer categorySeq, String imgUrl, String content, Boolean[] sticker, LocalDateTime createTime, List<Comment> comments) {
+        this.boardSeq = boardSeq;
+        this.writer = writer;
+        this.userSeq = userSeq;
+        this.title = title;
+        this.categorySeq = categorySeq;
+        this.imgUrl = imgUrl;
+        this.content = content;
+        this.sticker = sticker;
+        this.createTime = createTime;
+        this.comments = comments;
+    }
+
+
 
     @NoArgsConstructor
     @Data
@@ -56,18 +73,4 @@ public class BoardDetailResponse {
         }
     }
 
-    @Builder
-    public BoardDetailResponse(Long boardSeq, String writer,Long userSeq, String title, String imgUrl, String content, Integer categorySeq,
-                               Boolean[] sticker, LocalDateTime createTime, List<Comment> comments) {
-        this.boardSeq = boardSeq;
-        this.writer = writer;
-        this.userSeq = userSeq;
-        this.title = title;
-        this.imgUrl = imgUrl;
-        this.content = content;
-        this.categorySeq = categorySeq;
-        this.sticker = sticker;
-        this.createTime = createTime;
-        this.comments = comments;
-    }
 }

@@ -53,16 +53,3 @@ public class RedisRepositoryConfig {
     }
 
 }
-//    @Bean
-//    public RedisTemplate<String, Object> redisTemplate() {
-//        RedisTemplate<String, Object> template = new RedisTemplate<>();
-//        template.setConnectionFactory(redisConnectionFactory());
-//        return template;
-//    }
-
-// RedisConnectionFactory 인터페이스를 통해 LettuceConnectionFactory 생성해 반환
-//    @Bean
-//    public RedisConnectionFactory redisConnectionFactory(){
-//        return new LettuceConnectionFactory(redisProperties.getHost(),
-//                redisProperties.getPort());
-//    }

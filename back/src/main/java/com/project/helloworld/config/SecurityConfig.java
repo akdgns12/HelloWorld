@@ -122,7 +122,6 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // configuration.setAllowedOriginPatterns();
         configuration.addAllowedOrigin("http://localhost:3000");
         // 추후 도메인 주소에 맞게 변경필요
         configuration.addAllowedOrigin("http://localhost:8081");
@@ -131,7 +130,6 @@ public class SecurityConfig {
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
-        //configuration.setExposedHeaders(""); //
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

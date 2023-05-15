@@ -14,6 +14,7 @@ import com.project.helloworld.repository.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@Builder
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
 
