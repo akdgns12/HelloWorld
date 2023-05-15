@@ -29,7 +29,7 @@ public class AuthController {
 
     @ApiOperation(value = "소셜 로그인")
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Validated @RequestBody UserRequestDto.OauthSignIn oauthSignIn) {
+    public ResponseEntity<AuthResponse> authenticateUser(@Validated @RequestBody UserRequestDto.OauthSignIn oauthSignIn) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

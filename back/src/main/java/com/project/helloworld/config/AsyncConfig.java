@@ -13,6 +13,7 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class AsyncConfig extends AsyncConfigurerSupport {
 
+    @Override
     @Bean
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

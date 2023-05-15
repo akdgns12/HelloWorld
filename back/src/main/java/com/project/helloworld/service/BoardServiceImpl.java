@@ -60,7 +60,7 @@ public class BoardServiceImpl implements BoardService{
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public ResponseEntity<?> createBoard(BoardCreateBody boardCreateBody) throws Exception {
+    public MessageResponse createBoard(BoardCreateBody boardCreateBody) throws Exception {
         User user = userRepository.findById(boardCreateBody.getUserSeq()).orElseThrow(()-> new Exception("not exist user : "+boardCreateBody.getUserSeq()));
         Board board = Board.builder().title(boardCreateBody.getTitle()).content(boardCreateBody.getContent())
                 .categorySeq(boardCreateBody.getCategorySeq()).imgUrl("").likeCnt(0).helpfulCnt(0).commentCnt(0).understandCnt(0)
@@ -88,11 +88,11 @@ public class BoardServiceImpl implements BoardService{
                 .title(newBoardSaved.getUser().getName()+"님이 게시글을 작성하였습니다.")
                 .content("게시글게시글").receiveUserSeq(newBoardSaved.getUser().getUserSeq()).build();
         storyService.sendStory(newBoardSaved, user.getFamilies().stream().map(x->x.getFamilyUser().getUserSeq()).collect(Collectors.toList()));
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
     @Override
-    public ResponseEntity<?> getBoard(Long userSeq,Long boardSeq) throws Exception {
+    public BoardDetailResponse getBoard(Long userSeq,Long boardSeq) throws Exception {
         Board board = boardRepository.findById(boardSeq).orElseThrow(() -> new Exception("not exist board : "+boardSeq));
         Boolean[] sticker = {false,false,false};
         for(int i=0; i<board.getStickers().size(); i++){
@@ -108,11 +108,11 @@ public class BoardServiceImpl implements BoardService{
                 .sticker(sticker).imgUrl(board.getImgUrl())
                 .createTime(board.getCreateTime()).comments(comments)
                 .build();
-        return ResponseEntity.ok().body(boardDetailResponse);
+        return boardDetailResponse;
     }
 
     @Override
-    public ResponseEntity<?> getBoardsAll(int start,int size) throws Exception {
+    public Map<String,Object> getBoardsAll(int start,int size) throws Exception {
         // Page 객체로    https://wonit.tistory.com/483 참고
         // 제목 ,작성자, 내용, 썸네일, 스티커 개수, 댓글 개수
         PageRequest pageRequest = PageRequest.of(start,size);
@@ -124,11 +124,11 @@ public class BoardServiceImpl implements BoardService{
         HashMap<String,Object> boardInformation = new HashMap<>();
         boardInformation.put("boardList",boardList);
         boardInformation.put("boardCount",boardListCount);
-        return ResponseEntity.ok().body(boardInformation);
+        return boardInformation;
     }
 
     @Override
-    public ResponseEntity<?> getBoardsByUser(Long userSeq, int start, int size) throws Exception {
+    public HashMap<String,Object> getBoardsByUser(Long userSeq, int start, int size) throws Exception {
         // 제목, 작성자, 작성일, 조회수 , 카테고리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : "+userSeq));
         PageRequest pageRequest = PageRequest.of(start,size);
@@ -143,11 +143,11 @@ public class BoardServiceImpl implements BoardService{
         HashMap<String,Object> boardInformation = new HashMap<>();
         boardInformation.put("boardList",boardList);
         boardInformation.put("boardCount",boardListCount);
-        return ResponseEntity.ok().body(boardInformation);
+        return boardInformation;
     }
 
     @Override
-    public ResponseEntity<?> modifyBoard(BoardModifyBody boardModifyBody) throws Exception {
+    public MessageResponse modifyBoard(BoardModifyBody boardModifyBody) throws Exception {
         Board board = boardRepository.findById(boardModifyBody.getBoardSeq()).orElseThrow(()-> new Exception("not exist board : "+boardModifyBody.getBoardSeq()));
         Board newBoard = Board.builder().boardSeq(board.getBoardSeq()).title(boardModifyBody.getTitle()).content(boardModifyBody.getContent())
                 .imgUrl(board.getImgUrl()).likeCnt(board.getLikeCnt()).helpfulCnt(board.getHelpfulCnt())
@@ -156,20 +156,20 @@ public class BoardServiceImpl implements BoardService{
         MessageResponse messageResponse = MessageResponse.builder().type(-1).typeSeq(newBoardSaved.getBoardSeq())
                 .title(newBoardSaved.getUser().getName()+"님이 게시글을 수정했습니다.")
                 .content("게시글 수정").build();
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
     @Override
-    public ResponseEntity<?> removeBoard(Long boardSeq) throws Exception {
+    public MessageResponse removeBoard(Long boardSeq) throws Exception {
         Board board = boardRepository.findById(boardSeq).orElseThrow(() -> new Exception("not exist board : "+boardSeq));
         log.info(board.toString());
         boardRepository.delete(board);
         MessageResponse messageResponse = MessageResponse.builder().type(-1).title("게시글이 삭제되었습니다.").build();
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
     @Override
-    public ResponseEntity<?> createComment(CommentCreateBody commentCreateBody) throws Exception {
+    public MessageResponse createComment(CommentCreateBody commentCreateBody) throws Exception {
         Board board = boardRepository.findById(commentCreateBody.getBoardSeq()).orElseThrow(()-> new Exception("not exist board : "+commentCreateBody.getBoardSeq()));
         User user = userRepository.findById(commentCreateBody.getUserSeq()).orElseThrow(() -> new Exception("not exist user : "+commentCreateBody.getUserSeq()));
         Comment comment = Comment.builder().user(user).content(commentCreateBody.getContent()).board(board).build();
@@ -189,11 +189,11 @@ public class BoardServiceImpl implements BoardService{
         MessageResponse messageResponse = MessageResponse.builder().type(2).typeSeq(newCommentSaved.getCommentSeq())
                 .title(newCommentSaved.getUser().getName()+"님이 댓글을 등록하였습니다.").content("댓글댓글댓글")
                 .receiveUserSeq(newCommentSaved.getUser().getUserSeq()).build();
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
     @Override
-    public ResponseEntity<?> modifyComment(CommentModifyBody commentModifyBody) throws Exception {
+    public MessageResponse modifyComment(CommentModifyBody commentModifyBody) throws Exception {
         Comment comment = commentRepository.findById(commentModifyBody.getCommentSeq()).orElseThrow(() -> new Exception("not exist comment : "+commentModifyBody.getCommentSeq()));
 
         Comment newComment = Comment.builder().commentSeq(comment.getCommentSeq()).user(comment.getUser())
@@ -202,11 +202,11 @@ public class BoardServiceImpl implements BoardService{
         MessageResponse messageResponse = MessageResponse.builder().type(-1).typeSeq(newCommentSaved.getCommentSeq())
                 .title(newCommentSaved.getUser().getName()+"님이 댓글을 수정하셨습니다.").content("댓글댓글댓글수정")
                 .build();
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
     @Override
-    public ResponseEntity<?> removeComment(Long commentSeq) throws Exception {
+    public MessageResponse removeComment(Long commentSeq) throws Exception {
         Comment comment = commentRepository.findById(commentSeq).orElseThrow(() -> new Exception("not exist comment : "+commentSeq));
         Board board = boardRepository.findById(comment.getBoard().getBoardSeq()).orElseThrow(() -> new Exception("not exist board  : "+comment.getBoard().getBoardSeq()));
 
@@ -222,11 +222,11 @@ public class BoardServiceImpl implements BoardService{
                 .bookMarks(board.getBookMarks()).build();
         boardRepository.save(newBoard);
         MessageResponse messageResponse = MessageResponse.builder().type(-1).title("댓글 삭제 되었습니다.").build();
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
     @Override
-    public ResponseEntity<?> createSticker(StickerCreateBody stickerCreateBody) throws Exception {
+    public MessageResponse createSticker(StickerCreateBody stickerCreateBody) throws Exception {
         User user = userRepository.findById(stickerCreateBody.getUserSeq()).orElseThrow(()-> new Exception("not exist user : "+stickerCreateBody.getUserSeq()));
         Board board = boardRepository.findById(stickerCreateBody.getBoardSeq()).orElseThrow(()-> new Exception("not exist board : "+stickerCreateBody.getBoardSeq()));
         Sticker sticker = Sticker.builder().user(user).board(board).type(stickerCreateBody.getType()).build();
@@ -277,11 +277,11 @@ public class BoardServiceImpl implements BoardService{
                 .title(newStickerSaved.getUser().getName()+"님이 반응을 했습니다.").content("좋아요")
                 .receiveUserSeq(newStickerSaved.getUser().getUserSeq())
                 .build();
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
     @Override
-    public ResponseEntity<?> removeSticker(Long stickerSeq) throws Exception {
+    public MessageResponse removeSticker(Long stickerSeq) throws Exception {
         Sticker sticker = stickerRepository.findById(stickerSeq).orElseThrow(() -> new Exception("not exist sticker : "+stickerSeq));
         Board board = boardRepository.findById(sticker.getBoard().getBoardSeq()).orElseThrow(() -> new Exception("not exist board : "+sticker.getBoard().getBoardSeq()));
 
@@ -327,12 +327,12 @@ public class BoardServiceImpl implements BoardService{
                 break;
         }
         MessageResponse messageResponse = MessageResponse.builder().type(-1).content("반응이 삭제되었습니다.").build();
-        return ResponseEntity.ok().body(messageResponse);
+        return messageResponse;
     }
 
 
     @Cacheable(value = "searchResults", key = "#searchTerm")
-    public ResponseEntity<?> searchByKeyword(String searchTerm, int page) {
+    public List<BoardDocument> searchByKeyword(String searchTerm, int page) {
         // 로그 메시지 추가
         //log.info("Searching by searchTerm: {}", searchTerm);
 
@@ -356,7 +356,7 @@ public class BoardServiceImpl implements BoardService{
             .map(hit -> hit.getContent())
             .collect(Collectors.toList());
 
-        return ResponseEntity.ok().body(results);
+        return results;
     }
 
     @Override
@@ -365,9 +365,9 @@ public class BoardServiceImpl implements BoardService{
         return categoryList;
     }
 
-    public ResponseEntity<Set<Object>> getTop10KeywordsByRedis() {
+    public Set<Object> getTop10KeywordsByRedis() {
 
         Set<Object> topKeywords = redisTemplate.opsForZSet().reverseRange("search_ranking", 0, 9);
-        return ResponseEntity.ok(topKeywords);
+        return topKeywords;
     }
 }
