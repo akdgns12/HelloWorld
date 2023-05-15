@@ -46,6 +46,7 @@ public class UserResponseDto {
         private String backgroundUrl;
         private String bgmUrl;
         private int isFamily;
+        private List<BgmList> bgmList;
     }
 
     @Getter

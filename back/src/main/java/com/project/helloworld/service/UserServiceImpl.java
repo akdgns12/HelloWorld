@@ -82,9 +82,7 @@ public class UserServiceImpl implements UserService{
     private final StickerRepository stickerRepository;
     private final CommentRepository commentRepository;
     private final TodayVisitRepository todayVisitRepository;
-    private final BoardDocumentRepository boardDocumentRepository;
     private final AvatarRepository avatarRepository;
-    private final AccessoriesRepository accessoriesRepository;
     private String ownerPrefix = "owner:";
     private String todayVisitor = " todayVisitor";
     private String totalVisitor = " totalVisitor";
@@ -194,6 +192,20 @@ public class UserServiceImpl implements UserService{
                 .providerId(user.getProviderId())
                 .authProvider(user.getAuthProvider())
                 .build();
+
+        List<Bgm> bgms = bgmRepository.findAll();
+        Collections.shuffle(bgms);
+
+        List<BgmList> bgmList = bgms.stream().map(bgm -> {
+            BgmList list = new BgmList();
+            list.setBgmSeq(bgm.getBgmSeq());
+            list.setVideoId(bgm.getVideoId());
+            list.setTitle(bgm.getTitle());
+            list.setArtist(bgm.getArtist());
+            return list;
+        }).collect(Collectors.toList());
+
+        userInfo.setBgmList(bgmList);
 
         String userEmail = SecurityUtil.getCurrentUserEmail();
         user = userRepository.findByEmail(userEmail).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
@@ -323,18 +335,16 @@ public class UserServiceImpl implements UserService{
     public ResponseEntity<?> delete(Long userSeq) throws Exception{
         User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
 
-        commentRepository.deleteAllByUserSeq(userSeq);
-        boardDocumentRepository.deleteAllByUserSeq(userSeq);
-        boardRepository.deleteAllByUserSeq(userSeq);
+        commentRepository.deleteAllByUser(user);
+        boardRepository.deleteAllByUser(user);
         guestbookCommentRepository.deleteAllByUserSeq(userSeq);
-        guestBookRepository.deleteAllByUserSeq(userSeq);
-        familyRepository.deleteAllByUserSeq(userSeq);
-        grassRepository.deleteAllByUserSeq(userSeq);
-        bookMarkRepository.deleteAllByUserSeq(userSeq);
-        stickerRepository.deleteAllByUserSeq(userSeq);
-        todayVisitRepository.deleteAllByUserSeq(userSeq);
-        accessoriesRepository.deleteAllByUserSeq(userSeq);
-        avatarRepository.deleteAllByUserSeq(userSeq);
+        guestBookRepository.deleteAllByUser(user);
+        familyRepository.deleteAllByUser(user);
+        grassRepository.deleteAllByUser(user);
+        bookMarkRepository.deleteAllByUser(user);
+        stickerRepository.deleteAllByUser(user);
+        todayVisitRepository.deleteAllByUser(user);
+        avatarRepository.deleteAllByUser(user);
 
         userRepository.deleteByUserSeq(userSeq);
         // 회원탈퇴와 함께 redis에 저장된 RT, Today, Total 모두 만료
