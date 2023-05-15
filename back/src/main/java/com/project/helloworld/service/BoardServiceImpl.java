@@ -74,7 +74,8 @@ public class BoardServiceImpl implements BoardService{
         BoardDocument boardDocument = BoardDocument.builder()
             .id(newBoardSaved.getBoardSeq().toString())
             .title(newBoardSaved.getTitle())
-            .content(content.substring(0, endIndex))
+            //.content(content.substring(0, endIndex))
+            .content(newBoardSaved.getContent())
             .imageUrl(newBoardSaved.getImgUrl())
             .likeCnt(newBoardSaved.getLikeCnt())
             .boardSeq(newBoardSaved.getBoardSeq())
@@ -355,7 +356,19 @@ public class BoardServiceImpl implements BoardService{
             searchQuery, BoardDocument.class);
 
         List<BoardDocument> results = searchHits.getSearchHits().stream()
-            .map(hit -> hit.getContent())
+            .map(hit -> {
+                BoardDocument doc = hit.getContent();
+                String content = doc.getContent();
+
+                // 30자 이상이면 30자로 자름
+                if (content.length() > 30) {
+                    content = content.substring(0, 30);
+                }
+
+                // 내용을 업데이트하고 다시 반환
+                doc.setContent(content);
+                return doc;
+            })
             .collect(Collectors.toList());
 
         return results;
