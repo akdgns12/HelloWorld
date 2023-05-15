@@ -3,7 +3,7 @@
         <UserTitleComp />
         <div class="right-body">
             <div class="story">
-                <div class="select-story">
+                <div class="select-story" >
                     <!-- {{ this.story }} -->
                     <splide :options="options" class="slider">
                         <splide-slide class="splide-slide" v-for="stories in this.story" :key="stories">
