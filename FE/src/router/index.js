@@ -60,6 +60,7 @@ const routes = [
   },
   {
     path : '/board/:userSeq/:boardSeq',
+    name: 'board-detail',
     component : BoardDetailView,
   },
   {
