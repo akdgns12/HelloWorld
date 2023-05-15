@@ -37,7 +37,7 @@
         </div>
     </div>
     <Teleport to="body">
-        <modal :show="showModal" @close="showModal = false" :title="title" :author="author" :imgUrl="imgUrl" :boardSeq="boardSeq">
+        <modal :show="showModal" @close="showModal = false" :title="`${this.title}`" :author="`${this.author}`" :imgUrl="`${this.imgUrl}`" :boardSeq="`${this.boardSeq}`" :authorSeq="`${this.authorSeq}`">
             <template #header>
                 <h3>custom header</h3>
             </template>
@@ -79,24 +79,27 @@ export default {
             showModal: false,
             title: null,
             author: null,
+            authorSeq: null,
             boardSeq: null,
             imgUrl: null,
         };
     },
     methods: {
-        showStoryInfo: function (e) {
+        showStoryInfo: async function (e) {
             e.preventDefault();
             // console.log(e.target.id)
             httpStory.get(`/story/${e.target.id}`).then((result) => {
                 console.log(result.data)
                 this.title=result.data.title;
                 this.author=result.data.nickname;
-                this.boardSeq=result.data.boardSeq;
+                this.boardSeq=result.data.boardSeq.toString();
+                this.authorSeq=result.data.writerSeq.toString();
                 this.imgUrl=result.data.imgUrl;
+                this.showModal=true;
             }, (error) => {
                 console.log(error)
             })
-            this.showModal=true;
+            
         }
     },
     created() {

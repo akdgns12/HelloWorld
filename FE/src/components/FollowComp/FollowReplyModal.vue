@@ -29,7 +29,7 @@ export default {
     methods: {
         acceptFamily: function() {
             http.put(`/family?fromUserSeq=${this.masterSeq}&toUserSeq=${this.userSeq}`).then(() => {
-                // console.log(result);
+                
                 this.$emit('close')
             }, (error) => {
                 console.log(error);
