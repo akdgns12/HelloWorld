@@ -15,17 +15,17 @@ public class BookMarkController {
     private final BookMarkService bookMarkService;
 
     @PostMapping("")
-    ResponseEntity<?> createBookMark(@RequestBody BookMarkDto.RequestDto requestDto) throws Exception{
+    public ResponseEntity<?> createBookMark(@RequestBody BookMarkDto.RequestDto requestDto) throws Exception{
         log.info("boardSeq: {} ", requestDto.getBoardSeq());
         return bookMarkService.createBookMark(requestDto);
     }
 
     @GetMapping("")
-    ResponseEntity<?> getBookmarks(@RequestParam Long userSeq) throws Exception {
+    public ResponseEntity<?> getBookmarks(@RequestParam("user") Long userSeq) throws Exception {
         return bookMarkService.getBookMarks(userSeq);
     }
     @DeleteMapping("")
-    ResponseEntity<?> removeBookMark(@RequestParam Long bookMarkSeq) throws Exception{
+    public ResponseEntity<?> removeBookMark(@RequestParam Long bookMarkSeq) throws Exception{
         return bookMarkService.removeBookMark(bookMarkSeq);
     }
 }

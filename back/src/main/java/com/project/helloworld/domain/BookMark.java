@@ -20,7 +20,8 @@ public class BookMark extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookmark_seq")
     private Long bookmarkSeq;
-
+    @Column(name= "content")
+    private String content;
     @JoinColumn(name = "user_seq", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

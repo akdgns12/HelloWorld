@@ -37,6 +37,7 @@ public class BookMarkServiceImpl implements BookMarkService{
 
         BookMark bookMark = BookMark.builder()
                 .user(user)
+                .content(board.getContent().substring(0,Math.min(30,board.getContent().length())))
                 .board(board)
                 .build();
         BookMark newBookMark = bookMarkRepository.save(bookMark);
