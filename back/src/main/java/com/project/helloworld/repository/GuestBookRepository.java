@@ -13,6 +13,6 @@ import java.util.List;
 
 public interface GuestBookRepository extends JpaRepository<Guestbook,Long> {
 
-    @Query(value = "select * from guestbook where user_seq = :userSeq",nativeQuery = true)
+    @Query(value = "select * from guestbook where user_seq = :userSeq order by create_time desc",nativeQuery = true)
     List<Guestbook> findByUserSeq(@Param("userSeq") Long userSeq, Pageable pageable);
 }
