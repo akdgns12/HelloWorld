@@ -116,9 +116,9 @@ export default {
         }
     },
     created() {
-        var userSeq = localStorage.getItem('user-seq');
-        http.get(`/user/mainpage/${userSeq}`).then((result) => {
-            this.avatraUrl = result.data.data.avatarUrl;
+        // var userSeq = localStorage.getItem('user-seq');
+        http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
+            // this.avatarUrl = result.data.data.avatarUrl;
             console.log(result.data.data)
             if(result.data.data.likeCnt+result.data.data.understandCnt+result.data.data.helpfulCnt > 10 || result.data.data.today > 10) {
                 this.roomNum = 2;
