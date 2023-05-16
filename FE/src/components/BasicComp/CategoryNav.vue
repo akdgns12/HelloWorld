@@ -19,6 +19,9 @@
             <li class="navitem">
                 <router-link :to="`/my-family/${this.masterSeq}`" class="nav-link">일촌 목록</router-link>
             </li>
+            <li class="navitem">
+                <router-link :to="`/user-search/${this.masterSeq}`" class="nav-link">유저 검색</router-link>
+            </li>
         </ul>
     </nav>
 </template>
