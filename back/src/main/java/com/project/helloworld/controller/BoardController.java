@@ -8,16 +8,18 @@ import com.project.helloworld.dto.response.BoardCategoryCountResponse;
 import com.project.helloworld.dto.response.BoardDetailResponse;
 import com.project.helloworld.elkStack.domain.BoardDocument;
 import com.project.helloworld.service.BoardService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import java.io.IOException;
+import java.util.*;
+
+import com.project.helloworld.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     private final BoardService boardService;
+
+    private final S3Uploader s3Uploader;
     @PostMapping("")
     public ResponseEntity<MessageResponse> createBoard(@Validated  @RequestBody BoardCreateBody boardCreateBody) throws Exception {
 
@@ -97,10 +101,10 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.searchByKeyword(keyword, page));
     }
 
-    // Category 실험
-    @GetMapping("/aaa")
-    public ResponseEntity<List<BoardCategoryCountResponse>> getCategoryByUser(@RequestParam Long userSeq ) throws Exception {
-        return ResponseEntity.ok().body(boardService.getCategoryByUser(userSeq));
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file) throws IOException {
+        return  ResponseEntity.ok().body(s3Uploader.uploadFiles(file,"article"));
     }
 
 }
