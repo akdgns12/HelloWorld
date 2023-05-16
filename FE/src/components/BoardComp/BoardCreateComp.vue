@@ -41,11 +41,19 @@ const content = ref('');
 const category = ref(0);
 const handleUpload = (file) => {
     console.log(file)
+    return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('file', file);
 
-    return new Promise((resolve) => {
-        resolve('https://i.postimg.cc/52qCzTVw/pngwing-com.png');
-    })
-   //. return 'https://i.postimg.cc/52qCzTVw/pngwing-com.png'
+        axios.post(``, formData)
+            .then(response => {
+                const fileUrl = response.data.fileUrl;
+                resolve(fileUrl);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
 };
 const baseUrl = `https://k8a308.p.ssafy.io/api`;
 const headers = {
@@ -102,9 +110,9 @@ onMounted(() => {
     if (boardSeq.value) {
         axios.get(`${baseUrl}/board?userSeq=${localStorage.getItem("user-seq")}&boardSeq=${boardSeq.value}`, {headers})
         .then(response => {
-            title.value = response.data.body.title;
-            content.value = response.data.body.content;
-            category.value = response.data.body.categorySeq;
+            title.value = response.data.title;
+            content.value = response.data.content;
+            category.value = response.data.categorySeq;
         })
         .catch((error) => {
             console.error(error);

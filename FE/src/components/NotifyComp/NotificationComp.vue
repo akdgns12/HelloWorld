@@ -63,7 +63,7 @@
 <script>
 import axios from 'axios';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-
+import { router } from '@/router';
 
 const baseURL = `https://k8a308.p.ssafy.io/notify/`;
 const notifyURL = baseURL + `${localStorage.getItem("user-seq")}`;
@@ -121,6 +121,12 @@ export default {
                         return notification;
                     })
                     console.log(updateNotification);
+                    if (type === 2) {
+                        router.push(`/board/${localStorage.getItem('user-seq')}/${typeSeq}`);
+                    }
+                    else if (type === 0) {
+                        router.push(`/mainpage/${localStorage.getItem('user-seq')}`);
+                    }
                 })
                 .catch(error => {
                     console.error(error);

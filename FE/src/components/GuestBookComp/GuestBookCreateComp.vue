@@ -14,7 +14,7 @@
 <script setup>
 import axios from 'axios';
 import { useRoute } from 'vue-router';
-import { ref, getCurrentInstance, computed } from 'vue';
+import { ref, getCurrentInstance, computed, onMounted } from 'vue';
 
 const emit = getCurrentInstance().emit;
 const newGuestBookContent = ref('');
@@ -26,10 +26,25 @@ const headers = {
 const route = useRoute();
 const minihomeMaster = computed(() => route.params.userSeq);
 const userSeq = ref(`${localStorage.getItem("user-seq")}`);
-
+const userInfo = ref({});
 const showCreateComp = computed(() => {
     return minihomeMaster.value !== userSeq.value;
 })
+
+const getUserInfo = () => {
+    const header = {
+        Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+    };
+
+    axios.get(`${baseURL}/user/uesrInfo/${userSeq.value}`, {header})
+        .then(response => {
+            userInfo.value = response.data;
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}
 
 const addGuestBook = () => {
     const requestDto = {
@@ -49,6 +64,10 @@ const addGuestBook = () => {
             alert('방명록 작성에 실패했습니다!');
         })
 }
+
+onMounted(() => {
+    getUserInfo();
+});
 </script>
 
 <style scoped>

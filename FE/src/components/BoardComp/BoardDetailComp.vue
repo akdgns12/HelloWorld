@@ -11,7 +11,7 @@
                 <div v-html="changeMarkdown" class="content"></div>
                 <div class="boardFooter">
                     <div class="checkSticker" v-if="board && board.sticker">
-                        <div class="sticker">
+                        <div class="sticker" v-if="board.userSeq !== userSeq">
                             <img src="@/assets/boardIcon/heart.png" alt="heart" v-if="board.sticker[0] === true" @click="toggleSticker(0)">
                             <img src="@/assets/boardIcon/heart_no.png" alt="heart_no" v-else @click="toggleSticker(0)">
                             <img src="@/assets/boardIcon/help.png" alt="plus" v-if="board.sticker[1] === true" @click="toggleSticker(1)">
