@@ -10,10 +10,11 @@ export default {
     },
     methods: {
         mvArticle: function() {
-            this.$router.push({name: 'board-detail', params: {
-                userSeq: this.authorSeq,
-                boardSeq: this.boardSeq,
-            }})
+            this.$router.push(`/board/${this.authorSeq}/${this.boardSeq}`);
+            // this.$router.push({name: 'board-detail', params: {
+            //     userSeq: this.authorSeq,
+            //     boardSeq: this.boardSeq,
+            // }})
         }
     }
 }

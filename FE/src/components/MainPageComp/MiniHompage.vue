@@ -6,9 +6,9 @@
                 <div class="select-story">
                     <!-- {{ this.story }} -->
                     <splide :options="options" class="slider">
-                        <splide-slide class="splide-slide" v-for="stories in this.story" :key="stories">
-                            <div class="one-slide">
-                                <div :class="`story-element-container isRead_${oneStory.isRead}`"
+                        <splide-slide class="splide-slide">
+                            <div class="one-slide" v-for="stories in this.story" :key="stories">
+                                <div :class="`story-element-container-${oneStory.storySeq} isRead_${oneStory.isRead} story-element-container`"
                                     v-for="oneStory in stories" :key="oneStory" @click="showStoryInfo"
                                     :id="`${oneStory.storySeq}`">
                                     <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
@@ -32,12 +32,16 @@
                 <FamilyComment />
             </div>
             <div class="room-container">
-                <img class="room" src="@/assets/image/MiniRoom.png" />
+                <img class="room" src="@/assets/image/room/room1.png" v-if="this.roomNum==1"/>
+                <img class="room" src="@/assets/image/room/room2.png" v-if="this.roomNum==2"/>
+                <img class="room" src="@/assets/image/room/room3.png" v-if="this.roomNum==3"/>
+                <img class="room" src="@/assets/image/room/room4.png" v-if="this.roomNum==4"/>
             </div>
         </div>
     </div>
     <Teleport to="body">
-        <modal :show="showModal" @close="showModal = false" :title="`${this.title}`" :author="`${this.author}`" :imgUrl="`${this.imgUrl}`" :boardSeq="`${this.boardSeq}`" :authorSeq="`${this.authorSeq}`">
+        <modal :show="showModal" @close="showModal = false" :title="`${this.title}`" :author="`${this.author}`"
+            :imgUrl="`${this.imgUrl}`" :boardSeq="`${this.boardSeq}`" :authorSeq="`${this.authorSeq}`">
             <template #header>
                 <h3>custom header</h3>
             </template>
@@ -76,43 +80,63 @@ export default {
             newStory: [],
             story: [],
             masterSeq: this.$route.params.userSeq,
+            userSeq: localStorage.getItem('user-seq'),
             showModal: false,
             title: null,
             author: null,
             authorSeq: null,
             boardSeq: null,
             imgUrl: null,
+            roomNum: 1,
         };
     },
     methods: {
         showStoryInfo: async function (e) {
             e.preventDefault();
             // console.log(e.target.id)
+            console.log(`story-element-container-${e.target.id}`)
+            var temp = e.target.closest('div');
+            if (temp.classList.contains('isRead_0')) {
+                temp.classList.remove(`isRead_0`);
+                temp.classList.add(`isRead_1`);
+            }
+            console.log(document.getElementsByClassName(`story-element-container-${e.target.id}`));
             httpStory.get(`/story/${e.target.id}`).then((result) => {
                 console.log(result.data)
-                this.title=result.data.title;
-                this.author=result.data.nickname;
-                this.boardSeq=result.data.boardSeq.toString();
-                this.authorSeq=result.data.writerSeq.toString();
-                this.imgUrl=result.data.imgUrl;
-                this.showModal=true;
+                this.title = result.data.title;
+                this.author = result.data.nickname;
+                this.boardSeq = result.data.boardSeq.toString();
+                this.authorSeq = result.data.writerSeq.toString();
+                this.imgUrl = result.data.imgUrl;
+                this.showModal = true;
             }, (error) => {
                 console.log(error)
             })
-            
+
         }
     },
     created() {
         var userSeq = localStorage.getItem('user-seq');
         http.get(`/user/mainpage/${userSeq}`).then((result) => {
             this.avatraUrl = result.data.data.avatarUrl;
+            console.log(result.data.data)
+            if(result.data.data.likeCnt+result.data.data.understandCnt+result.data.data.helpfulCnt > 10 || result.data.data.today > 10) {
+                this.roomNum = 2;
+            }
+            else if (result.data.data.likeCnt+result.data.data.understandCnt+result.data.data.helpfulCnt > 100 || result.data.data.today > 100) {
+                this.roomNum = 3;
+            }
+            else if (result.data.data.likeCnt+result.data.data.understandCnt+result.data.data.helpfulCnt > 500 || result.data.data.today > 500) {
+                this.roomNum = 4;
+            }
         }, (error) => {
             console.log(error);
         });
-        httpStory.get(`/story/all/${this.masterSeq}`).then((result) => {
-            console.log(result.data)
+        httpStory.get(`/story/all/${this.userSeq}`).then((result) => {
             this.readStory = result.data.readStory;
             this.newStory = result.data.newStory;
+            console.log(this.newStory)
+            console.log(this.readStory)
             var temp = []
             for (var i = 0; i < this.readStory.length + this.newStory.length; i++) {
                 if (i % 10 == 9) {
@@ -124,11 +148,12 @@ export default {
                         temp.push(this.newStory[i])
                     }
                     else {
-                        temp.push(this.readStory[i])
+                        temp.push(this.readStory[i - this.newStory.length])
                     }
                 }
             }
             this.story.push(temp);
+            console.log(this.story)
         }, (error) => {
             console.log(error);
         })
@@ -196,10 +221,11 @@ export default {
 .grass-container {
     width: 95%;
     height: 20%;
-    border: 1px solid #6A6A6A;
+    border: 1px solid #F6F6F6;
     border-radius: 5px;
     margin: 0 auto;
     margin-top: 5px;
+    background-color: #F7F7F7;
 }
 
 .grass {
@@ -250,4 +276,5 @@ export default {
     border-radius: 3px;
     border: 1.5px solid #6A6A6A;
 
-}</style>
+}
+</style>

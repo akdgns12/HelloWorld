@@ -39,18 +39,19 @@
             <div style="display: flex; margin-left: 3%; height: 25px; margin-top: 5px;">
                 <div style="font-weight: 600; font-size: 20px; line-height: 25px;">' {{ searchDecisionKeyword }} ' </div>
                 <div style="font-size: 15px; line-height: 25px;">&nbsp;&nbsp;에 대한 검색 결과입니다</div>
+                {{ search_result?._value }}
             </div>
             <div class="whole-alticles" style="display: flex;">
-                <div class="articles" v-for="(result, i) in searchResult" :key="i">
+                <div class="articles" id = "guestBookList" v-for="result in search_result?.value" :key=result?.boardSeq>
                     <div class="article-container" :id="result.id" @click="printBoardSeq">
                         <div class="represent-img-container" :id="result.id">
                             <img class="represent-img" v-if="result.imageUrl == ''"
-                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" :id="result.id" alt="대표이미지" />
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" :id="result?.id" alt="대표이미지" />
                                 <img class="represent-img" v-if="result.imageUrl != ''"
                                 src="result.imageUrl" :id="result.id" alt="대표이미지" />
                         </div>
                         <div class="title">
-                            {{ result.title }}
+                            {{ result?.title }}
                         </div>
                         <div class="author">
                             by {{ result.author }}
@@ -71,56 +72,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="articles" v-for="i in 4-searchResult.length" :key="i">
+                <InfiniteLoading
+                    @infinite="loadMore"
+                    target="#guestBookList"
+                >
+                    <template #no-more>
+                        <div class="infinite-end">
+                            방명록을 모두 불러왔습니다!
+                        </div>
+                    </template>
+                </InfiniteLoading>
+                <!-- <div class="articles" v-for="i in 4-searchResult.length" :key="i">
                     <div class="article-container" hidden>
-                        <!-- <div class="represent-img-container">
-                            <img class="represent-img"
-                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" />
-                        </div>
-                        <div class="title">
-                            {{ result.title }}
-                        </div>
-                        <div class="author">
-                            by {{ result.author }}
-                        </div>
-                        <div class="content">
-                            {{ result.content }}
-                        </div>
-                        <hr width="92%">
-                        <div class="sticker-and-comment">
-                            <div class="heart-icon-container">
-                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" />
-                            </div>
-                            <div class="heart-cnt">
-                                {{ result.likeCnt }}
-                            </div>
-                            <div class="comment-icon-container">
-                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" />
-                            </div>
-                            <div class="comment-cnt">12</div>
-                        </div> -->
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script >
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
 import http from "@/api/httpWithAccessToken"
 // import { isProxy, toRaw } from 'vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, } from 'vue3-carousel'
+import InfiniteLoading from 'v3-infinite-loading';
+import { ref,  onBeforeMount } from 'vue';
+
+const start = ref(0);
+const search_result = ref([]);
+const busy = ref(false);
+onBeforeMount(() => {
+    start.value = 0;
+    search_result.value = [];
+})
 
 export default {
-    components: { UserTitleComp, Carousel, Slide, },
+    components: { UserTitleComp, Carousel, Slide, InfiniteLoading },
     data() {
         return {
             topKeywords: [],
             searchKeyword: null,
             searchResult: [],
             searchDecisionKeyword: null,
+            toShow: [[], [], []]
         }
     },
     methods: {
@@ -128,28 +124,44 @@ export default {
             e.preventDefault();
             this.searchKeyword = e.target.id;
             this.searchDecisionKeyword = e.target.id;
+            
             http.get(
-                `/board/searchByKeyword?keyword=${this.searchKeyword}&page=0`
+                `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${start.value}`
             ).then((response) => {
                 this.searchResult = response.data;
-                console.log(this.searchResult)
+                search_result.value = response.data;
+                console.log(search_result)
             },
                 (error) => {
                     console.log(error);
-                    alert("검색 실패!");
                 }
             );
         },
         searchWithKeyword: async function () {
             this.searchDecisionKeyword = this.searchKeyword;
             http.get(
-                `/board/searchByKeyword?keyword=${this.searchKeyword}&page=0`
+                `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${start.value}`
             ).then((response) => {
                 this.searchResult = response.data;
+                search_result.value = response.data;
+                console.log(search_result)
             },
                 (error) => {
                     console.log(error);
-                    alert("검색 실패!");
+                }
+            );
+        },
+        loadMore: function() {
+            http.get(
+                `/board/searchByKeyword?keyword=${this.searchKeyword}&${start.value}`
+            ).then((response) => {
+                search_result.value = search_result.value.concat(response.data);  // 기존 데이터에 새로운 데이터 추가
+                busy.value = false;  // 데이터 로딩 상태 해제
+                start.value += 1;  // 다음 데이터를 가져오기 위해 start 값 증가
+            },
+                (error) => {
+                    console.log(error);
+                    busy.value = false;
                 }
             );
         },

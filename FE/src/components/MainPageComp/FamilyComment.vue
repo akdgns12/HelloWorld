@@ -8,9 +8,6 @@
             <div class="comment-content">
                 {{ comment.relationComment }}
             </div>
-            <div class="comment-created-time">
-                2023.04.13&nbsp;&nbsp;&nbsp;&nbsp;14:10
-            </div>
         </div>
     </div>
     <div class="comment-input-container">

@@ -591,7 +591,6 @@
         </div>
     </div>
     <div class="button-group">
-        <button class="cancel-btn" @click="this.$router.push({ path: '/join' })" hidden>이전</button>
         <button class="next-btn" @click="join">완료</button>
     </div>
 </template>
@@ -700,17 +699,9 @@ export default {
                 file = new Blob([new Uint8Array(array)], {type: 'image/png'});
             });
             var formData = new FormData();
-            formData.append("email", this.email);
-            formData.append("name", this.userName);
-            formData.append("nickname", this.nickname);
-            formData.append("password", this.password);
-            formData.append("phoneNumber", this.phonenum);
-            realFile = new File([file], `${this.email}_avatar.png`);
+            realFile = new File([file], `${localStorage.getItem('user-seq')}_avatar.png`);
             formData.append("img", realFile);
 
-            for (var key of formData.keys()) {
-                console.log(key);
-            }
             // console.log(user);
             // http.post(`/user/signUp`, JSON.stringify(user)).then(
             //     (response)=> {
@@ -721,14 +712,24 @@ export default {
             //         console.log(error);
             //     }
             // )
-            axios.post(`https://k8a308.p.ssafy.io/api/user/signUp`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
+            axios.put(`https://k8a308.p.ssafy.io/api/user/modify-avatar/${localStorage.getItem('user-seq')}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data',
+                Authorization:  `Bearer ${localStorage.getItem('access-token')}`},
             }).then((response) => {
                 console.log(response);
-                this.$router.location({ name: 'login' });
+                var link = document.location.href;
+                if (link.includes('localhost')) {
+                    // window.location.replace(`http://localhost:8081/mainpage/${localStorage.getItem('user-seq')}`);
+                    this.$router.push({name: 'mainpage', params: { userSeq: localStorage.getItem('user-seq') }})
+                }
+                else {
+                    // window.location.replace(`https://k8a308.p.ssafy.io/mainpage/${localStorage.getItem('user-seq')}`);
+                    this.$router.push({name: 'mainpage', params: { userSeq: localStorage.getItem('user-seq') }})
+                }
             }, (error) => {
                 console.log(error);
             });
+            
         }
     },
 }

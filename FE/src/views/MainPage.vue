@@ -18,36 +18,36 @@
 import UserProfile from "@/components/MainPageComp/UserProfile.vue"
 import MiniHomepage from "@/components/MainPageComp/MiniHompage.vue"
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue"
-import http from "@/api/httpWithAccessToken";
+// import http from "@/api/httpWithAccessToken";
 // import axios from "axios"
 import 'url-search-params-polyfill';
 
 export default {
     components: { UserProfile, MiniHomepage, CategoryNav, },
-    methods: {
-        getUser: function () {
-            // var userAvatar;
-            // await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
-            //     userAvatar = canvas.toDataURL();
-            // });
-            http.get(`/user/userInfo/${localStorage.getItem("user-seq")}`).then(
-                (response) => {
-                    this.userName = response.data.data.nickname;
-                    localStorage.setItem("user-nickname", response.data.data.nickname);
-                    // console.log(response.data.data.nickname);
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
-        },
-    },
-    data() {
-        return {
-            userSeq: null,
-            userName: null,
-        }
-    },
+    // methods: {
+    //     getUser: function () {
+    //         // var userAvatar;
+    //         // await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
+    //         //     userAvatar = canvas.toDataURL();
+    //         // });
+    //         http.get(`/user/userInfo/${localStorage.getItem("user-seq")}`).then(
+    //             (response) => {
+    //                 this.userName = response.data.data.nickname;
+    //                 localStorage.setItem("user-nickname", response.data.data.nickname);
+    //                 // console.log(response.data.data.nickname);
+    //             },
+    //             (error) => {
+    //                 console.log(error);
+    //             }
+    //         )
+    //     },
+    // },
+    // data() {
+    //     return {
+    //         userSeq: null,
+    //         userName: null,
+    //     }
+    // },
     // getGrass: async function () {
     //     http.get(`/grass?startDate=2022-01-01&endDate=2023-05-01`).then(
     //         (response)=> {

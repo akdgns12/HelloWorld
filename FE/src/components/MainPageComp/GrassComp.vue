@@ -2,7 +2,7 @@
     <svg class="grass" style="direction: ltr; margin-top: 4px;">
         <rect width="12" height="12" v-for="(grass, i) in grassInfo" :key="i" :x=17*parseInt(i/7) :y=15*(i%7) rx="2.5"
             stroke-width="0.5" fill="#82ACC1" :fill-opacity=0.25*(grass.boardList.length) 
-            stroke="#D9D9D9" class="grass-element" :id=grass.grassDate @click="dateDetail" :boardList=grass.boardList
+            stroke="#6A6A6A" class="grass-element" :id=grass.grassDate @click="dateDetail" :boardList=grass.boardList
             v-tippy="{ content: `${grass.grassDate} 게시글 ${grass.boardList.length}개 작성`, arrow: false, placement: 'right' }">
         </rect>
     </svg>
@@ -31,7 +31,7 @@ export default {
     },
     created() {
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
-            this.grassInfo = result.data.data.grassList;
+            this.grassInfo = result.data.data.grassList.slice(2,);
         }, (error)=>{
             console.log(error);
         });
@@ -51,7 +51,7 @@ export default {
 
 <style scoped>
 .grass {
-    width: 98%;
+    width: 97.5%;
     height: 100%;
     margin: 0 auto;
 }
