@@ -9,17 +9,18 @@
                         <splide-slide class="splide-slide" v-for="stories in this.story" :key="stories">
                             <div class="one-slide" v-for="oneStory in stories" :key="oneStory">
                                 <div :class="`story-element-container-${oneStory.storySeq} isRead_${oneStory.isRead} story-element-container`"
-                                     @click="showStoryInfo"
-                                    :id="`${oneStory.storySeq}`">
+                                    @click="showStoryInfo" :id="`${oneStory.storySeq}`">
                                     <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
                                         v-if="oneStory.imgUrl == ''" :id="`${oneStory.storySeq}`" />
                                     <img class="story-element" :src="`${oneStory.imgUrl}`" alt="스토리"
                                         v-if="oneStory.imgUrl != ''" :id="`${oneStory.storySeq}`" />
                                 </div>
-                                <div class="story-element-container" v-for="i in (10 - stories.length)" :key="i">
+                                <!-- <div class="story-element-container" v-for="i in (10 - stories.length)" :key="i">
                                     <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
                                         hidden />
-                                </div>
+                                </div> -->
+                            </div>
+                            <div class="one-slide" v-for="i in (10 - stories.length)" :key="i" hidden>
                             </div>
                         </splide-slide>
                     </splide>
@@ -32,10 +33,10 @@
                 <FamilyComment />
             </div>
             <div class="room-container">
-                <img class="room" src="@/assets/image/room/room1.png" v-if="this.roomNum==1"/>
-                <img class="room" src="@/assets/image/room/room2.png" v-if="this.roomNum==2"/>
-                <img class="room" src="@/assets/image/room/room3.png" v-if="this.roomNum==3"/>
-                <img class="room" src="@/assets/image/room/room4.png" v-if="this.roomNum==4"/>
+                <img class="room" src="@/assets/image/room/room1.png" v-if="this.roomNum == 1" />
+                <img class="room" src="@/assets/image/room/room2.png" v-if="this.roomNum == 2" />
+                <img class="room" src="@/assets/image/room/room3.png" v-if="this.roomNum == 3" />
+                <img class="room" src="@/assets/image/room/room4.png" v-if="this.roomNum == 4" />
             </div>
         </div>
     </div>
@@ -120,13 +121,13 @@ export default {
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
             // this.avatarUrl = result.data.data.avatarUrl;
             console.log(result.data.data)
-            if(result.data.data.likeCnt+result.data.data.understandCnt+result.data.data.helpfulCnt > 10 || result.data.data.today > 10) {
+            if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 10 || result.data.data.today > 10) {
                 this.roomNum = 2;
             }
-            else if (result.data.data.likeCnt+result.data.data.understandCnt+result.data.data.helpfulCnt > 100 || result.data.data.today > 100) {
+            else if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 100 || result.data.data.today > 100) {
                 this.roomNum = 3;
             }
-            else if (result.data.data.likeCnt+result.data.data.understandCnt+result.data.data.helpfulCnt > 500 || result.data.data.today > 500) {
+            else if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 500 || result.data.data.today > 500) {
                 this.roomNum = 4;
             }
         }, (error) => {
