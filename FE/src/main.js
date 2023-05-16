@@ -13,7 +13,8 @@ import VueSSE from 'vue-sse';
 import InfintiedLoading from "v3-infinite-loading";
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
-
+import PerfectScrollbar from 'vue3-perfect-scrollbar'
+import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
 //createApp(App).mount('#app')
 
 const app = createApp(App);
@@ -23,6 +24,7 @@ app.use(VueSplide);
 app.use(VueApexCharts);
 app.use(VueYtframe);
 app.use(VueSSE);
+app.use(PerfectScrollbar);
 app.use(ContextMenu);
 const timeagoOptions = {
     converterOptions: {

@@ -2,7 +2,7 @@
     <div id = "Wrapper">
         <UserTitleComp />
         <div id = guestBookWrapper>
-            <div id = "guestBook">
+                <perfect-scrollbar>
                 <GuestBookCreateComp v-if="showCreateComp" @addGuestBook="addGuestBook"/>
                 <div id = "guestBookList" v-for="guestBook in guestBooks" :key=guestBook?.guestBookSeq>
                     <div id="guestBookOne" v-if="showSecretGuestBook(guestBook?.guestBookUserSeq, guestBook?.secret)">
@@ -63,7 +63,7 @@
                 <img src="@/assets/noneGB.png" alt="" class="noneImg">
                 <div class="noneText">방명록○l 없습LI⊂ト!</div>                
             </div>
-            </div>
+        </perfect-scrollbar>
         </div>
     </div>
 </template>
@@ -76,6 +76,7 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import InfiniteLoading from 'v3-infinite-loading';
 import { router } from '@/router';
+import {PerfectScrollbar} from 'vue3-perfect-scrollbar';
 
 const headers = {
     "Content-Type" : "application/json;charset=utf-8",
@@ -308,6 +309,7 @@ const goMainpage = (guestBookUserSeq) => {
 
 </script>
 
+<style src="vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css"/>
 <style scoped>
 
     #guestBookWrapper {
@@ -320,12 +322,11 @@ const goMainpage = (guestBookUserSeq) => {
         justify-content: center;
         align-items: center;
     }
-    #guestBook {
+    .ps {
         height : 65vh;
-        width : 90vw;
+        width : 90%;
         padding : 0 2vw 0 2vw;
         margin : 0 1vw 0 1vw;
-        overflow-y : scroll;
     }
     /* 방명록 하나 CSS */
     #guestBookOne {
