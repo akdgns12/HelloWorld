@@ -40,7 +40,7 @@
                                 <div class="commentOne">
                                     <p style="color : #4689aa; font-weight : bold;">{{ guestBook?.commentDto.nickname }}</p>
                                     <p style="padding : 0 1rem;">{{ guestBook?.commentDto.content }}</p>
-                                    <button class="commentDelete" @click="removeGuestBookComment(guestBook?.guestBookSeq,guestBook?.commentDto.guestBookCommentSeq)">삭제</button>
+                                    <button v-if="guestBook?.commentDto.userSeq === userSeq" class="commentDelete" @click="removeGuestBookComment(guestBook?.guestBookSeq,guestBook?.commentDto.guestBookCommentSeq)">삭제</button>
                                 </div>
                             </div>
                             <div id = "guestBookComment"> 
