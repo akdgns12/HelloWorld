@@ -1,6 +1,6 @@
 <template>
     <svg class="grass" style="direction: ltr; margin-top: 4px;">
-        <rect width="12" height="12" v-for="(grass, i) in grassInfo" :key="i" :x=17*parseInt(i/7) :y=15*(i%7) rx="2.5"
+        <rect width="1.5%" height="10.15%" v-for="(grass, i) in grassInfo" :key="i" :x=17*parseInt(i/7) :y=15*(i%7) rx="2.5"
             stroke-width="0.5" fill="#82ACC1" :fill-opacity=0.25*(grass.boardList.length) 
             stroke="#6A6A6A" class="grass-element" :id=grass.grassDate @click="dateDetail" :boardList=grass.boardList
             v-tippy="{ content: `${grass.grassDate} 게시글 ${grass.boardList.length}개 작성`, arrow: false, placement: 'right' }">

@@ -6,10 +6,10 @@
                 <div class="select-story">
                     <!-- {{ this.story }} -->
                     <splide :options="options" class="slider">
-                        <splide-slide class="splide-slide">
-                            <div class="one-slide" v-for="stories in this.story" :key="stories">
+                        <splide-slide class="splide-slide" v-for="stories in this.story" :key="stories">
+                            <div class="one-slide" v-for="oneStory in stories" :key="oneStory">
                                 <div :class="`story-element-container-${oneStory.storySeq} isRead_${oneStory.isRead} story-element-container`"
-                                    v-for="oneStory in stories" :key="oneStory" @click="showStoryInfo"
+                                     @click="showStoryInfo"
                                     :id="`${oneStory.storySeq}`">
                                     <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
                                         v-if="oneStory.imgUrl == ''" :id="`${oneStory.storySeq}`" />
@@ -67,7 +67,7 @@ export default {
                 perPage: 1,
                 autoplay: false,
                 pauseOnHover: false,
-                arrows: true,
+                arrows: false,
                 dots: false,
                 animatedDots: false,
                 speed: 800,
@@ -144,7 +144,6 @@ export default {
                 else {
                     if (i < this.newStory.length) {
                         temp.push(this.newStory[i])
-                        console.log(temp)
                     }
                     else {
                         temp.push(this.readStory[i - this.newStory.length])
@@ -184,9 +183,8 @@ export default {
 }
 
 .one-slide {
-    margin: 0 auto;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     margin-top: 3vh;
     width: 90%;
     overflow: hidden;
@@ -196,7 +194,6 @@ export default {
     width: 65px;
     height: 65px;
     border-radius: 100%;
-    margin: 0 8px;
     overflow: hidden;
 }
 

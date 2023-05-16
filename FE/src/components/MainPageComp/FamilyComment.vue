@@ -2,7 +2,7 @@
     <div class="family-comment-title">일촌평</div>
     <div class="comments">
         <div class="comment" v-for="comment in this.familyComment" :key="comment.id">
-            <div class="comment-author">
+            <div class="comment-author" @click="mvOther" :id="comment.userSeq">
                 {{ comment.familyNickName }} ({{ comment.relationName }})
             </div>
             <div class="comment-content">
@@ -75,6 +75,17 @@ export default {
             }, (error) => {
                 console.log(error);
             });
+        },
+        mvOther: function(e) {
+            e.preventDefault();
+            console.log(e.target.id);
+            var link = document.location.href;
+            if (link.includes('localhost')) {
+                window.location.replace(`http://localhost:8081/mainpage/${e.target.id}`);
+            }
+            else {
+                window.location.replace(`https://k8a308.p.ssafy.io/mainpage/${e.target.id}`);
+            }
         }
     }
 }

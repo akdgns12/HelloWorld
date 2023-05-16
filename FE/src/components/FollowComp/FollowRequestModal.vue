@@ -1,5 +1,6 @@
 <script>
 import http from '@/api/httpWithAccessToken';
+import axios from 'axios';
 export default {
     props: {
         show: Boolean
@@ -25,25 +26,43 @@ export default {
                 "toRelationName": this.toRelationName,
                 "toUserSeq": this.masterSeq,
             };
+            var notifyInfo = {
+                "type": 3,
+                "typeSeq": 3,
+                "title": "일촌 신청이 왔어요",
+                "content": "일촌 신청이 왔어요",
+                "receiveUserSeq": this.masterSeq,
+            }
             http.post(`/family`, JSON.stringify(info)).then((response) => {
                 console.log(response);
                 this.$emit('close');
+
             }, (error) => {
                 console.log(error);
                 alert("일촌 요청 실패!")
             });
+            const headers = {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+            };
+            axios.post(`https://k8a308.p.ssafy.io/notify/`, JSON.stringify(notifyInfo), {headers});
+            // httpNotify.post(``, JSON.stringify(notifyInfo)).then((response) => {
+            //     console.log(response)
+            // }, (error) => {
+            //     console.log(error);
+            // });
         }
     },
     created() {
         http.get(`/user/userInfo/${this.userSeq}`).then((result) => {
             this.myNickname = result.data.data.nickname;
-        }, (error)=>{
+        }, (error) => {
             console.log(error);
         });
         http.get(`/user/userInfo/${this.masterSeq}`).then((result) => {
             this.otherNickname = result.data.data.nickname;
             this.userAvatar = result.data.data.avatarUrl;
-        }, (error)=>{
+        }, (error) => {
             console.log(error);
         });
     }
@@ -62,21 +81,21 @@ export default {
                         <div class="profile-img-container">
                             <img class="profile-img" :src="`${this.userAvatar}`" />
                         </div>
-                        <div class="user-name">{{this.otherNickname}}</div>
+                        <div class="user-name">{{ this.otherNickname }}</div>
                         <div class="request-msg">&nbsp;님께 일촌을 신청합니다</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">{{this.otherNickname}}</div>
+                        <div class="user-name">{{ this.otherNickname }}</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">{{this.myNickname}} (나)</div>
+                        <div class="user-name">{{ this.myNickname }} (나)</div>
                         <div class="request-msg">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.toRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">{{this.myNickname}} (나)</div>
+                        <div class="user-name">{{ this.myNickname }} (나)</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">{{this.otherNickname}}</div>
+                        <div class="user-name">{{ this.otherNickname }}</div>
                         <div class="request-msg">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.fromRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
