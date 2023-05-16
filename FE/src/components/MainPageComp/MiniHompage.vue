@@ -135,17 +135,16 @@ export default {
         httpStory.get(`/story/all/${this.userSeq}`).then((result) => {
             this.readStory = result.data.readStory;
             this.newStory = result.data.newStory;
-            console.log(this.newStory)
-            console.log(this.readStory)
             var temp = []
             for (var i = 0; i < this.readStory.length + this.newStory.length; i++) {
-                if (i % 10 == 9) {
+                if (i % 10 == 0 && i != 0) {
                     this.story.push(temp);
                     temp = []
                 }
                 else {
                     if (i < this.newStory.length) {
                         temp.push(this.newStory[i])
+                        console.log(temp)
                     }
                     else {
                         temp.push(this.readStory[i - this.newStory.length])
