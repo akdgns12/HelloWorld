@@ -14,6 +14,7 @@ import Statistic from '@/views/StatisticView.vue'
 import RedirectHandler from '@/views/UserView/login/RedirectHandle.vue'
 import Community from '@/views/CommunityView.vue';
 import ModifyAvatar from '@/components/UserComp/UserAvatarModify.vue'
+import MyFamilyView from '@/views/MyFamilyView.vue'
 
 
 const routes = [
@@ -91,6 +92,11 @@ const routes = [
     path: "/community/:userSeq",
     name: "community",
     component: Community,
+  },
+  {
+    path: "/my-family/:userSeq",
+    name: "my-family",
+    component: MyFamilyView,
   },
 ];
 

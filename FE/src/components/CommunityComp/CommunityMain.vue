@@ -142,7 +142,7 @@ export default {
             ).then((response) => {
                 this.searchResult = response.data;
                 // this.searchResult.concat(response.data);
-                // console.log(this.searchResult)
+                console.log(this.searchResult)
                 this.chunkedResult = this.chunk(this.searchResult, 4);
                 console.log(this.chunkedResult);
                 this.value += 1;

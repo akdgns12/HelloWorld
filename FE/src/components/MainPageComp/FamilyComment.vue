@@ -41,11 +41,11 @@ export default {
         }
     },
     mounted() {
-        // http.get(`/family?userSeq=${this.userSeq}&status=all&hasComment=false`).then((result) => {
-        //     console.log(result.data.body);
-        // }, (error) => {
-        //     console.log(error);
-        // });
+        http.get(`/family?userSeq=${this.userSeq}&status=all&hasComment=false`).then((result) => {
+            console.log(result.data.body);
+        }, (error) => {
+            console.log(error);
+        });
         http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
             // console.log(result.data.data);
             console.log(result.data.data)

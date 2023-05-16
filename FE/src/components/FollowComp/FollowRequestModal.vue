@@ -26,26 +26,28 @@ export default {
                 "toRelationName": this.toRelationName,
                 "toUserSeq": this.masterSeq,
             };
-            var notifyInfo = {
-                "type": 3,
-                "typeSeq": 3,
-                "title": "일촌 신청이 왔어요",
-                "content": "일촌 신청이 왔어요",
-                "receiveUserSeq": this.masterSeq,
-            }
-            http.post(`/family`, JSON.stringify(info)).then((response) => {
-                console.log(response);
-                this.$emit('close');
-                window.location.reload();
-            }, (error) => {
-                console.log(error);
-                alert("일촌 요청 실패!")
-            });
+            // var notifyInfo = {
+            //     "type": 3,
+            //     "typeSeq": 3,
+            //     "title": "일촌 신청이 왔어요",
+            //     "content": "일촌 신청이 왔어요",
+            //     "receiveUserSeq": this.masterSeq,
+            // }
             const headers = {
                 "Content-Type": "application/json;charset=utf-8",
                 Authorization: `Bearer ${localStorage.getItem("access-token")}`,
             };
-            axios.post(`https://k8a308.p.ssafy.io/notify/`, JSON.stringify(notifyInfo), {headers});
+            http.post(`/family`, JSON.stringify(info)).then((response) => {
+                axios.post(`https://k8a308.p.ssafy.io/notify/`, response.data, {headers});
+                this.$emit('close');
+                window.location.reload();
+                console.log(response.data)
+            }, (error) => {
+                console.log(error);
+                alert("일촌 요청 실패!")
+            });
+            
+            
             // httpNotify.post(``, JSON.stringify(notifyInfo)).then((response) => {
             //     console.log(response)
             // }, (error) => {
