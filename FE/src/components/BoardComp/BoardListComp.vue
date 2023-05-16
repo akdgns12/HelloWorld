@@ -7,40 +7,47 @@
                 <p style="font-size:0.9rem"> 폴더입니다</p>
                 <p id = "cnt">({{ pageCnt }})</p>
             </div>
-            <div id="boardlist">
-                <table>
-                    <thead>
-                        <tr id = "boardheader">
-                            <th id = "boardNum">게시글ID</th>
-                            <th id = "boardTitle">제목</th>
-                            <th id = "boardWriter">작성자</th>
-                            <th id = "boardDate">작성일</th>
-                            <th id = "boardCnt">조회수</th>
-                        </tr>
-                    </thead>
-                    <tbody >
-                        <tr v-for="board in boards" :key="board.boardSeq" style="cursor: pointer;">
-                            <td id = "boardNum">{{ board.boardSeq }}</td>
-                            <td id = "boardTitle" @click="goDetail(board.boardSeq)">{{ board.title.length > 12? board.title.slice(0,12) + "..." : board.title }}</td>
-                            <td id = "boardWriter">{{ board.writer }}</td>
-                            <td id = "boardDate">{{ board.createTime.slice(0,10) }}</td>
-                            <td id = "boardCnt">{{ board.viewCnt }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div id = "writeboard" v-if="minihomeMaster === userSeq">
-                    <button @click="WriteBoard()">글쓰기</button>
+            <div v-if="pageCnt > 0">
+                <div id="boardlist">
+                    <table>
+                        <thead>
+                            <tr id = "boardheader">
+                                <th id = "boardNum">게시글ID</th>
+                                <th id = "boardTitle">제목</th>
+                                <th id = "boardWriter">작성자</th>
+                                <th id = "boardDate">작성일</th>
+                                <th id = "boardCnt">조회수</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr v-for="board in boards" :key="board.boardSeq" style="cursor: pointer;">
+                                <td id = "boardNum">{{ board.boardSeq }}</td>
+                                <td id = "boardTitle" @click="goDetail(board.boardSeq)">{{ board.title.length > 12? board.title.slice(0,12) + "..." : board.title }}</td>
+                                <td id = "boardWriter">{{ board.writer }}</td>
+                                <td id = "boardDate">{{ board.createTime.slice(0,10) }}</td>
+                                <td id = "boardCnt">{{ board.viewCnt }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id = "writeboard" v-if="minihomeMaster === userSeq">
+                        <button @click="WriteBoard()">글쓰기</button>
+                    </div>
                 </div>
+                <ul class="pagination">
+                  <li class="page-item" :class="{'disabled' : isBtnFirst}"><img src="@/assets/boardIcon/arrow_first.png" alt="pageFirst" class="page-link-img" href="#" @click.prevent="pageArrow('first')"></li>
+                  <li class="page-item" :class="{'disabled' : isBtnPrev}"><img src="@/assets/boardIcon/arrow_prev.png" alt="pagePrev" class="page-link-img" href="#" @click.prevent="pageArrow('prev')"></li>
+                  <template v-for="(item, index) in pageList" :key="`list-${index}`">
+                    <li class="page-item" :class="{'active' : item == currentPage}"><a class="page-link" href="#" @click.prevent="page(item)">{{item+1}}</a></li>
+                  </template>
+                  <li class="page-item" :class="{'disabled' : isBtnNext}"><img src="@/assets/boardIcon/arrow_next.png" alt="pageNext" class="page-link-img" href="#" @click.prevent="pageArrow('next')"></li>
+                  <li class="page-item" :class="{'disabled' : isBtnLast}"><img src="@/assets/boardIcon/arrow_last.png" alt="pageLast" class="page-link-img" href="#" @click.prevent="pageArrow('last')"></li>
+                </ul>
             </div>
-            <ul class="pagination">
-              <li class="page-item" :class="{'disabled' : isBtnFirst}"><img src="@/assets/boardIcon/arrow_first.png" alt="pageFirst" class="page-link-img" href="#" @click.prevent="pageArrow('first')"></li>
-              <li class="page-item" :class="{'disabled' : isBtnPrev}"><img src="@/assets/boardIcon/arrow_prev.png" alt="pagePrev" class="page-link-img" href="#" @click.prevent="pageArrow('prev')"></li>
-              <template v-for="(item, index) in pageList" :key="`list-${index}`">
-                <li class="page-item" :class="{'active' : item == currentPage}"><a class="page-link" href="#" @click.prevent="page(item)">{{item+1}}</a></li>
-              </template>
-              <li class="page-item" :class="{'disabled' : isBtnNext}"><img src="@/assets/boardIcon/arrow_next.png" alt="pageNext" class="page-link-img" href="#" @click.prevent="pageArrow('next')"></li>
-              <li class="page-item" :class="{'disabled' : isBtnLast}"><img src="@/assets/boardIcon/arrow_last.png" alt="pageLast" class="page-link-img" href="#" @click.prevent="pageArrow('last')"></li>
-            </ul>
+            <div v-else class="noneBoard">
+                <img src="@/assets/no_board.png" alt="" class="noBoard">
+                <p  v-if="minihomeMaster === userSeq" style="font-size : 2rem; cursor:pointer" @click="WriteBoard()">글쓰러 가기</p>
+                <p v-else style="font-size : 1.7rem; font-weight: bold;">글이 없어요</p>
+            </div>
         </div>
     </div>
 </template>
@@ -138,8 +145,6 @@ const updatePageList = () => {
         pageListStart++;
     }
 }
-updatePageButtons();
-updatePageList();
 
 const getBoardList = () => {
     if (props.category === 'all') {
@@ -177,6 +182,9 @@ const getBoardList = () => {
             pageCnt.value = response.data.boardCount;
             totalPage.value = pageCnt.value / 10;
             boards.value = response.data.boardList;
+
+            updatePageButtons();
+            updatePageList();
         })
         .catch(error => {
         console.error(error);
@@ -281,9 +289,10 @@ watch(() => props.category, () => {
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        margin-top : 2rem;
     }
     .page-link-img {
-        width : 0.9rem;
+        width : 0.8rem;
         padding : 0 0.5rem;
         opacity: 0.5;
         cursor: pointer;
@@ -291,11 +300,20 @@ watch(() => props.category, () => {
     .page-link {
         padding : 0 0.5rem;
         text-decoration: none;
-        color : black;
+        color: black;
     }
 
-    .active {
-        color: #D7AA71;
+    .active .page-link {
+        color: #D7AA71 !important;
         font-weight: bold;
+    }
+    .noneBoard{
+        display : flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .noBoard {
+        width : 10rem;
     }
 </style>

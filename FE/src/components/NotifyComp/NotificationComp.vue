@@ -87,14 +87,11 @@ export default {
                 notifyURL, { headers, heartbeatTimeout: 1000 * 60 * 60 }
             );
             source.onmessage = (event) => {
-                const temp = JSON.parse(event.data);
-                console.log(temp);
-                this.notifications.push(JSON.parse(event.data));
+                this.notifications.unshift(JSON.parse(event.data));
             };
             source.onerror = (error) => {
                 console.error(error);
                 source.close();
-                //alert("SSE 에러 발생");
             };
         },
         putNotification(notifySeq, type, typeSeq) {
@@ -105,9 +102,6 @@ export default {
                     "Content-Type": "application/json;charset=utf-8"
                 }
             });
-            console.log(type, typeSeq);
-            console.log(notifySeq);
-            
             const notifyIdx = {
                 "notifySeq" : notifySeq
             }
@@ -123,6 +117,9 @@ export default {
                     console.log(updateNotification);
                     if (type === 2) {
                         router.push(`/board/${localStorage.getItem('user-seq')}/${typeSeq}`);
+                    }
+                    else if (type === 1) {
+                        router.push(`/guestbook/${localStorage.getItem('user-seq')}`);
                     }
                     else if (type === 0) {
                         router.push(`/mainpage/${localStorage.getItem('user-seq')}`);

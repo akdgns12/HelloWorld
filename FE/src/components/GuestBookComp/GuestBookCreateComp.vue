@@ -35,7 +35,6 @@ const showCreateComp = computed(() => {
 const getUserInfo = () => {
     http.get(`/user/userInfo/${userSeq.value}`)
     .then((response) => {
-        console.log(response.data.data);
         userInfo.value = response.data.data;
     }, (error) => {
         console.log(error);
@@ -52,7 +51,14 @@ const addGuestBook = () => {
     newGuestBookContent.value = '';
     axios.post(`${baseURL}/guestbook`, requestDto, {headers})
         .then(response => {
-            console.log(response.data);
+            const notifyDto = {
+                "type" : 1,
+                "typeSeq" : response.data.responseSeq,
+                "title" : `"[방명록] ${userInfo.value.nickname}님이 방명록을 남겼습니다"`,
+                "content" : "방명록방명록",
+                "receiveUserSeq" : minihomeMaster.value
+            }
+            axios.post("https://k8a308.p.ssafy.io/notify/", notifyDto, {headers});
             emit('addGuestBook');
         })
         .catch(error => {

@@ -8,15 +8,14 @@
                     <div id="guestBookOne" v-if="showSecretGuestBook(guestBook?.guestBookUserSeq, guestBook?.secret)">
                         <div :class="{'guestBookHeader_secret' : guestBook?.secret , 'guestBookHeader' : guestBook?.secret === false}">
                             <p class="GBWrite">
-                                <span class="GBWriter">{{ guestBook?.guestBookUserNickname  }}</span>
+                                <span class="GBWriter" @click="goMainpage(guestBook?.guestBookUserSeq)">{{ guestBook?.guestBookUserNickname  }}</span>
                                 <img src="@/assets/icon/laptop.png" alt="laptop">
                                 <span class="GBCreatedDate">{{ formatDate(guestBook?.createdTime) }}</span>
                             </p>
                             <p class="GBEditor">
                                 <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" class="secret" style="font-weight: bold; cursor: pointer;" @click="isSecretGuestBook(guestBook?.guestBookSeq, guestBook?.secret, guestBook?.content)">{{ !guestBook?.secret ? "비밀로 하기" : "공개로 하기" }}</span>
                                 <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" style="padding: 0 0.5vw 0 0.5vw;" class="secret">|</span>
-                                <span v-if="showEditGuestBook(guestBook?.guestBookUserSeq)" class="modify" style="font-weight: bold; cursor: pointer;" @click="showEditArea(guestBook?.guestBookSeq)">수정</span>
-                                <span v-if="!showCreateComp || showEditGuestBook(guestBook?.guestBookUserSeq)" style="padding: 0 0.5vw 0 0.5vw;" class="modify">|</span>
+                                <span v-if="guestBook?.guestBookUserSeq == userSeq" class="modify" style="font-weight: bold; cursor: pointer;" @click="showEditArea(guestBook?.guestBookSeq)">수정</span>
                                 <span v-if="!showCreateComp" class="delete" style="font-weight: bold; cursor: pointer;" @click="deleteGuestBook(guestBook?.guestBookSeq)">삭제</span>
                             </p>
                         </div>
@@ -76,6 +75,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import InfiniteLoading from 'v3-infinite-loading';
+import { router } from '@/router';
 
 const headers = {
     "Content-Type" : "application/json;charset=utf-8",
@@ -139,8 +139,6 @@ const getGuestBooks = () => {
         .get(`${baseURL}/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`, {headers})
         .then(response => {
             guestBooks.value =  guestBooks.value.concat(response.data);
-            console.log(size.value);
-            console.log(response.data.length);
             start.value += 1;
             if (response.data.length < 10) busy.value = true;
             else busy.value = false;
@@ -302,6 +300,10 @@ const removeGuestBookComment = (guestBookSeq) => {
             console.error(error);
             alert("댓글을 삭제할 수 없습니다!");
         })
+}
+
+const goMainpage = (guestBookUserSeq) => {
+    router.push(`/mainpage/${guestBookUserSeq}`);
 }
 
 </script>

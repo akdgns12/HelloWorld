@@ -174,7 +174,7 @@ const onContextMenu = (event, writerSeq, bookmarkSeq) => {
         font-weight: bold;
     }
     .NoBM {
-        width : 12rem;
-        height : 15rem;
+        width : 11rem;
+        height : 16rem;
     }
 </style>
