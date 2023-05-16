@@ -36,7 +36,7 @@ export default {
             http.post(`/family`, JSON.stringify(info)).then((response) => {
                 console.log(response);
                 this.$emit('close');
-
+                window.location.reload();
             }, (error) => {
                 console.log(error);
                 alert("일촌 요청 실패!")
@@ -85,17 +85,17 @@ export default {
                         <div class="request-msg">&nbsp;님께 일촌을 신청합니다</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">{{ this.otherNickname }}</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.otherNickname }}</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">{{ this.myNickname }} (나)</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.myNickname }} (나)</div>
                         <div class="request-msg">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.toRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name">{{ this.myNickname }} (나)</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.myNickname }} (나)</div>
                         <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name">{{ this.otherNickname }}</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.otherNickname }}</div>
                         <div class="request-msg">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.fromRelationName" />
                         <div class="request-msg">&nbsp;로,</div>

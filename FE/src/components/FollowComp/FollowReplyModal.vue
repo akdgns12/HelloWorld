@@ -29,8 +29,8 @@ export default {
     methods: {
         acceptFamily: function() {
             http.put(`/family?fromUserSeq=${this.masterSeq}&toUserSeq=${this.userSeq}`).then(() => {
-                
                 this.$emit('close')
+                window.location.reload();
             }, (error) => {
                 console.log(error);
             })
@@ -82,9 +82,6 @@ export default {
                     <div class="btn-list">
                         <div class="send-btn" @click="acceptFamily">
                             수락하기
-                        </div>
-                        <div class="reject-btn">
-                            거절하기
                         </div>
                         <div class="close-btn" @click="$emit('close')">
                             닫기

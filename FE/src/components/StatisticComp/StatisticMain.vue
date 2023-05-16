@@ -28,26 +28,26 @@
                                     v-tippy="{ content: '스티커 1000개 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-4.png"
-                                    alt="업적" v-tippy="{ content: 'TODAY 10 달성', arrow: false, placement: 'top', }" />
+                                <img id="ten-today" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-4.png"
+                                    alt="업적" v-tippy="{ content: 'TOTAL 10 달성', arrow: false, placement: 'top', }" />
                             </div>
                         </div>
                         <div class="row-achievement">
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-5.png"
-                                    alt="업적" v-tippy="{ content: 'TODAY 100 달성', arrow: false, placement: 'top', }" />
+                                <img id="hundread-today" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-5.png"
+                                    alt="업적" v-tippy="{ content: 'TOTAL 100 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-6.png"
-                                    alt="업적" v-tippy="{ content: 'TODAY 1000 달성', arrow: false, placement: 'top', }" />
+                                <img  id="thousand-today" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-6.png"
+                                    alt="업적" v-tippy="{ content: 'TOTAL 1000 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-1.png"
-                                    alt="업적" v-tippy="{ content: '스티커 10개 미달성', arrow: false, placement: 'top', }" />
+                                <img id="ten-post" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-7.png"
+                                    alt="업적" v-tippy="{ content: '포스팅 10개 달성', arrow: false, placement: 'top', }" />
                             </div>
                             <div class="achievement-container">
-                                <img class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-2.png"
-                                    alt="업적" v-tippy="{ content: '스티커 100개 미달성', arrow: false, placement: 'top', }" />
+                                <img id="hundred-post" class="achievement-element not-yet" src="@/assets/image/achievement/pixil-layer-8.png"
+                                    alt="업적" v-tippy="{ content: '포스팅 100개 달성', arrow: false, placement: 'top', }" />
                             </div>
                         </div>
                     </div>
@@ -76,8 +76,36 @@ export default {
     created() {
         // var userSeq = localStorage.getItem('user-seq');
         var masterSeq = this.$route.params.userSeq;
+        http.get(`/user/userInfo/${masterSeq}`).then((response)=> {
+            if (response.data.data.total >= 10) {
+                var tenToday = document.querySelector('#ten-today');
+                tenToday.classList.remove('not-yet');
+            }
+            if (response.data.data.total >= 100) {
+                var hundredToday = document.querySelector('#hundred-today');
+                hundredToday.classList.remove('not-yet');
+            }
+            if (response.data.data.total >= 1000) {
+                var thousandToday = document.querySelector('#thousand-today');
+                thousandToday.classList.remove('not-yet');
+            }
+        }, (error) => {
+            console.log(error)
+        })
         http.get(`/statistic/${masterSeq}?userSeq=${masterSeq}`).then((response) => {
-            console.log(response.data.data);
+            console.log(response.data.data.categoryInfo);
+            var postCnt = 0;
+            for (var j = 0; j < response.data.data.categoryInfo.length; j++) {
+                postCnt += response.data.data.categoryInfo[j].count;
+            }
+            if (postCnt >= 10) {
+                var tenPosting = document.querySelector('#ten-post');
+                tenPosting.classList.remove('not-yet');
+            }
+            if (postCnt >= 100) {
+                var hundredPosting = document.querySelector('#hundred-post');
+                hundredPosting.classList.remove('not-yet');
+            }
             var temp = response.data.data.weeklyTodayInfoList;
             temp = temp.reverse();
             console.log(`엥??????${temp[0].date}`);

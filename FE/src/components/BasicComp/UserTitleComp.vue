@@ -75,7 +75,7 @@ export default {
         deleteFamily: function() {
             http.delete(`/family?fromUserSeq=${this.userSeq}&toUserSeq=${this.masterSeq}`).then((result) => {
                 console.log(result)
-                this.$forceUpdate();
+                window.location.reload();
             }, (error) => {
                 console.log(error)
             })
