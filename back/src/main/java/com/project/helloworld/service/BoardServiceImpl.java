@@ -138,15 +138,18 @@ public class BoardServiceImpl implements BoardService{
 
         ExampleMatcher matcher;
         Board board;
+        User newUser;
         if(categorySeq == null){
-            board = Board.builder().user(user).build();
-            matcher = ExampleMatcher.matching().withMatcher("user",ExampleMatcher.GenericPropertyMatchers.exact())
+            newUser = User.builder().userSeq(userSeq).build();
+            board = Board.builder().user(newUser).build();
+            matcher = ExampleMatcher.matching().withMatcher("user.userSeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withMatcher("categorySeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withIgnorePaths("boardSeq","title","content","categorySeq","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
                             ,"grasses","stickers","bookMarks");
         }else{
-            board = Board.builder().user(user).categorySeq(categorySeq).build();
-            matcher = ExampleMatcher.matching().withMatcher("user",ExampleMatcher.GenericPropertyMatchers.exact())
+            newUser = User.builder().userSeq(userSeq).build();
+            board = Board.builder().user(newUser).categorySeq(categorySeq).build();
+            matcher = ExampleMatcher.matching().withMatcher("user.userSeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withMatcher("categorySeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withIgnorePaths("boardSeq","title","content","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
                             ,"grasses","stickers","bookMarks");

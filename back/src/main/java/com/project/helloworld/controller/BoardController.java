@@ -107,4 +107,5 @@ public class BoardController {
         return  ResponseEntity.ok().body(s3Uploader.uploadFiles(file,"article"));
     }
 
+
 }
