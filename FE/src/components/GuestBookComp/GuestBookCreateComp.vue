@@ -54,7 +54,7 @@ const addGuestBook = () => {
             const notifyDto = {
                 "type" : 1,
                 "typeSeq" : response.data.responseSeq,
-                "title" : `"[방명록] ${userInfo.value.nickname}님이 방명록을 남겼습니다"`,
+                "title" : `[방명록] ${userInfo.value.nickname}님이 방명록을 남겼습니다`,
                 "content" : "방명록방명록",
                 "receiveUserSeq" : minihomeMaster.value
             }

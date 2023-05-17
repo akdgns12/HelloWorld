@@ -1,5 +1,6 @@
 <script>
 import http from '@/api/httpWithAccessToken'
+import axios from 'axios';
 export default {
     props: {
         show: Boolean
@@ -29,6 +30,18 @@ export default {
     methods: {
         acceptFamily: function() {
             http.put(`/family?fromUserSeq=${this.masterSeq}&toUserSeq=${this.userSeq}`).then(() => {
+                const requestDto = {
+                    "type" : 4,
+                    "typeSeq" : this.masterSeq,
+                    "title" : `[일촌수락] ${this.myNickname}님이 일촌수락을 했습니다`,
+                    "content" : "일촌수락",
+                    "receiveUserSeq" : this.masterSeq
+                }
+                const headers = {
+                    "Content-Type": "application/json;charset=utf-8",
+                    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+                };
+                axios.post("https://k8a308.p.ssafy.io/notify/", requestDto, {headers});
                 this.$emit('close')
                 window.location.reload();
             }, (error) => {

@@ -62,7 +62,7 @@ export default {
             </div>
             <div class="pw-container">
                 <div class="pw">비밀번호</div>
-                <input class="pw-input" type="password" v-model="password" />
+                <input class="pw-input" type="password" v-model="password" @keyup.enter="login"/>
             </div>
         </form><button class="login-btn" @click="login">로그인</button>
         <div class="other-option">
