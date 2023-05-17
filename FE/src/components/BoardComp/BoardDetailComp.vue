@@ -100,6 +100,7 @@ const changeMarkdown = computed(() => {
     changedText = changedText.replaceAll("&lt;", "<");
     changedText = changedText.replaceAll("&gt;", ">");
     changedText = changedText.replaceAll("&quot;", '"');
+    changedText = changedText.replace(/<img([^>]+)>/g, '<img$1 width="300">');
     return changedText; 
 });
 

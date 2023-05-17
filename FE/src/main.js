@@ -27,7 +27,7 @@ app.use(VueSSE);
 app.use(PerfectScrollbar, {
   watchOptions : true,
   options : {
-    suppressScrollX : false
+    suppressScrollX : true
   }
 });
 app.use(ContextMenu);

@@ -8,12 +8,14 @@
             </div>
             <ul class="shareBoardlist" v-else>
                 <li v-for="board in boards" v-bind:key="board?.bookmarkSeq" class="shareBoard">
+                    <img v-if="board?.imgUrl !== ''" :src="board?.imgUrl" alt="" class="board_img">
+                    <img v-else src="@/assets/no_image.jpg" alt="" class="board_img">
                     <div class="boardInfo">
                         <div class="boardHeader">
                             <span class="author">{{ board.writerNickname }}</span>
                             <span class="createdTime">{{ board?.updateTime?.slice(0, 10) }}</span>
                         </div>
-                        <img src="@/assets/icon/drop_dots.png" alt="" @click="onContextMenu($event,board?.writerSeq,board?.boardSeq, board?.bookMarkSeq)" style="cursor: pointer;">
+                        <img class="menu_dots" src="@/assets/icon/drop_dots.png" alt="" @click="onContextMenu($event,board?.writerSeq,board?.boardSeq, board?.bookMarkSeq)" style="cursor: pointer;">
                     </div>
                     <div class="title">{{ board?.title?.length > 22 ? board?.title?.slice(0, 22) + '...' : board?.title }}</div>
                     <div class="content">
@@ -124,9 +126,8 @@ const onContextMenu = (event, writerSeq, boardSeq, bookmarkSeq) => {
         border : 1px solid #D9D9D9;
         border-radius : 5px;
         margin : 1vw;
-        padding : 1vw 1vh;
-        /* height : 25vh; */
-        height : 10rem;
+        padding : 1rem 0.2rem;
+        height : 15rem;
         box-shadow: rgba(0,0,0,0.04) 0px 4px 16px 0px;
     }
     .boardInfo {
@@ -134,9 +135,12 @@ const onContextMenu = (event, writerSeq, boardSeq, bookmarkSeq) => {
         align-items: center;
         justify-content: space-between;
     }
+    .board_img{
+        height: 8rem;
+    }
     .boardHeader {
         display: flex;
-        margin : 1vh 2vw;
+        margin : 1vh 1.8vw;
     }
     .author {
         color : #82ACC1;
@@ -149,17 +153,17 @@ const onContextMenu = (event, writerSeq, boardSeq, bookmarkSeq) => {
     }
 
     .title {
-        text-align: left;
-        margin : 1vh 2vw;
-        font-size : 1rem;
+        text-align: justify;
+        margin : 0.5vh 1.8vw;
+        font-size : 0.825rem;
         font-weight : bold;
     }
     .content {
-        font-size : 0.9rem;
-        margin : 1vh 2vw;
-        text-align:left;
+        font-size : 0.7rem;
+        margin : 0.5vh 1.8vw;
+        text-align:justify;
     }
-    img {
+    .menu_dots {
         height: 0.8rem;
         margin-right : 0.5rem;
         cursor: pointer;
