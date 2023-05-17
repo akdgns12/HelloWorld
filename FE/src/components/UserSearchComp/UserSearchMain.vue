@@ -5,10 +5,10 @@
             <div class="community-notice">
                 <div class="search-container">
                     <form class="search-form">
-                        <select>
+                        <select v-model="type" @change="selectType">
                             <option value="">검색 조건&nbsp;&nbsp;▼</option>
-                            <option value="1">닉네임</option>
-                            <option value="2">이름</option>
+                            <option value="1">이름</option>
+                            <option value="2">닉네임</option>
                             <option value="3">이메일</option>
                         </select>
                         <input type="search-input" class="search-input" name="search" required v-model="searchKeyword">
@@ -40,46 +40,36 @@
 
 <script>
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
+// import http from "@/api/httpWithAccessToken"
 export default {
     components: { UserTitleComp, },
     methods: {
         chunk: function (data = [], size = 1) {
             const arr = [];
-
             for (let i = 0; i < data.length; i += size) {
                 arr.push(data.slice(i, i + size));
             }
-
             return arr;
         },
         mvFamilyHome: function (e) {
             e.preventDefault();
             this.$router.push({ name: 'mainpage', params: { userSeq: e.target.id } })
+        },
+        selectType: function(e) {
+            e.preventDefault();
+            console.log(e.target.value)
+            console.log(`value: ${this.type}`)
+        },
+        search: function() {
+            console.log(this.searchKeyword)
+            // http.get(`/user/search?type=${this.type}&keyword=${this.searchKeyword}`).then((result) => {
+            //     console.log(result)
+            // }, (error) => {
+            //     console.log(error);
+            // })
         }
     },
     async mounted() {
-        // await http.get(`/family?userSeq=${this.masterSeq}&status=all&hasComment=true`).then((result) => {
-        //     // console.log(result.data.body)
-        //     this.family=result.data.body;
-        // }, (error) => {
-        //     console.log(error)
-        // });
-        // await http.get(`/family?userSeq=${this.masterSeq}&status=all&hasComment=false`).then((result) => {
-        //     // var temp = result.data.body;
-        //     this.family.concat(result.data.body);
-        //     // this.chunkedResult = this.chunk(this.family, 4);
-        // }, (error) => {
-        //     console.log(error)
-        // });
-        // console.log(this.family)
-        // for(var i = 0; i < this.family.length; i++) {
-        //     await http.get(`/user/userInfo/${this.family[i].userSeq}`).then((result) => {
-        //         this.family[i]['imageUrl'] = result.data.data.avatarUrl;
-        //         this.family[i]['nickname'] = result.data.data.nickname;
-        //     }, (error) => {
-        //         console.log(error)
-        //     })
-        // }
         this.chunkedResult = this.chunk(this.searchResult, 4);
     },
     data() {
@@ -88,6 +78,8 @@ export default {
             userSeq: localStorage.getItem('user-seq'),
             searchResult: [],
             chunkedResult: null,
+            type: "",
+            searchKeyword: "",
         }
     },
 }
