@@ -16,6 +16,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         public void addInterceptors(InterceptorRegistry registry){
             registry.addInterceptor(visitorInterceptor)
                     // visitorInterceptor가 적용될 경로
-                    .addPathPatterns("/user/mainpage/**");
+                    .addPathPatterns("/user/mainpage/**", "/board/**");
     }
 }
