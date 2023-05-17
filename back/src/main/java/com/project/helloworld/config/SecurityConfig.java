@@ -65,8 +65,8 @@ public class SecurityConfig {
                         , "/webjars/**"
                         ,"/swagger-ui/**"
                         ,"/v3/api-docs/**"
-                        ,"/user/email-certification/**"
-                        ,"/user/sms-certification/**"
+                        ,"/**/user/email-certification/**"
+                        ,"/**/user/sms-certification/**"
                 );
         };
     }
