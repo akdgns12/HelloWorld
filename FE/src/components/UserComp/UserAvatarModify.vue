@@ -689,7 +689,7 @@ export default {
             var userAvatar;
             var file;
             var realFile;
-            await html2canvas(document.querySelector("#my-character-container")).then(function (canvas) {
+            await html2canvas(document.querySelector("#my-character-container"), {backgroundColor: null}).then(function (canvas) {
                 userAvatar = canvas.toDataURL("image/png");
                 var blobBin = atob(userAvatar.split(',')[1]);	// base64 데이터 디코딩
                 var array = [];
@@ -862,7 +862,6 @@ a {
     margin-top: 15%;
     width: 15%;
     height: 15%;
-    border: 1px solid #D9D9D9;
     border-radius: 20px;
 }
 
@@ -1015,7 +1014,7 @@ a {
 
 .button-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     margin: 0 auto;
     margin-top: 220px;
     width: 30%;
