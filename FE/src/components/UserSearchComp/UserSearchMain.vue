@@ -21,13 +21,13 @@
                         <div class="article-container" v-for="info in oneRow" :key="info" :id="`${info.userSeq}`"
                             @click="mvFamilyHome">
                             <div class="represent-img-container" :id="`${info.userSeq}`">
-                                <img class="represent-img" :src="`${info.imageUrl}`" alt="대표이미지" :id="`${info.userSeq}`" />
+                                <img class="represent-img" :src="`${info.avatarUrl}`" alt="대표이미지" :id="`${info.userSeq}`" />
                             </div>
                             <div class="title" :id="`${info.userSeq}`">
                                 {{ info.nickname }}
                             </div>
                             <div class="author" :id="`${info.userSeq}`">
-                                {{ info.relationName }}
+                                {{ info.name }}
                             </div>
                         </div>
                         <div class="article-container hidden" v-for="i in 4 - oneRow.length" :key="i"
@@ -40,7 +40,7 @@
 
 <script>
 import UserTitleComp from "@/components/BasicComp/UserTitleComp.vue"
-// import http from "@/api/httpWithAccessToken"
+import http from "@/api/httpWithAccessToken"
 export default {
     components: { UserTitleComp, },
     methods: {
@@ -61,16 +61,22 @@ export default {
             console.log(`value: ${this.type}`)
         },
         search: function() {
-            console.log(this.searchKeyword)
-            // http.get(`/user/search?type=${this.type}&keyword=${this.searchKeyword}`).then((result) => {
-            //     console.log(result)
-            // }, (error) => {
-            //     console.log(error);
-            // })
+            if(this.type=='') {
+                alert("검색 조건을 먼저 선택해주세요")
+            }
+            var info = {
+                "keyword": this.searchKeyword,
+                "masterSeq": this.masterSeq,
+                "type": this.type
+            }
+            http.post(`/user/search`, JSON.stringify(info)).then((result) => {
+                console.log(result.data.data)
+                this.searchResult = result.data.data;
+                this.chunkedResult = this.chunk(this.searchResult, 4)
+            }, (error) => {
+                console.log(error);
+            })
         }
-    },
-    async mounted() {
-        this.chunkedResult = this.chunk(this.searchResult, 4);
     },
     data() {
         return {
@@ -262,22 +268,22 @@ select::-ms-expand {
     width: 90%;
     margin: 0 auto;
     margin-top: 5%;
-    text-align: start;
     font-size: 13px;
     font-weight: 700;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: center;
 }
 
 .author {
     font-size: 9px;
     width: 90%;
     margin: 0 auto;
-    text-align: start;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-top: 1%;
+    text-align: center;
 }
 </style>
