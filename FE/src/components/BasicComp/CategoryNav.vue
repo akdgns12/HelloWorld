@@ -34,7 +34,7 @@ export default {
             userSeq: localStorage.getItem('user-seq'),
             masterSeq: this.$route.params.userSeq,
         }
-    }
+    },
 }
 </script>
 

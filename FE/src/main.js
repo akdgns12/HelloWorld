@@ -24,7 +24,12 @@ app.use(VueSplide);
 app.use(VueApexCharts);
 app.use(VueYtframe);
 app.use(VueSSE);
-app.use(PerfectScrollbar);
+app.use(PerfectScrollbar, {
+  watchOptions : true,
+  options : {
+    suppressScrollX : false
+  }
+});
 app.use(ContextMenu);
 const timeagoOptions = {
     converterOptions: {

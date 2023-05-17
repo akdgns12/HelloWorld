@@ -118,7 +118,7 @@ const deleteBoard = (boardSeq) => {
     .then(response => {
         console.log(response);
         alert("게시글 삭제 완료!");
-        router.push(`/board/${userSeq}/boardlist`);
+        router.push(`/board/${userSeq}/boardlist/all`);
     })
     .catch(error => {
         console.error(error);
@@ -129,20 +129,33 @@ const deleteBoard = (boardSeq) => {
 const toggleSticker = (index) => {
     const requestDto = {
         boardSeq : boardSeq.value,
-        type : index,
+        type : index + 1,
         userSeq : userSeq,
     };
 
     if (board.value.sticker[index]) {
-        axios
-            .delete(`${baseUrl}/board/sticker`, requestDto, {headers})
+        const deleteSticker = axios.create({
+            baseURL : `https://k8a308.p.ssafy.io/api`,
+            headers : {
+                    Authorization : `Bearer ${localStorage.getItem("access-token")}`,
+                    //"Content-Type": "application/json;charset=utf-8"
+                }
+        });
+            deleteSticker.delete("/board/sticker", {data:requestDto})
             .then(response => {
-                console.log(response);
+                console.log(response.data);
                 board.value.sticker[index] = false;
             })
             .catch(error => {
                 console.error(error);
             })
+        // axios
+        //     .delete(`${baseUrl}/board/sticker`, {data : requestDto }, {headers})
+        //     .then(response => {
+        //         console.log(response);
+        //         board.value.sticker[index] = false;
+        //     })
+            
     } else {
         axios
             .post(`${baseUrl}/board/sticker`, requestDto, {headers})

@@ -13,12 +13,11 @@
                             <span class="author">{{ board.writerNickname }}</span>
                             <span class="createdTime">{{ board?.updateTime?.slice(0, 10) }}</span>
                         </div>
-                        <img src="@/assets/icon/drop_dots.png" alt="" @click="onContextMenu($event,board?.writerSeq,board?.bookMarkSeq)" style="cursor: pointer;">
+                        <img src="@/assets/icon/drop_dots.png" alt="" @click="onContextMenu($event,board?.writerSeq,board?.boardSeq, board?.bookMarkSeq)" style="cursor: pointer;">
                     </div>
                     <div class="title">{{ board?.title?.length > 22 ? board?.title?.slice(0, 22) + '...' : board?.title }}</div>
                     <div class="content">
                         <p>{{ board.content }}</p>
-                        <!-- <p>{{ board.content.length > 90 ? board.content.slice(0,90) + '...' : board.content }}</p> -->
                     </div>
                 </li>
             </ul>
@@ -53,21 +52,17 @@ const getBookmarks = () => {
     })
 }
 
-// onMounted(() => {
-//     getBookmarks();
-// })
-
 onBeforeMount(() => {
     getBookmarks();
 })
 
-const onContextMenu = (event, writerSeq, bookmarkSeq) => {
+const onContextMenu = (event, writerSeq, boardSeq, bookmarkSeq) => {
     event.preventDefault();
     const menuItems = [
         {
             label : '바로가기',
             onClick : () => {
-                router.push(`/board/${writerSeq}/${bookmarkSeq}`)
+                router.push(`/board/${writerSeq}/${boardSeq}`)
             }
         },{
             label : '북마크 삭제',

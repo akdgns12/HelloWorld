@@ -155,9 +155,8 @@ const getBoardList = () => {
             size: 10
         }})
         .then (response => {
-            console.log(response);
             pageCnt.value = response.data.boardCount;
-            totalPage.value = pageCnt.value / 10
+            totalPage.value = Math.floor(pageCnt.value / 10) + 1;
             boards.value = response.data.boardList;
 
             updatePageButtons();
@@ -178,9 +177,8 @@ const getBoardList = () => {
             }
         })
         .then (response => {
-            console.log(response);
             pageCnt.value = response.data.boardCount;
-            totalPage.value = pageCnt.value / 10;
+            totalPage.value = Math.floor(pageCnt.value / 10) + 1
             boards.value = response.data.boardList;
 
             updatePageButtons();
@@ -289,7 +287,6 @@ watch(() => props.category, () => {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        margin-top : 2rem;
     }
     .page-link-img {
         width : 0.8rem;

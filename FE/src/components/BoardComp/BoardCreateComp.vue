@@ -17,7 +17,7 @@
                     id = "mdeditor"
                     v-model="content"
                     locale="en"
-                    @upload-action="handleUpload"
+                    :upload-action="handleUpload"
                 />
             </div>
             <div id="boardfooter">
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted} from 'vue'
+import {ref, computed, onBeforeMount } from 'vue'
 import { VMarkdownEditor } from 'vue3-markdown'
 import 'vue3-markdown/dist/style.css'
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
@@ -36,31 +36,84 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { router } from '@/router';
 
-const title = ref('');
-const content = ref('');
-const category = ref(0);
-const handleUpload = (file) => {
-    console.log(file)
-    return new Promise((resolve, reject) => {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        axios.post(``, formData)
-            .then(response => {
-                const fileUrl = response.data.fileUrl;
-                resolve(fileUrl);
-            })
-            .catch(error => {
-                reject(error);
-            });
-    });
-};
 const baseUrl = `https://k8a308.p.ssafy.io/api`;
 const headers = {
     "Content-Type": "application/json;charset=utf-8",
     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
   };
 
+const title = ref('');
+const content = ref('');
+const category = ref(0);
+const handleUpload = (file) => {
+    return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                const maxWidth = 40; // 최대 너비
+                const maxHeight = 40; // 최대 높이
+
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                }
+
+                if (height > maxHeight) {
+                    width *= maxHeight / height;
+                    height = maxHeight;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                    formData.append('resizedFile', blob);
+
+                    axios.post(`${baseUrl}/board/upload`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${localStorage.getItem("access-token")}`
+                        }
+                    })
+                    .then(response => {
+                        const fileUrl = response.data;
+                        resolve(fileUrl);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+                }, file.type);
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+        // axios.post(`${baseUrl}/board/upload`, formData ,
+        // {headers: {
+        //         'Content-Type': 'multipart/form-data',
+        //         Authorization: `Bearer ${localStorage.getItem("access-token")}`
+        //     }}
+        // )
+        //     .then(response => {
+        //         const fileUrl = response.data;
+        //         resolve(fileUrl);
+        //     })
+        //     .catch(error => {
+        //         reject(error);
+        //     });
+    });
+};
 const route = useRoute();
 const boardSeq = computed(() => route.params.boardSeq);
 
@@ -106,7 +159,7 @@ const createBoard = () => {
     }
 }
 
-onMounted(() => {
+onBeforeMount(() => {
     if (boardSeq.value) {
         axios.get(`${baseUrl}/board?userSeq=${localStorage.getItem("user-seq")}&boardSeq=${boardSeq.value}`, {headers})
         .then(response => {
