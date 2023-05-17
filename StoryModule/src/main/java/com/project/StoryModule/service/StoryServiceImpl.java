@@ -29,9 +29,19 @@ public class StoryServiceImpl implements StoryService{
     private final UserRepository userRepository;
     @KafkaListener(topics="user-story",groupId="dev-group",containerFactory="storyListner")
     public void consume(StoryDto storyDto){
-        User user = userRepository.findById(storyDto.getUserSeq())
-                .orElse(userRepository.save(new User(storyDto.getUserSeq())));
-        storyRepository.save(new Story(storyDto,user));
+        Optional<User> optionalUser = userRepository.findById(storyDto.getUserSeq());
+        User user = null;
+        if(optionalUser.isEmpty()){
+            user = userRepository.save(new User(storyDto.getUserSeq()));
+        }else {
+            user = optionalUser.get();
+        }
+        Optional<Story> optionalStory = storyRepository.findByBoardSeqAndUserSeq(storyDto.getBoardSeq(),user.getUserSeq());
+        if(optionalStory.isEmpty()) {
+            storyRepository.save(new Story(storyDto, user));
+        }else {
+            storyRepository.delete(optionalStory.get());
+        }
     }
 
     @Override

@@ -11,6 +11,8 @@ import com.project.helloworld.elkStack.domain.BoardDocument;
 
 import com.project.helloworld.repository.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -90,7 +92,12 @@ public class BoardServiceImpl implements BoardService{
         MessageResponse messageResponse = MessageResponse.builder().type(-1).typeSeq(newBoardSaved.getBoardSeq())
                 .title(newBoardSaved.getUser().getName()+"님이 게시글을 작성하였습니다.")
                 .content("게시글게시글").receiveUserSeq(newBoardSaved.getUser().getUserSeq()).build();
-        storyService.sendStory(newBoardSaved, user.getFamilies().stream().map(x->x.getFamilyUser().getUserSeq()).collect(Collectors.toList()));
+
+        List<Long> acceptedFamilies = user.getFamilies().stream()
+                .filter(x->x.getIsAccepted()==2 )
+                .map(x->x.getFamilyUser().getUserSeq())
+                .collect(Collectors.toList());
+        storyService.sendStory(newBoardSaved, acceptedFamilies);
         return messageResponse;
     }
 
@@ -181,9 +188,18 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public MessageResponse removeBoard(Long boardSeq) throws Exception {
         Board board = boardRepository.findById(boardSeq).orElseThrow(() -> new Exception("not exist board : "+boardSeq));
-        log.info(board.toString());
         boardRepository.delete(board);
         MessageResponse messageResponse = MessageResponse.builder().type(-1).title("게시글이 삭제되었습니다.").build();
+        long timeDiff = Duration.between(board.getCreateTime(), LocalDateTime.now()).toHours();
+        if(timeDiff<24) {
+            User user = board.getUser();
+            List<Long> accetedFamilies = user.getFamilies()
+                    .stream()
+                    .filter(x -> x.getIsAccepted() == 2)
+                    .map(x -> x.getFamilyUser().getUserSeq())
+                    .collect(Collectors.toList());
+            storyService.sendStory(board, accetedFamilies);
+        }
         return messageResponse;
     }
 
