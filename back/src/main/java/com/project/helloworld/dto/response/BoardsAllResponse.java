@@ -25,10 +25,10 @@ public class BoardsAllResponse {
 
     private int commentCnt;
 
-
+    private Long writerSeq;
 
     @Builder
-    public BoardsAllResponse(Long boardSeq, String title, String writer, String content, String imgUrl, Integer categorySeq, int likeCnt, int commentCnt) {
+    public BoardsAllResponse(Long boardSeq, String title, String writer, String content, String imgUrl, Integer categorySeq, int likeCnt, int commentCnt, Long writerSeq) {
         this.boardSeq = boardSeq;
         this.title = title;
         this.writer = writer;
@@ -37,5 +37,6 @@ public class BoardsAllResponse {
         this.imgUrl = imgUrl;
         this.likeCnt = likeCnt;
         this.commentCnt = commentCnt;
+        this.writerSeq = writerSeq;
     }
 }

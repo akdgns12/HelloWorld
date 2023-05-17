@@ -126,10 +126,21 @@ public class BoardServiceImpl implements BoardService{
         // Page 객체로    https://wonit.tistory.com/483 참고
         // 제목 ,작성자, 내용, 썸네일, 스티커 개수, 댓글 개수
         PageRequest pageRequest = PageRequest.of(start,size);
-        List<BoardsAllResponse> boardList = boardRepository.findAll(pageRequest)
-                .stream().map(x -> new BoardsAllResponse(x.getBoardSeq(),x.getTitle(),x.getUser().getName()
-                        ,x.getContent(),x.getImgUrl(),x.getCategorySeq(),x.getLikeCnt(),x.getCommentCnt())).collect(Collectors.toList());
 
+        List<BoardsAllResponse> boardList = boardRepository.findAll(pageRequest)
+                .stream().map(x->BoardsAllResponse.
+                        builder()
+                        .boardSeq(x.getBoardSeq())
+                        .title(x.getTitle())
+                        .writer(x.getUser().getName())
+                        .writerSeq(x.getUser().getUserSeq())
+                        .categorySeq(x.getCategorySeq())
+                        .content(x.getContent())
+                        .likeCnt(x.getLikeCnt())
+                        .commentCnt(x.getCommentCnt())
+                        .imgUrl(x.getImgUrl())
+                        .build())
+                .collect(Collectors.toList());
         int boardListCount = boardRepository.findAll().size();
         HashMap<String,Object> boardInformation = new HashMap<>();
         boardInformation.put("boardList",boardList);
