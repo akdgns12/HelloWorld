@@ -861,8 +861,8 @@ a {
     margin-top: 15%;
     width: 15%;
     height: 15%;
-    border: 1px solid #D9D9D9;
-    border-radius: 20px;
+    /* border: 1px solid #D9D9D9; */
+    /* border-radius: 20px; */
 }
 
 .my-character-img {

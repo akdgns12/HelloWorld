@@ -26,17 +26,25 @@
                     </splide>
                 </div>
             </div>
-            <div class="grass-container">
-                <GrassComp />
-            </div>
-            <div class="family-comment-container">
-                <FamilyComment />
-            </div>
+
+            <div class="notice">{{ this.masterNickname }} 님의 방</div>
             <div class="room-container">
                 <img class="room" src="@/assets/image/room/room1.png" v-if="this.roomNum == 1" />
                 <img class="room" src="@/assets/image/room/room2.png" v-if="this.roomNum == 2" />
                 <img class="room" src="@/assets/image/room/room3.png" v-if="this.roomNum == 3" />
                 <img class="room" src="@/assets/image/room/room4.png" v-if="this.roomNum == 4" />
+                <div class="avatar-container">
+                    <img class="avatar" :src="`${this.avatarUrl}`" />
+                </div>
+            </div>
+
+            <div class="notice">{{ this.masterNickname }} 님 일촌들의 한 마디</div>
+            <div class="family-comment-container">
+                <FamilyComment />
+            </div>
+            <div class="notice">{{ this.masterNickname }} 님이 심은 잔디</div>
+            <div class="grass-container">
+                <GrassComp />
             </div>
         </div>
     </div>
@@ -89,6 +97,7 @@ export default {
             boardSeq: null,
             imgUrl: null,
             roomNum: 1,
+            masterNickname: null,
         };
     },
     methods: {
@@ -116,11 +125,14 @@ export default {
 
         }
     },
-    created() {
+    async created() {
         // var userSeq = localStorage.getItem('user-seq');
-        http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
+        await http.get(`/user/mainpage/${this.masterSeq}`).then((result) => {
             // this.avatarUrl = result.data.data.avatarUrl;
             console.log(result.data.data)
+            this.masterNickname = result.data.data.nickname;
+            this.avatarUrl = result.data.data.avatarUrl;
+            // this.roomNum = 4
             if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 10 || result.data.data.today > 10) {
                 this.roomNum = 2;
             }
@@ -133,7 +145,7 @@ export default {
         }, (error) => {
             console.log(error);
         });
-        httpStory.get(`/story/all/${this.userSeq}`).then((result) => {
+        await httpStory.get(`/story/all/${this.userSeq}`).then((result) => {
             this.readStory = result.data.readStory;
             this.newStory = result.data.newStory;
             var temp = []
@@ -162,12 +174,38 @@ export default {
 </script>
 
 <style scoped>
+.notice {
+    text-align: start;
+    margin-top: 2%;
+    margin-left: 2.5%;
+    color: #82ACC1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.avatar-container {
+    width: 15%;
+    height: 30%;
+    overflow: hidden;
+    position: absolute;
+    top: 66%;
+    left: 42%;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
 .right-body {
     background-color: white;
     width: 62vw;
     height: 75vh;
     border: 1px solid #6A6A6A;
     border-radius: 15px;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .story {
@@ -246,10 +284,12 @@ export default {
 
 .room-container {
     width: 95%;
-    height: 37%;
-    border-radius: 5px;
+    height: 65%;
+    border-radius: 10px;
+    overflow: hidden;
     margin: 0 auto;
     margin-top: 5px;
+    position: relative;
 }
 
 .room {
@@ -274,4 +314,23 @@ export default {
     border: 1.5px solid #6A6A6A;
 
 }
+
+.right-body::-webkit-scrollbar {
+    /* width: 6px; */
+    display: none;
+    /*스크롤바의 너비*/
+}
+
+/* 
+.right-body::-webkit-scrollbar-thumb {
+    background-color: #A3A3A3;
+    border-radius: 3px;
+}
+
+.right-body::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 3px;
+    border: 1.5px solid #6A6A6A;
+
+} */
 </style>

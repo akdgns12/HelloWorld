@@ -1,9 +1,37 @@
 <script>
+// import http from '@/api/httpWithAccessToken'
 export default {
     props: {
         show: Boolean,
         date: String,
-        boardList: Array,
+        boardInfo: Array,
+    },
+    data() {
+        return {
+            userSeq: localStorage.getItem('user-seq'),
+            masterSeq: this.$route.params.userSeq, 
+        }
+    },
+    methods: {
+        mvBoard: function(e) {
+            e.preventDefault();
+            console.log(e.target.id);
+            this.$router.push(`/board/${this.masterSeq}/${e.target.id}`)
+        }
+    },  
+    async created() {
+        // if(this.boardList==null) {
+        //     return;
+        // }
+        // for(var i = 0; i < this.boardList.length; i++) {
+        //     await http.get(`/board?userSeq=${this.userSeq}&boardSeq=${this.boardList[i]}`).then((result) => {
+        //         this.boardInfo.push(result.data)
+        //         // console.log(result.data)
+        //     }, (error) => {
+        //         console.log(error)
+        //     })
+        // }
+
     }
 }
 </script>
@@ -17,8 +45,14 @@ export default {
                 </div>
                 <div class="modal-body">
                     <div class="board-list">
-                        <div class="board-element" v-for="(board, i) in boardList" :key="i">
-                            id가 {{ board }} 번인 글이 작성되었습니다
+                        <div class="board-element" v-for="(board, i) in this.boardInfo" :key="i" :id="`${board.boardSeq}`" @click="mvBoard">
+                            <div class="board-category" v-if="board.categorySeq==0" :id="`${board.boardSeq}`" @click="mvBoard">CS</div>
+                            <div class="board-category" v-if="board.categorySeq==1" :id="`${board.boardSeq}`" @click="mvBoard">Algorithm</div>
+                            <div class="board-category" v-if="board.categorySeq==2" :id="`${board.boardSeq}`" @click="mvBoard">Project</div>
+                            <div class="board-category" v-if="board.categorySeq==3" :id="`${board.boardSeq}`" @click="mvBoard">Language</div>
+                            <div class="board-category" v-if="board.categorySeq==4" :id="`${board.boardSeq}`" @click="mvBoard">Etc</div>
+                            <div class="board-title" :id="`${board.boardSeq}`" @click="mvBoard">{{board.title}}</div>
+                            <div class="board-create-time" :id="`${board.boardSeq}`" @click="mvBoard">{{ board.createTime.slice(11, 16) }}에 작성됨</div>
                         </div>
                     </div>
                     <div class="btn-list">
@@ -53,11 +87,36 @@ export default {
     border: 1px solid #D9D9D9;
     border-radius: 5px;
     margin: 0 auto;
-    margin-bottom: 2px;
-    text-align: center;
+    margin-bottom: 5px;
+    text-align: start;
     line-height: 50px;
+    display: flex;
 }
 
+.board-category {
+    width: 20%;
+    margin-left: 2%;
+    color: #6A6A6A;
+    font-size: 12px;
+    /* text-align: center; */
+}
+
+.board-title {
+    /* margin-left: 2%; */
+    width: 52%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.board-create-time {
+    width: 26%;
+    color: #6A6A6A;
+    font-size: 12px;
+}
 .board-list::-webkit-scrollbar {
     width: 8px;  /* 스크롤바의 너비 */
 }
@@ -65,7 +124,6 @@ export default {
 .board-list::-webkit-scrollbar-thumb {
     height: 20%; /* 스크롤바의 길이 */
     background: #6A6A6A; /* 스크롤바의 색상 */
-    
     border-radius: 10px;
 }
 

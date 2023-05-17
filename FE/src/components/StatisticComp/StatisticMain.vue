@@ -360,4 +360,5 @@ export default {
 
 .not-yet {
     filter: grayscale(100%);
+    opacity: 0.25;
 }</style>

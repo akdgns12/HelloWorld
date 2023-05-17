@@ -7,7 +7,7 @@
         </rect>
     </svg>
     <Teleport to="body">
-        <modal :show="showModal" @close="showModal = false" :date="date" :boardList="detailBoardList">
+        <modal :show="showModal" @close="showModal = false" :date="date" :boardInfo="boardInfo">
             <template #header>
                 <h3>custom header</h3>
             </template>
@@ -27,6 +27,7 @@ export default {
             date: null,
             detailBoardList: null,
             masterSeq: this.$route.params.userSeq,
+            boardInfo: [],
         }
     },
     created() {
@@ -41,7 +42,18 @@ export default {
             e.preventDefault();
             this.date = e.target.id;
             this.detailBoardList = await e.target.getAttribute("boardList").split(",");
-            console.log(this.detailBoardList);
+            if(this.detailBoardList[0].length !=0) {
+            for(var i = 0; i < this.detailBoardList.length; i++) {
+                
+            await http.get(`/board?userSeq=${this.masterSeq}&boardSeq=${this.detailBoardList[i]}`).then((result) => {
+                this.boardInfo.push(result.data)
+                // console.log(result.data)
+            }, (error) => {
+                console.log(error)
+            })
+        }
+    }
+            console.log(this.boardInfo);
             this.showModal = true;
         }
     }
