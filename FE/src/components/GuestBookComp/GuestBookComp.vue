@@ -42,7 +42,7 @@
                                     <button v-if="guestBook?.commentDto.userSeq == userSeq" class="commentDelete" @click="removeGuestBookComment(guestBook?.guestBookSeq,guestBook?.commentDto.guestBookCommentSeq)">삭제</button>
                                 </div>
                             </div>
-                            <div id = "guestBookComment"> 
+                            <div id = "guestBookComment" v-if="minihomeMaster === userSeq"> 
                                 <input type="text" class="comment" v-model="newComment[guestBook?.guestBookSeq]">
                                 <button class="commentCreate" @click="addGuestBookComment(newComment[guestBook?.guestBookSeq], guestBook?.guestBookSeq)">확인</button>
                             </div>
@@ -424,6 +424,7 @@ const goMainpage = (guestBookUserSeq) => {
         flex-direction: column;
         background-color: #F0F0F0;
         margin : 0 0.5rem;
+        padding : 1rem;
     }
 
     .guestBookCommentList_secret {
@@ -431,13 +432,13 @@ const goMainpage = (guestBookUserSeq) => {
         flex-direction: column;
         background-color: #FFEFD3;
         margin: 0 0.5rem;
+        padding : 1rem;
     }
 
     #guestBookCommentWrapper {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding-top : 1rem;
         margin : 0 1vw;
         padding-left : 3vw;
         font-size : 0.8rem;
@@ -446,7 +447,6 @@ const goMainpage = (guestBookUserSeq) => {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        padding : 1rem;
         margin : 0 1rem;
     }
     .comment {
