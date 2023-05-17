@@ -42,11 +42,15 @@
             </div>
             <div class="whole-alticles" v-if="this.searchState == true">
                 <div class="articles" id="guestBookList" v-for="oneRow in this.chunkedResult" :key="oneRow">
-                    <div class="article-container" v-for="article in oneRow" :key="article" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
+                    <div class="article-container" v-for="article in oneRow" :key="article" :boardSeq="`${article.id}`"
+                        :authorSeq="`${article.userSeq}`" @click="mvBoard">
                         <div class="represent-img-container">
                             <img class="represent-img" v-if="article.imageUrl == ''"
-                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard"/>
-                            <img class="represent-img" v-if="article.imageUrl != ''" :src="`${article.imageUrl}`" alt="대표이미지" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`"  @click="mvBoard"/>
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" :boardSeq="`${article.id}`"
+                                :authorSeq="`${article.userSeq}`" @click="mvBoard" />
+                            <img class="represent-img" v-if="article.imageUrl != ''" :src="`${article.imageUrl}`"
+                                alt="대표이미지" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`"
+                                @click="mvBoard" />
                         </div>
                         <div class="title" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
                             {{ article.title }}
@@ -58,15 +62,21 @@
                             {{ article.content }}
                         </div>
                         <hr width="92%">
-                        <div class="sticker-and-comment" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
-                            <div class="heart-icon-container" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
-                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard"/>
+                        <div class="sticker-and-comment" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`"
+                            @click="mvBoard">
+                            <div class="heart-icon-container" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`"
+                                @click="mvBoard">
+                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" :boardSeq="`${article.id}`"
+                                    :authorSeq="`${article.userSeq}`" @click="mvBoard" />
                             </div>
-                            <div class="heart-cnt" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">{{ article.likeCnt }}</div>
-                            <div class="comment-icon-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
-                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.userSeq}`" @click="mvBoard"/>
+                            <div class="heart-cnt" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`"
+                                @click="mvBoard">{{ article.likeCnt }}</div>
+                            <div class="comment-icon-container" :boardSeq="`${article.boardSeq}`"
+                                :authorSeq="`${article.userSeq}`" @click="mvBoard">
+                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글"
+                                    :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.userSeq}`" @click="mvBoard" />
                             </div>
-                            <div class="comment-cnt">{{ article.commentCnt}}</div>
+                            <div class="comment-cnt">{{ article.commentCnt }}</div>
                         </div>
                     </div>
                     <div class="article-container hidden" v-for="i in 4 - oneRow.length" :key="i" style="display: hidden;">
@@ -82,31 +92,46 @@
             </div>
             <div class="whole-alticles" v-if="this.searchState == false">
                 <div class="articles" id="guestBookList2" v-for="oneRow in this.chunkedResult2" :key="oneRow">
-                    <div class="article-container" v-for="article in oneRow" :key="article" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
-                        <div class="represent-img-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                    <div class="article-container" v-for="article in oneRow" :key="article"
+                        :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                        <div class="represent-img-container" :boardSeq="`${article.boardSeq}`"
+                            :authorSeq="`${article.writerSeq}`" @click="mvBoard">
                             <img class="represent-img" v-if="article.imgUrl == ''"
-                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard"/>
-                            <img class="represent-img" v-if="article.imgUrl != ''" :src="`${article.imgUrl}`" alt="대표이미지" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard"/>
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지"
+                                :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard" />
+                            <img class="represent-img" v-if="article.imgUrl != ''" :src="`${article.imgUrl}`" alt="대표이미지"
+                                :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard" />
                         </div>
-                        <div class="title" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                        <div class="title" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`"
+                            @click="mvBoard">
                             {{ article.title }}
                         </div>
-                        <div class="author" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                        <div class="author" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`"
+                            @click="mvBoard">
                             by {{ article.writer }}
                         </div>
-                        <div class="content" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                        <div class="content" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`"
+                            @click="mvBoard">
                             {{ article.content }}
                         </div>
                         <hr width="92%">
-                        <div class="sticker-and-comment" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
-                            <div class="heart-icon-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
-                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard" />
+                        <div class="sticker-and-comment" :boardSeq="`${article.boardSeq}`"
+                            :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                            <div class="heart-icon-container" :boardSeq="`${article.boardSeq}`"
+                                :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요"
+                                    :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`"
+                                    @click="mvBoard" />
                             </div>
-                            <div class="heart-cnt" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">{{ article.likeCnt }}</div>
-                            <div class="comment-icon-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
-                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard"/>
+                            <div class="heart-cnt" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`"
+                                @click="mvBoard">{{ article.likeCnt }}</div>
+                            <div class="comment-icon-container" :boardSeq="`${article.boardSeq}`"
+                                :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글"
+                                    :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`"
+                                    @click="mvBoard" />
                             </div>
-                            <div class="comment-cnt">{{ article.commentCnt}}</div>
+                            <div class="comment-cnt">{{ article.commentCnt }}</div>
                         </div>
                     </div>
                     <div class="article-container hidden" v-for="i in 4 - oneRow.length" :key="i" style="display: hidden;">
@@ -151,7 +176,7 @@ export default {
         }
     },
     methods: {
-        mvBoard: function(e) {
+        mvBoard: function (e) {
             e.preventDefault();
             this.$router.push(`/board/${e.target.getAttribute('authorSeq')}/${e.target.getAttribute('boardSeq')}`)
             // console.log(e.target.getAttribute('authorSeq'))
@@ -167,9 +192,11 @@ export default {
         search: async function (e) {
             e.preventDefault();
             this.searchState = true;
+            this.searchResult = [];
             this.searchKeyword = e.target.id;
             this.searchDecisionKeyword = e.target.id;
             this.value = 0;
+            this.busy = true;
             http.get(
                 `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${this.value}`
             ).then((response) => {
@@ -179,6 +206,12 @@ export default {
                 this.chunkedResult = this.chunk(this.searchResult, 4);
                 console.log(this.chunkedResult);
                 this.value += 1;
+                if(this.searchResult.length < 18) {
+                    this.busy = false;
+                }
+                else {
+                    this.busy = true;
+                }
             },
                 (error) => {
                     console.log(error);
@@ -187,37 +220,48 @@ export default {
         },
         searchWithKeyword: async function () {
             this.searchState = true;
+            this.searchResult = [];
             this.searchDecisionKeyword = this.searchKeyword;
             this.value = 0;
+            this.busy = true;
             http.get(
                 `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${this.value}`
             ).then((response) => {
                 this.searchResult = response.data;
                 this.chunkedResult = this.chunk(this.searchResult, 4);
                 this.value += 1;
-            },
-                (error) => {
-                    console.log(error);
-                }
-            );
-        },
-        loadMore: function () {
-            http.get(
-                `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${this.value}`
-            ).then((response) => {
-                console.log(response)
-                this.searchResult = this.searchResult.concat(response.data);  // 기존 데이터에 새로운 데이터 추가
-                this.busy = false;  // 데이터 로딩 상태 해제
-                this.value += 1;  // 다음 데이터를 가져오기 위해 start 값 증가
-                this.chunkedResult = this.chunk(this.searchResult, 4);
-                console.log(this.chunkedResult);
-            },
-                (error) => {
-                    console.log(error);
+                if(this.searchResult.length < 18) {
                     this.busy = false;
                 }
+                else {
+                    this.busy = true;
+                }
+            },
+                (error) => {
+                    console.log(error);
+                }
             );
         },
+        loadMore: async function () {
+            console.log(`HERE ${this.busy}`)
+            if (!this.busy) {
+                await http.get(
+                    `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${this.value}`
+                ).then((response) => {
+                    this.searchResult = this.searchResult.concat(response.data);  // 기존 데이터에 새로운 데이터 추가
+                    this.busy = false;  // 데이터 로딩 상태 해제
+                    this.value += 1;  // 다음 데이터를 가져오기 위해 start 값 증가
+                    this.chunkedResult = this.chunk(this.searchResult, 4);
+                    console.log(this.chunkedResult);
+                },
+                    (error) => {
+                        console.log(error);
+                        this.busy = false;
+                    }
+                );
+            }
+        },
+
         loadMore2: function () {
             console.log(this.value2)
             http.get(
@@ -483,5 +527,4 @@ export default {
     height: 12px;
     line-height: 19px;
     color: #6A6A6A;
-}
-</style>
+}</style>
