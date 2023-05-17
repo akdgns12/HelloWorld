@@ -163,14 +163,14 @@ public class BoardServiceImpl implements BoardService{
             board = Board.builder().user(newUser).build();
             matcher = ExampleMatcher.matching().withMatcher("user.userSeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withMatcher("categorySeq",ExampleMatcher.GenericPropertyMatchers.exact())
-                    .withIgnorePaths("boardSeq","title","content","categorySeq","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
+                    .withIgnorePaths("boardSeq","title","content","commentCnt","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
                             ,"grasses","stickers","bookMarks");
         }else{
             newUser = User.builder().userSeq(userSeq).build();
             board = Board.builder().user(newUser).categorySeq(categorySeq).build();
             matcher = ExampleMatcher.matching().withMatcher("user.userSeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withMatcher("categorySeq",ExampleMatcher.GenericPropertyMatchers.exact())
-                    .withIgnorePaths("boardSeq","title","content","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
+                    .withIgnorePaths("boardSeq","title","content","commentCnt","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
                             ,"grasses","stickers","bookMarks");
         }
 
