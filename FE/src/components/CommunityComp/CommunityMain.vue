@@ -36,48 +36,89 @@
                 </carousel>
             </div>
             <hr style="width: 96%; margin: 0 auto; margin-top: 5px;" />
-            <div style="display: flex; margin-left: 3%; height: 25px; margin-top: 5px;">
+            <div style="display: flex; margin-left: 3%; height: 25px; margin-top: 5px;" v-if="this.searchState == true">
                 <div style="font-weight: 600; font-size: 20px; line-height: 25px;">' {{ searchDecisionKeyword }} ' </div>
                 <div style="font-size: 15px; line-height: 25px;">&nbsp;&nbsp;에 대한 검색 결과입니다</div>
             </div>
-            <div class="whole-alticles" >
+            <div class="whole-alticles" v-if="this.searchState == true">
                 <div class="articles" id="guestBookList" v-for="oneRow in this.chunkedResult" :key="oneRow">
-                    <div class="article-container" v-for="article in oneRow" :key="article">
+                    <div class="article-container" v-for="article in oneRow" :key="article" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
                         <div class="represent-img-container">
                             <img class="represent-img" v-if="article.imageUrl == ''"
-                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" />
-                            <img class="represent-img" v-if="article.imageUrl != ''" src="article.imageUrl" alt="대표이미지" />
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard"/>
+                            <img class="represent-img" v-if="article.imageUrl != ''" :src="`${article.imageUrl}`" alt="대표이미지" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`"  @click="mvBoard"/>
                         </div>
-                        <div class="title">
+                        <div class="title" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
                             {{ article.title }}
                         </div>
-                        <div class="author">
+                        <div class="author" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
                             by {{ article.author }}
                         </div>
-                        <div class="content">
+                        <div class="content" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
                             {{ article.content }}
                         </div>
                         <hr width="92%">
-                        <div class="sticker-and-comment">
-                            <div class="heart-icon-container">
-                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" />
+                        <div class="sticker-and-comment" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
+                            <div class="heart-icon-container" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
+                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard"/>
                             </div>
-                            <div class="heart-cnt">{{ article.likeCnt }}</div>
-                            <!-- <div class="comment-icon-container">
-                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" />
+                            <div class="heart-cnt" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">{{ article.likeCnt }}</div>
+                            <div class="comment-icon-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
+                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.userSeq}`" @click="mvBoard"/>
                             </div>
-                            <div class="comment-cnt">12</div> -->
+                            <div class="comment-cnt">{{ article.commentCnt}}</div>
                         </div>
                     </div>
-                    <div class="article-container hidden" v-for="i in 4 - oneRow.length" :key="i" style="display: hidden;"> </div>
+                    <div class="article-container hidden" v-for="i in 4 - oneRow.length" :key="i" style="display: hidden;">
+                    </div>
                 </div>
                 <InfiniteLoading @infinite="loadMore" target="#guestBookList">
-                <template #no-more>
-                    <div class="infinite-end">
-                        검색 결과를 모두 불러왔습니다!
+                    <template #no-more>
+                        <div class="infinite-end">
+                            검색 결과를 모두 불러왔습니다!
+                        </div>
+                    </template>
+                </InfiniteLoading>
+            </div>
+            <div class="whole-alticles" v-if="this.searchState == false">
+                <div class="articles" id="guestBookList2" v-for="oneRow in this.chunkedResult2" :key="oneRow">
+                    <div class="article-container" v-for="article in oneRow" :key="article" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                        <div class="represent-img-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                            <img class="represent-img" v-if="article.imgUrl == ''"
+                                src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard"/>
+                            <img class="represent-img" v-if="article.imgUrl != ''" :src="`${article.imgUrl}`" alt="대표이미지" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard"/>
+                        </div>
+                        <div class="title" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                            {{ article.title }}
+                        </div>
+                        <div class="author" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                            by {{ article.writer }}
+                        </div>
+                        <div class="content" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                            {{ article.content }}
+                        </div>
+                        <hr width="92%">
+                        <div class="sticker-and-comment" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                            <div class="heart-icon-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                                <img class="heart-icon" src="@/assets/icon/heart.png" alt="좋아요" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard" />
+                            </div>
+                            <div class="heart-cnt" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">{{ article.likeCnt }}</div>
+                            <div class="comment-icon-container" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
+                                <img class="comment-icon" src="@/assets/icon/comment.png" alt="댓글" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard"/>
+                            </div>
+                            <div class="comment-cnt">{{ article.commentCnt}}</div>
+                        </div>
                     </div>
-                </template>
-            </InfiniteLoading>
+                    <div class="article-container hidden" v-for="i in 4 - oneRow.length" :key="i" style="display: hidden;">
+                    </div>
+                </div>
+                <InfiniteLoading @infinite="loadMore2" target="#guestBookList2">
+                    <template #no-more>
+                        <div class="infinite-end">
+                            검색 결과를 모두 불러왔습니다!
+                        </div>
+                    </template>
+                </InfiniteLoading>
             </div>
         </div>
     </div>
@@ -98,24 +139,34 @@ export default {
             topKeywords: [],
             searchKeyword: null,
             searchResult: [],
+            boardResult: [],
             searchDecisionKeyword: null,
             value: 0,
             busy: false,
             chunkedResult: [],
+            value2: 0,
+            busy2: false,
+            chunkedResult2: [],
+            searchState: false,
         }
     },
     methods: {
+        mvBoard: function(e) {
+            e.preventDefault();
+            this.$router.push(`/board/${e.target.getAttribute('authorSeq')}/${e.target.getAttribute('boardSeq')}`)
+            // console.log(e.target.getAttribute('authorSeq'))
+            // console.log(e.target.getAttribute('boardSeq'))
+        },
         chunk: function (data = [], size = 1) {
             const arr = [];
-
             for (let i = 0; i < data.length; i += size) {
                 arr.push(data.slice(i, i + size));
             }
-
             return arr;
         },
         search: async function (e) {
             e.preventDefault();
+            this.searchState = true;
             this.searchKeyword = e.target.id;
             this.searchDecisionKeyword = e.target.id;
             this.value = 0;
@@ -135,16 +186,14 @@ export default {
             );
         },
         searchWithKeyword: async function () {
+            this.searchState = true;
             this.searchDecisionKeyword = this.searchKeyword;
             this.value = 0;
             http.get(
                 `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${this.value}`
             ).then((response) => {
                 this.searchResult = response.data;
-                // this.searchResult.concat(response.data);
-                console.log(this.searchResult)
                 this.chunkedResult = this.chunk(this.searchResult, 4);
-                console.log(this.chunkedResult);
                 this.value += 1;
             },
                 (error) => {
@@ -156,6 +205,7 @@ export default {
             http.get(
                 `/board/searchByKeyword?keyword=${this.searchKeyword}&page=${this.value}`
             ).then((response) => {
+                console.log(response)
                 this.searchResult = this.searchResult.concat(response.data);  // 기존 데이터에 새로운 데이터 추가
                 this.busy = false;  // 데이터 로딩 상태 해제
                 this.value += 1;  // 다음 데이터를 가져오기 위해 start 값 증가
@@ -168,11 +218,27 @@ export default {
                 }
             );
         },
+        loadMore2: function () {
+            console.log(this.value2)
+            http.get(
+                `/board/board-list-all?start=${this.value2}&size=12`
+            ).then((response) => {
+                console.log(response.data.boardList)
+                this.boardResult = this.boardResult.concat(response.data.boardList);  // 기존 데이터에 새로운 데이터 추가
+                this.busy2 = false;  // 데이터 로딩 상태 해제
+                this.value2 += 1;  // 다음 데이터를 가져오기 위해 start 값 증가
+                this.chunkedResult2 = this.chunk(this.boardResult, 4);
+            },
+                (error) => {
+                    console.log(error);
+                    // this.busy2 = false;
+                }
+            );
+        },
     },
     created() {
         http.get(`/board/getTopTen`).then(
             (result) => {
-                // console.log(result.data)
                 this.topKeywords = result.data;
                 console.log(this.topKeywords);
             },
@@ -181,6 +247,14 @@ export default {
                 alert("인기 검색어 로드 실패!");
             }
         );
+        // http.get(`/board/board-list-all?start=${this.value2}&size=10`).then((result) => {
+        //     // this.value2 = 0;
+        //     this.boardResult = result.data.boardList;
+        //     this.chunkedResult2 = this.chunk(this.boardResult, 4);
+        //     this.value2 += 1;
+        // }, (error) => {
+        //     console.log(error)
+        // })
     }
 }
 
