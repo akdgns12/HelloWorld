@@ -9,6 +9,9 @@ import com.project.helloworld.security.oauth2.AuthProvider;
 import com.project.helloworld.util.Authority;
 import com.project.helloworld.security.SecurityUtil;
 import com.project.helloworld.util.S3Uploader;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -373,6 +376,49 @@ public class UserServiceImpl implements UserService{
                 .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
 
         return response.success("", "로그아웃이 성공했습니다.", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<?> getUserSearchByKeyword(UserRequestDto.UserSearchKeyword userSearchKeyword) throws Exception {
+        int type = userSearchKeyword.getType();
+        List<User> userList = new ArrayList<>();
+        String message = null;
+        switch (type){
+            case 1: // 이름 
+                userList = userRepository.findAllByName(userSearchKeyword.getKeyword());
+                message = "사용자 이름과 관련된 리스트 조회 성공";
+                break;
+            case 2: // 닉네임
+                userList = userRepository.findAllByNickname(userSearchKeyword.getKeyword());
+                message = "사용자 닉네임과 관련된 리스트 조회 성공";
+                break;
+            case 3: // 이메일
+                userList = userRepository.findAllByEmail(userSearchKeyword.getKeyword());
+                message = "사용자 이메일과 관련된 리스트 조회 성공";
+        }
+
+        if(userList.size() == 0){
+            return response.fail("Keyword에 해당하는 유저가 없습니다.",HttpStatus.NO_CONTENT);
+        }
+
+        UserResponseDto.UserSearchList userSearchList = new UserResponseDto.UserSearchList();
+        List<UserResponseDto.UserSearchList.SearchInfo> userSearchLists = new ArrayList<>();
+        for (User user : userList) {
+            int isFamily = familyService.getFamilyByUser(userSearchKeyword.getMasterSeq(), user.getUserSeq());
+
+            UserResponseDto.UserSearchList.SearchInfo searchInfo = UserResponseDto.UserSearchList.SearchInfo.builder()
+                    .userSeq(user.getUserSeq())
+                    .name(user.getName())
+                    .nickname(user.getNickname())
+                    .isFamily(isFamily)
+                    .avatarUrl(user.getAvatar().getImgUrl())
+                    .build();
+
+            userSearchLists.add(searchInfo);
+        }
+
+
+        return response.success(userSearchLists, message, HttpStatus.OK);
     }
 
 

@@ -4,7 +4,6 @@ import com.project.helloworld.dto.UserRequestDto;
 import com.project.helloworld.security.jwt.JwtAuthenticationFilter;
 import com.project.helloworld.security.jwt.JwtTokenProvider;
 import com.project.helloworld.service.UserService;
-import com.project.helloworld.service.VisitorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +58,14 @@ public class UserController {
         log.debug("tokenInfo", userSeq);
 
         return userService.getUserInfo(userSeq);
+    }
+
+    @ApiOperation(value = "유저 검색", notes = "masterSeq, 이름, 닉네임, 이메일 중 입력받아 조건에 맞게 검색")
+    @PostMapping("/search")
+    public ResponseEntity<?> getUserSearchByKeyword(@Validated @RequestBody UserRequestDto.UserSearchKeyword userSearchKeyword) throws Exception{
+        log.debug("searhUserKeyword ", userSearchKeyword);
+
+        return userService.getUserSearchByKeyword(userSearchKeyword);
     }
 
     @ApiOperation(value = "회원정보 수정", notes = "userSeq, name, nickName, comment, phoneNumber 입력받음")

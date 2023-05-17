@@ -57,6 +57,14 @@ public class UserRequestDto {
 
     @Getter
     @Setter
+    public static class UserSearchKeyword {
+        private int type;
+        private Long masterSeq;
+        private String keyword;
+    }
+
+    @Getter
+    @Setter
     public static class ChangePassword{
         private Long userSeq;
         private String originPassword;

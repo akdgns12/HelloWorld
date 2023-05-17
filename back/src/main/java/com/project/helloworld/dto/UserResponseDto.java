@@ -1,16 +1,18 @@
 package com.project.helloworld.dto;
 
-import com.project.helloworld.domain.Avatar;
+import com.project.helloworld.domain.User;
 import com.project.helloworld.dto.response.BgmList;
 import com.project.helloworld.dto.response.GrassResponse;
 import com.project.helloworld.security.oauth2.AuthProvider;
+import com.project.helloworld.service.FamilyService;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class UserResponseDto {
 
     @Getter
@@ -47,6 +49,21 @@ public class UserResponseDto {
         private String bgmUrl;
         private int isFamily;
         private List<BgmList> bgmList;
+    }
+
+    public static class UserSearchList{
+        private List<SearchInfo> userSearchList;
+
+        @Getter
+        @Setter
+        @Builder
+        public static class SearchInfo{
+            private Long userSeq;
+            private String name;
+            private String nickname;
+            private String avatarUrl;
+            private int isFamily;
+        }
     }
 
     @Getter

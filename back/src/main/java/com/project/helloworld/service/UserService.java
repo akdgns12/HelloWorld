@@ -22,4 +22,5 @@ public interface UserService {
     ResponseEntity<?> certifiedPhoneNumber(String phoneNumber) throws Exception;
     ResponseEntity<?> confirmMessage(UserRequestDto.SmsCertify smsCertify) throws Exception;
     ResponseEntity<?> logout(UserRequestDto.Logout logout) throws Exception;
+    ResponseEntity<?> getUserSearchByKeyword(UserRequestDto.UserSearchKeyword userSearchKeyword) throws Exception;
 }
