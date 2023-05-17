@@ -15,7 +15,8 @@
                             <span class="author">{{ board.writerNickname }}</span>
                             <span class="createdTime">{{ board?.updateTime?.slice(0, 10) }}</span>
                         </div>
-                        <img class="menu_dots" src="@/assets/icon/drop_dots.png" alt="" @click="onContextMenu($event,board?.writerSeq,board?.boardSeq, board?.bookMarkSeq)" style="cursor: pointer;">
+                        <img v-if="userSeq === minihomeMaster" class="menu_dots" src="@/assets/icon/drop_dots.png" alt="" @click="onContextMenu($event,board?.writerSeq,board?.boardSeq, board?.bookMarkSeq)" style="cursor: pointer;">
+                        <img v-else class="menu_dots" src="@/assets/icon/drop_dots.png" alt="" @click="onContextMenuNo($event,board?.writerSeq,board?.boardSeq)" style="cursor: pointer;">
                     </div>
                     <div class="title">{{ board?.title?.length > 22 ? board?.title?.slice(0, 22) + '...' : board?.title }}</div>
                     <div class="content">
@@ -30,9 +31,10 @@
 <script setup>
 import UserTitleComp from "../BasicComp/UserTitleComp.vue";
 import axios from 'axios';
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, computed } from 'vue';
 import ContextMenu from '@imengyu/vue3-context-menu';
 import { router } from "@/router";
+import { useRoute } from 'vue-router';
 
 const headers = {
     "Content-Type" : "application/json;charset=utf-8",
@@ -42,9 +44,11 @@ const baseURL = "https://k8a308.p.ssafy.io/api";
 
 const boards = ref([]);
 const userSeq = ref(`${localStorage.getItem("user-seq")}`);
+const route = useRoute();
+const minihomeMaster = computed(() => route.params.userSeq);
 
 const getBookmarks = () => {
-    axios.get(`${baseURL}/bookmark?user=${userSeq.value}`, {headers})
+    axios.get(`${baseURL}/bookmark?user=${minihomeMaster.value}`, {headers})
     .then(response => {
         console.log(response);
         boards.value = response.data;
@@ -78,6 +82,26 @@ const onContextMenu = (event, writerSeq, boardSeq, bookmarkSeq) => {
                     .catch(error => {
                         console.error(error);
                     })
+            }
+        }
+    ]
+    ContextMenu.showContextMenu({
+        items : menuItems,
+        zIndex : 3,
+        minWidth : 100,
+        maxWidth : 100,
+        x : event.pageX,
+        y : event.pageY
+    });
+}
+
+const onContextMenuNo = (event, writerSeq, boardSeq) => {
+    event.preventDefault();
+    const menuItems = [
+        {
+            label : '바로가기',
+            onClick : () => {
+                router.push(`/board/${writerSeq}/${boardSeq}`)
             }
         }
     ]
