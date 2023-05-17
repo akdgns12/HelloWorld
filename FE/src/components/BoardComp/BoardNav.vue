@@ -5,13 +5,13 @@
             <div id="title">게시글</div>
             <hr>
             <div id="category">
-                <div id = "Allcategory" :class="{ active: selectedCategory === 'all' }"
-                @click="handleClick('all')" style="cursor: pointer;">
+                <div id = "Allcategory" :class="{ active: selectedCategory === 0 }"
+                @click="handleClick(0)" style="cursor: pointer;">
                     전체보기
                 </div>
-                <div v-for="category in categories" :key="category.id">
-                    <img src="../../assets/icon/folder.png" alt="" v-if="category.id != 5">
-                    <img src="../../assets/icon/share.png" alt="" v-if="category.id === 5">
+                <div v-for="category in categories.slice(1)" :key="category.id">
+                    <img src="../../assets/icon/folder.png" alt="" v-if="category.id != 6">
+                    <img src="../../assets/icon/share.png" alt="" v-else>
                     <p :class="{ active: selectedCategory === category.id }"
                     @click="handleClick(category.id)" style="cursor: pointer;">{{ category.name }}</p>
                 </div>
@@ -35,12 +35,13 @@ export default {
 
         const selectedCategory = ref('all');
         const categories = [
-            {id : 0, name : 'CS'},
-            {id : 1, name : 'Algorithm'},
-            {id : 2, name : 'Project'},
-            {id : 3, name : 'Language'},
-            {id : 4, name : 'Etc'},
-            {id : 5, name : 'Share'},
+            {id : 0, name : 'all'},
+            {id : 1, name : 'CS'},
+            {id : 2, name : 'Algorithm'},
+            {id : 3, name : 'Project'},
+            {id : 4, name : 'Language'},
+            {id : 5, name : 'Etc'},
+            {id : 6, name : 'Share'},
         ];
         const emits = getCurrentInstance().emit;
 

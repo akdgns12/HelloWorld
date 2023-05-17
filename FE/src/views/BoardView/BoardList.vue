@@ -4,7 +4,7 @@
             <BoardNav @category-selected="selectCategory"/>
             <div>
                 <div id = "MainBoard">
-                    <div v-if="selectedCategory === 5 || categoryNameIndex === 5">
+                    <div v-if="selectedCategory === 6 || categoryNameIndex === 6">
                         <BoardShareList />
                     </div>
                     <div v-else>
@@ -22,29 +22,26 @@ import BoardNav from "@/components/BoardComp/BoardNav.vue";
 import BoardListComp from "@/components/BoardComp/BoardListComp.vue";
 import CategoryNav from "@/components/BasicComp/CategoryNav.vue";
 import BoardShareList from "@/components/BoardComp/BoardShareList.vue";
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default {
     components : { BoardNav, BoardListComp, BoardShareList, CategoryNav},
     setup() {
-
         const route = useRoute();
         const categoryName = computed(() => route.params.category);
-        const categoryList = ["CS", "Algorithm", "Project", "Language", "Etc", "Share"];
+        const category = categoryName.value;
+        const categoryList = ["all", "CS", "Algorithm", "Project", "Language", "Etc", "Share"];
         const categoryNameIndex = computed(() => {
             return categoryList.findIndex((item) => item === categoryName.value);
         });
 
-        const selectedCategory = ref('all');
-        console.log(selectedCategory);
-        const selectCategory = (category) => {
-            selectedCategory.value = category;
-        };
+        const selectedCategory = categoryNameIndex;
         return {
+            categoryName,
+            category,
             categoryNameIndex,
-            selectedCategory,
-            selectCategory
+            selectedCategory
         }
     }
 };

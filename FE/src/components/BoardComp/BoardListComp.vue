@@ -3,7 +3,7 @@
         <UserTitleComp />
         <div class="boardWrapper">
             <div id = "categoryinfo">
-                <p id = "folder">[{{ category == 'all' ? "전체보기" : categoryName[category] }}]</p>
+                <p id = "folder">[{{ category == 0 ? "전체보기" : categoryName[category] }}]</p>
                 <p style="font-size:0.9rem"> 폴더입니다</p>
                 <p id = "cnt">({{ pageCnt }})</p>
             </div>
@@ -61,7 +61,7 @@ import { router } from '@/router';
 import axios from "axios";
 
 const route = useRoute();
-const categoryName = ["CS", "Algorithm", "Project", "Language", "Etc"];
+const categoryName = ["all", "CS", "Algorithm", "Project", "Language", "Etc"];
 const createUser = `${localStorage.getItem("user-seq")}`;
 const minihomeMaster = computed(() => route.params.userSeq);
 const userSeq = localStorage.getItem('user-seq');
@@ -82,7 +82,7 @@ const goDetail = (boardSeq) => {
 }
 
 const props = defineProps({
-    category : String,
+    category : Number,
 });
 
 console.log(props);
@@ -147,7 +147,7 @@ const updatePageList = () => {
 }
 
 const getBoardList = () => {
-    if (props.category === 'all') {
+    if (props.category == 0) {
         axios.get(`${baseURL}/board/board-list-by-user`, {headers,
         params : {
             userSeq : minihomeMaster.value,
@@ -155,6 +155,7 @@ const getBoardList = () => {
             size: 10
         }})
         .then (response => {
+            console.log(response);
             pageCnt.value = response.data.boardCount;
             totalPage.value = Math.floor(pageCnt.value / 10) + 1;
             boards.value = response.data.boardList;
@@ -167,18 +168,19 @@ const getBoardList = () => {
         alert("게시글을 불러오지 못했습니다");
     })
     } else {
-        const categoryId = props.category;
+        const categoryId = Number(props.category);
         axios.get(`${baseURL}/board/board-list-by-user`, {headers,
             params : {
                 userSeq : minihomeMaster.value,
                 start : currentPage.value,
                 size : 10,
-                categorySeq : categoryId
+                categorySeq : categoryId - 1
             }
         })
         .then (response => {
+            console.log(response);
             pageCnt.value = response.data.boardCount;
-            totalPage.value = Math.floor(pageCnt.value / 10) + 1
+            totalPage.value = pageCnt.value / 10;
             boards.value = response.data.boardList;
 
             updatePageButtons();
@@ -287,6 +289,7 @@ watch(() => props.category, () => {
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        margin-top : 2rem;
     }
     .page-link-img {
         width : 0.8rem;
