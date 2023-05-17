@@ -28,16 +28,27 @@ public class BoardDocument {
   @Field(type = FieldType.Text)
   private String imageUrl;
 
+  @Builder.Default
   @Field(type = FieldType.Integer)
-  private int likeCnt;
+  private int likeCnt = 0;
 
   @Field(type = FieldType.Text)
   private String createTime;
+
+  @Field(type = FieldType.Long)
+  private Long userSeq;
+
+  @Field(type = FieldType.Text)
+  private String nickname;
 
   @Field(type = FieldType.Text)
   private String modifiedTime;
 
   @Field(type = FieldType.Long)
   private Long boardSeq;
+
+  @Builder.Default
+  @Field(type = FieldType.Long)
+  private Integer commentCnt = 0;
 
 }
