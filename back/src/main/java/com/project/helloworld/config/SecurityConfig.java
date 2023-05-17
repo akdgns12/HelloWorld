@@ -127,6 +127,7 @@ public class SecurityConfig {
         configuration.addAllowedOrigin("http://localhost:8081");
         configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("https://k8a308.p.ssafy.io");
+        configuration.addAllowedOrigin("https://k8a308.p.ssafy.io/api");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
