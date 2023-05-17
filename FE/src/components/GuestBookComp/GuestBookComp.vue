@@ -39,7 +39,7 @@
                                 <div class="commentOne">
                                     <p style="color : #4689aa; font-weight : bold;">{{ guestBook?.commentDto.nickname }}</p>
                                     <p style="padding : 0 1rem;">{{ guestBook?.commentDto.content }}</p>
-                                    <button v-if="guestBook?.commentDto.userSeq === userSeq" class="commentDelete" @click="removeGuestBookComment(guestBook?.guestBookSeq,guestBook?.commentDto.guestBookCommentSeq)">삭제</button>
+                                    <button v-if="guestBook?.commentDto.userSeq == userSeq" class="commentDelete" @click="removeGuestBookComment(guestBook?.guestBookSeq,guestBook?.commentDto.guestBookCommentSeq)">삭제</button>
                                 </div>
                             </div>
                             <div id = "guestBookComment"> 
@@ -274,14 +274,7 @@ const addGuestBookComment = (newCommentValue, guestBookSeq) => {
         .post(`${baseURL}/guestbook/comment/${guestBookSeq}`, requestDto, {headers})
         .then(response => {
             console.log(response.data);
-            axios.get(`${baseURL}/guestbook?userSeq=${minihomeMaster.value}&start=${start.value}&size=${size.value}`,{headers})
-            .then(response => {
-                guestBooks.value = response.data;
-            })
-            .catch(error => {
-                console.error(error);
-                alert("댓글을 불러올 수 없습니다!");
-            })
+            getGuestBooks();
         })
         .catch(error => {
             console.error(error);
