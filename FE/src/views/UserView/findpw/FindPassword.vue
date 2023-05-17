@@ -1,6 +1,26 @@
 <script>
+import http from '@/api/http'
 export default {
     name: 'FindPassword',
+    methods: {
+        sendEmail: async function() {
+            console.log(this.email)
+            var info = {
+                "email": this.email,
+                "message": "HI I AM SSONGHEEEEEEEEEEEEEEE!!!!",
+            }
+            await http.post(`/user/email-certification/sends`, JSON.stringify(info)).then((result) => {
+                console.log(result);
+            }, (error) => {
+                console.log(error);
+            })
+        }
+    },
+    data() {
+        return {
+            email: null,
+        }
+    }
 }
 </script>
 
@@ -17,10 +37,10 @@ export default {
         <form>
             <div class="email-container">
                 <div class="email">이메일</div>
-                <input class="email-input" type="email" />
+                <input class="email-input" type="email" v-model="email"/>
             </div>
         </form>
-        <button class="get-new-pw-btn">임시 비밀번호 발급받기</button>
+        <button class="get-new-pw-btn" @click="sendEmail">임시 비밀번호 발급받기</button>
         <div class="other-option">
             <router-link to="/"><div class="login">로그인</div></router-link>
             <div>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
