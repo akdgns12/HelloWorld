@@ -44,7 +44,7 @@ export default {
                 const requestDto = {
                     "type" : 4,
                     "typeSeq" : this.masterSeq,
-                    "title" : `[일촌수락] ${this.myNickname}님이 일촌수락을 했습니다`,
+                    "title" : `${this.myNickname}님이 일촌수락을 했습니다`,
                     "content" : "일촌수락",
                     "receiveUserSeq" : this.masterSeq
                 }

@@ -12,11 +12,11 @@
                 <div class="boardFooter">
                     <div class="checkSticker" v-if="board && board.sticker">
                         <div class="sticker" v-if="board.userSeq !== userSeq">
-                            <img src="@/assets/boardIcon/heart.png" alt="heart" v-if="board.sticker[0] === true" @click="toggleSticker(0)">
+                            <img src="@/assets/boardIcon/heart.png" alt="heart" v-if="board.sticker[0] == true" @click="toggleSticker(0)">
                             <img src="@/assets/boardIcon/heart_no.png" alt="heart_no" v-else @click="toggleSticker(0)">
-                            <img src="@/assets/boardIcon/help.png" alt="plus" v-if="board.sticker[1] === true" @click="toggleSticker(1)">
+                            <img src="@/assets/boardIcon/help.png" alt="plus" v-if="board.sticker[1] == true" @click="toggleSticker(1)">
                             <img src="@/assets/boardIcon/help_no.png" alt="plus_no" v-else @click="toggleSticker(1)">
-                            <img src="@/assets/boardIcon/bulb.png" alt="idea" v-if="board.sticker[2] === true" @click="toggleSticker(2)">
+                            <img src="@/assets/boardIcon/bulb.png" alt="idea" v-if="board.sticker[2] == true" @click="toggleSticker(2)">
                             <img src="@/assets/boardIcon/bulb_no.png" alt="idea_no" v-else @click="toggleSticker(2)">
                         </div>
                     </div>
@@ -56,7 +56,7 @@ const content = ref(``);
 const board = ref({});
 
 const route = useRoute();
-const minihomeMaster = computed(() => route.params.userSeq);
+//const minihomeMaster = computed(() => route.params.userSeq);
 const boardSeq = computed(() => route.params.boardSeq);
 const baseUrl = `https://k8a308.p.ssafy.io/api`;
 const headers = {
@@ -78,7 +78,7 @@ const formatDate = (dateString) => {
 };
 
 const getBoardDetail = () => {
-    axios.get(`${baseUrl}/board?userSeq=${minihomeMaster.value}&boardSeq=${boardSeq.value}`,{headers})
+    axios.get(`${baseUrl}/board?userSeq=${userSeq}&boardSeq=${boardSeq.value}`,{headers})
     .then((response) => {
         console.log(response.data);
         board.value = response.data;
@@ -150,12 +150,6 @@ const toggleSticker = (index) => {
             .catch(error => {
                 console.error(error);
             })
-        // axios
-        //     .delete(`${baseUrl}/board/sticker`, {data : requestDto }, {headers})
-        //     .then(response => {
-        //         console.log(response);
-        //         board.value.sticker[index] = false;
-        //     })
             
     } else {
         axios
