@@ -19,7 +19,12 @@ public class familyController {
     private final FamilyService familyService;
 
     private final JwtTokenProvider jwtTokenProvider;
+    // 하나의 family 조회
+    @GetMapping("/one")
+    ResponseEntity<?> getFamily(@RequestParam("fromUserSeq") Long fromUserSeq,@RequestParam("toUserSeq") Long toUserSeq) throws Exception {
 
+        return ResponseEntity.ok().body(familyService.getFamily(fromUserSeq,toUserSeq));
+    }
     // 일촌 조회
     @GetMapping("")
       ResponseEntity<?> getFamilies(@RequestParam("userSeq") Long userSeq,@RequestParam("status") String status,@RequestParam("hasComment") Boolean hasComment) throws Exception {

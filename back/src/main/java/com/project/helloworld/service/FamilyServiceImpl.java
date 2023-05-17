@@ -8,6 +8,7 @@ import com.project.helloworld.dto.GuestBookDto;
 import com.project.helloworld.dto.MessageResponse;
 import com.project.helloworld.dto.request.FamilyCommentBody;
 import com.project.helloworld.dto.request.FamilyNameBody;
+import com.project.helloworld.dto.response.FamilyResponse;
 import com.project.helloworld.repository.FamilyRepository;
 import com.project.helloworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -68,9 +69,12 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public ResponseEntity<?> getFamily(Long familySeq) throws Exception {
-        Family family = familyRepository.findById(familySeq).orElseThrow(() -> new Exception("not exist user : " + familySeq));
-        return ResponseEntity.ok().body(family);
+    public ResponseEntity<?> getFamily(Long fromUserSeq, Long toUserSeq ) throws Exception {
+        Family family = familyRepository.findFamilyByUsers(fromUserSeq,toUserSeq).orElseThrow(() -> new Exception("not exist family"));
+        Family familyReverse = familyRepository.findFamilyByUsers(toUserSeq,fromUserSeq).orElseThrow(()-> new Exception("not exist family"));
+        FamilyResponse familyResponse = FamilyResponse.builder().fromNickName(family.getUser().getNickname()).fromRelationName(family.getRelationName())
+                .toNickName(familyReverse.getUser().getNickname()).toRelationName(familyReverse.getRelationName()).requestMessage(family.getRequestMessage()).build();
+        return ResponseEntity.ok().body(familyResponse);
     }
 
     @Override
@@ -87,15 +91,24 @@ public class FamilyServiceImpl implements FamilyService {
     // 반대도 저장
     @Override
     public ResponseEntity<?> requestFamily(Long userSeq, Long toUserSeq,String fromRelationName,String toRelationName,String requestMessage) throws Exception {
+        // 여기서 , 반대쪽 짝대기는 불가능 하도록 만들어라
+        if(familyRepository.findFamilyByUsers(toUserSeq,userSeq).isPresent()){
+            HashMap<String,String> map = new HashMap<>(){{
+               put("message","친구 요청 불가능 합니다.");
+            }};
+            return ResponseEntity.ok().body(map);
+        }
+
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : " + userSeq));
         User userReverse = userRepository.findById(toUserSeq).orElseThrow(() -> new Exception("not exist user: " + toUserSeq));
         Family family = Family.builder().relationName(fromRelationName).isAccepted(1).user(user).familyUser(userReverse).requestMessage(requestMessage).
-                build();
+        familyUserNickname(userReverse.getNickname()).build();
         Family newFamilySaved = familyRepository.save(family);
         // 반대방향도 저장
 
 
-        Family familyReverse = Family.builder().relationName(toRelationName).isAccepted(0).user(userReverse).familyUser(user).requestMessage(requestMessage).build();
+        Family familyReverse = Family.builder().relationName(toRelationName).isAccepted(0).user(userReverse).familyUser(user).requestMessage(requestMessage)
+                .familyUserNickname(user.getNickname()).build();
        familyRepository.save(familyReverse);
         MessageResponse messageResponse = MessageResponse.builder().type(3).typeSeq(newFamilySaved.getFamilySeq())
                 .title(newFamilySaved.getUser().getName()+"님이 친구 요청을 하였습니다.").content(newFamilySaved.getRequestMessage())
@@ -107,7 +120,7 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public ResponseEntity<?> acceptFamily(Long fromUserSeq,Long toUserSeq) throws Exception {
         // 정방향 수락
-        Family family = familyRepository.findFamilyByUsers(fromUserSeq,toUserSeq);
+        Family family = familyRepository.findFamilyByUsers(fromUserSeq,toUserSeq).orElseThrow(() ->new Exception("not exist family"));
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                 .relationName(family.getRelationName()).relationComment(family.getRelationComment())
                 .familyUser(family.getFamilyUser()).isAccepted(2).familyUserNickname(family.getFamilyUserNickname())
@@ -116,7 +129,7 @@ public class FamilyServiceImpl implements FamilyService {
         Family newFamilySaved = familyRepository.save(newFamily);
         // 반대 방향
 
-        Family familyReverse = familyRepository.findFamilyByUsers(toUserSeq,fromUserSeq);
+        Family familyReverse = familyRepository.findFamilyByUsers(toUserSeq,fromUserSeq).orElseThrow(() -> new Exception("not exist family"));
         Family newFamilyReverse = family.builder().familySeq(familyReverse.getFamilySeq())
                         .relationName(familyReverse.getRelationName()).relationComment(familyReverse.getRelationComment())
                 .familyUser(familyReverse.getFamilyUser()).isAccepted(2).familyUserNickname(familyReverse.getFamilyUserNickname())
@@ -134,9 +147,9 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public ResponseEntity<?> deleteFamily(Long fromUserSeq, Long toUserSeq) throws Exception {
 //        Family family = familyRepository.findById(familySeq).orElseThrow(() ->new Exception("not exist family relation : "+familySeq));
-        Family family = familyRepository.findFamilyByUsers(fromUserSeq,toUserSeq);
+        Family family = familyRepository.findFamilyByUsers(fromUserSeq,toUserSeq).orElseThrow(() -> new Exception("not exist family"));
 
-        Family familyReverse = familyRepository.findFamilyByUsers(toUserSeq,fromUserSeq);
+        Family familyReverse = familyRepository.findFamilyByUsers(toUserSeq,fromUserSeq).orElseThrow(() -> new Exception("not exist family"));
         // 정방향
         familyRepository.delete(family);
         // 역방향
@@ -149,7 +162,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public ResponseEntity<?> updateFamilyRelationComment(FamilyCommentBody familyCommentBody) throws Exception {
-        Family family = familyRepository.findFamilyByUsers(familyCommentBody.getFromUserSeq(),familyCommentBody.getToUserSeq());
+        Family family = familyRepository.findFamilyByUsers(familyCommentBody.getFromUserSeq(),familyCommentBody.getToUserSeq()).orElseThrow(() -> new Exception("not exist family"));
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                 .relationName(family.getRelationName()).relationComment(familyCommentBody.getComment())
                 .familyUser(family.getFamilyUser()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())
@@ -165,7 +178,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public ResponseEntity<?> updateFamilyRelationName(FamilyNameBody familyNameBody) throws Exception {
-        Family family = familyRepository.findFamilyByUsers(familyNameBody.getFromUserSeq(),familyNameBody.getToUserSeq());
+        Family family = familyRepository.findFamilyByUsers(familyNameBody.getFromUserSeq(),familyNameBody.getToUserSeq()).orElseThrow(() -> new Exception("not exist family"));
         Family newFamily = family.builder().familySeq(family.getFamilySeq())
                         .relationName(familyNameBody.getName()).relationComment(family.getRelationComment())
                         .familyUser(family.getFamilyUser()).isAccepted(family.getIsAccepted()).familyUserNickname(family.getFamilyUserNickname())

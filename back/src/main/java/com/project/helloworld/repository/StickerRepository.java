@@ -11,8 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StickerRepository extends JpaRepository<Sticker,Long> {
-    @Query(value="SELECT * FROM sticker where user_seq = :userSeq and board_seq = :boardSeq and type=:type;", nativeQuery = true)
-    Sticker stickerByBoardAndUser(@Param("userSeq") Long userSeq,@Param("boardSeq") Long boardSeq, @Param("type") Integer type);
+    @Query(value="SELECT * FROM sticker where user_seq = :userSeq and board_seq = :boardSeq and type=:type", nativeQuery = true)
+    Optional<Sticker> stickerByBoardAndUser(@Param("userSeq") Long userSeq, @Param("boardSeq") Long boardSeq, @Param("type") Integer type);
 }

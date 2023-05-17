@@ -11,7 +11,7 @@ public interface FamilyService {
 
     public ResponseEntity<?> getFamilies(Long userSeq,String status,Boolean hasComment) throws Exception;
 
-    public ResponseEntity<?> getFamily(Long familySeq) throws Exception;
+    public ResponseEntity<?> getFamily(Long fromUserSeq, Long toUserSeq) throws Exception;
 
     public Integer getFamilyByUser(Long fromUserSeq,Long toUserSeq ) throws Exception;
 

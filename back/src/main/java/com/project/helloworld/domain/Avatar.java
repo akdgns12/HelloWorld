@@ -29,7 +29,7 @@ public class Avatar extends BaseTimeEntity {
   @Column(name = "img_url")
   private String imgUrl;
 
-  @JsonIgnore
+ @JsonIgnore
   @OneToOne(mappedBy = "avatar")
   private User user;
 

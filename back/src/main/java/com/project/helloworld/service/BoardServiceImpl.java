@@ -403,7 +403,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public MessageResponse removeSticker(StickerRequest stickerRequest) throws Exception {
-        Sticker sticker = stickerRepository.stickerByBoardAndUser(stickerRequest.getUserSeq(),stickerRequest.getBoardSeq(),stickerRequest.getType());
+        Sticker sticker = stickerRepository.stickerByBoardAndUser(stickerRequest.getUserSeq(),stickerRequest.getBoardSeq(),stickerRequest.getType()).orElseThrow(()-> new Exception("not exist sticker"));
         Board board = boardRepository.findById(sticker.getBoard().getBoardSeq()).orElseThrow(() -> new Exception("not exist board : "+sticker.getBoard().getBoardSeq()));
 
         stickerRepository.delete(sticker);
