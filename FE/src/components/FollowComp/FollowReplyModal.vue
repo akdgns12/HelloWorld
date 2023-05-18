@@ -52,7 +52,7 @@ export default {
                     "Content-Type": "application/json;charset=utf-8",
                     Authorization: `Bearer ${localStorage.getItem("access-token")}`,
                 };
-                axios.post("https://k8a308.p.ssafy.io/notify/", requestDto, {headers});
+                axios.post(`https://k8a308.p.ssafy.io/notify/`, requestDto, {headers});
                 this.$emit('close')
                 window.location.reload();
             }, (error) => {

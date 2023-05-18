@@ -38,7 +38,7 @@
                         <div v-else-if="notification?.type === 3" class="changeRead"
                             @click="putNotification(notification?.notifySeq, 3, notification?.typeSeq)">
                             <span class="type" style="border:3px solid #55CBCD">신</span>
-                            <span>{{ notificaiton?.title }}</span>
+                            <span>{{ notification?.title }}</span>
                             <span class="date">
                                 <timeago :datetime="notification.createdTime" auto-update />
                             </span>
