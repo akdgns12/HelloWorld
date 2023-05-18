@@ -53,17 +53,16 @@ export default {
         }
     },
     async mounted() {
-        await http.get(`/family?userSeq=${this.masterSeq}&status=accepted&hasComment=true`).then((result) => {
-            // console.log(result.data.body)
-            console.log(result.data.body)
-            this.family=result.data.body;
-        }, (error) => {
-            console.log(error)
-        });
+        // await http.get(`/family?userSeq=${this.masterSeq}&status=accepted&hasComment=true`).then((result) => {
+        //     // console.log(result.data.body)
+        //     console.log(`status accepted!! comment true!! ${result.data.body}`)
+        //     this.family=result.data.body;
+        // }, (error) => {
+        //     console.log(error)
+        // });
         await http.get(`/family?userSeq=${this.masterSeq}&status=accepted&hasComment=false`).then((result) => {
             // var temp = result.data.body;
-            console.log(result.data.body)
-            this.family.concat(result.data.body);
+            this.family = result.data.body;
             // this.chunkedResult = this.chunk(this.family, 4);
         }, (error) => {
             console.log(error)
