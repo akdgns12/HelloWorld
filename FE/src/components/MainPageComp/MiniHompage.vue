@@ -138,10 +138,10 @@ export default {
             if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 10 || result.data.data.today > 10) {
                 this.roomNum = 2;
             }
-            else if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 100 || result.data.data.today > 100) {
+            if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 100 || result.data.data.today > 100) {
                 this.roomNum = 3;
             }
-            else if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 500 || result.data.data.today > 500) {
+            if (result.data.data.likeCnt + result.data.data.understandCnt + result.data.data.helpfulCnt > 500 || result.data.data.today > 500) {
                 this.roomNum = 4;
             }
         }, (error) => {
