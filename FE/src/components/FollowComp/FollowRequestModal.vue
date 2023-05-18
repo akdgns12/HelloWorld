@@ -33,12 +33,19 @@ export default {
             //     "content": "일촌 신청이 왔어요",
             //     "receiveUserSeq": this.masterSeq,
             // }
-            const headers = {
-                "Content-Type": "application/json;charset=utf-8",
-                Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-            };
             http.post(`/family`, JSON.stringify(info)).then((response) => {
-                axios.post(`https://k8a308.p.ssafy.io/notify/`, response.data, {headers});
+                const requestDto = {
+                    "type" : 3,
+                    "typeSeq" : this.masterSeq,
+                    "title" : `${this.myNickname}님이 일촌신청을 했습니다`,
+                    "content" : "일촌신청",
+                    "receiveUserSeq" : this.masterSeq
+                }
+                const headers = {
+                    "Content-Type": "application/json;charset=utf-8",
+                    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+                };
+                axios.post("https://k8a308.p.ssafy.io/notify/", requestDto, {headers});
                 this.$emit('close');
                 window.location.reload();
                 console.log(response.data)

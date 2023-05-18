@@ -4,8 +4,7 @@
         <div class="right-body">
             <div class="story">
                 <div class="select-story">
-                    <!-- {{ this.story }} -->
-                    <splide :options="options" class="slider">
+                    <splide :options="options" class="slider" v-if="this.story[0]==[]">
                         <splide-slide class="splide-slide" v-for="stories in this.story" :key="stories">
                             <div class="one-slide" v-for="oneStory in stories" :key="oneStory">
                                 <div :class="`story-element-container-${oneStory.storySeq} isRead_${oneStory.isRead} story-element-container`"
@@ -24,6 +23,9 @@
                             </div>
                         </splide-slide>
                     </splide>
+                    <div v-else style="line-height: 15vh">
+                        조회할 스토리가 없습니다
+                    </div>
                 </div>
             </div>
 

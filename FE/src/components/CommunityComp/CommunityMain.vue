@@ -56,7 +56,7 @@
                             {{ article.title }}
                         </div>
                         <div class="author" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
-                            by {{ article.author }}
+                            by {{ article.nickname }}
                         </div>
                         <div class="content" :boardSeq="`${article.id}`" :authorSeq="`${article.userSeq}`" @click="mvBoard">
                             {{ article.content }}
