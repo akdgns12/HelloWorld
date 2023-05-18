@@ -117,6 +117,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDetailResponse getBoard(Long userSeq,Long boardSeq) throws Exception {
         Board board = boardRepository.findById(boardSeq).orElseThrow(() -> new Exception("not exist board : "+boardSeq));
+
         Boolean[] sticker = {false,false,false};
         for(int i=0; i<board.getStickers().size(); i++){
             if(board.getStickers().get(i).getUser().getUserSeq() == userSeq){
@@ -131,6 +132,16 @@ public class BoardServiceImpl implements BoardService{
                 .sticker(sticker).imgUrl(board.getImgUrl())
                 .createTime(board.getCreateTime()).comments(comments)
                 .build();
+        Board newBoard = Board.builder()
+                .boardSeq(board.getBoardSeq()).title(board.getTitle())
+                .content(board.getContent()).imgUrl(board.getImgUrl())
+                .viewCnt(board.getViewCnt()+1).likeCnt(board.getLikeCnt())
+                .helpfulCnt(board.getHelpfulCnt()).understandCnt(board.getUnderstandCnt())
+                .commentCnt(board.getCommentCnt()).categorySeq(board.getCategorySeq())
+                .user(board.getUser()).comments(board.getComments())
+                .grasses(board.getGrasses()).stickers(board.getStickers())
+                .bookMarks(board.getBookMarks()).build();
+        boardRepository.save(newBoard);
         return boardDetailResponse;
     }
 
