@@ -30,6 +30,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -137,7 +138,7 @@ public class BoardServiceImpl implements BoardService{
     public Map<String,Object> getBoardsAll(int start,int size) throws Exception {
         // Page 객체로    https://wonit.tistory.com/483 참고
         // 제목 ,작성자, 내용, 썸네일, 스티커 개수, 댓글 개수
-        PageRequest pageRequest = PageRequest.of(start,size);
+        PageRequest pageRequest = PageRequest.of(start,size, Sort.by("createTime").descending());
 
         List<BoardsAllResponse> boardList = boardRepository.findAll(pageRequest)
                 .stream().map(x->BoardsAllResponse.
@@ -252,6 +253,7 @@ public class BoardServiceImpl implements BoardService{
         long timeDiff = Duration.between(board.getCreateTime(), LocalDateTime.now()).toHours();
         if(timeDiff<24) {
             User user = board.getUser();
+
             List<Long> accetedFamilies = user.getFamilies()
                     .stream()
                     .filter(x -> x.getIsAccepted() == 2)
