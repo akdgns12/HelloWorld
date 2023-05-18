@@ -165,7 +165,7 @@ public class BoardServiceImpl implements BoardService{
     public HashMap<String,Object> getBoardsByUser(Long userSeq,Integer categorySeq, int start, int size) throws Exception {
         // 제목, 작성자, 작성일, 조회수 , 카테고리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : "+userSeq));
-        PageRequest pageRequest = PageRequest.of(start,size,Sort.by("createTime").descending());
+        PageRequest pageRequest = PageRequest.of(start,size);
 
         ExampleMatcher matcher;
         Board board;
