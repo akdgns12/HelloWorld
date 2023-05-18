@@ -161,6 +161,7 @@ const onContextMenuNo = (event, writerSeq, boardSeq) => {
     }
     .board_img{
         height: 8rem;
+        width : 14rem;
     }
     .boardHeader {
         display: flex;
