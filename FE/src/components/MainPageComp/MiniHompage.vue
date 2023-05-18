@@ -2,9 +2,9 @@
     <div class="wrap">
         <UserTitleComp />
         <div class="right-body">
-            <div class="story">
+            <div class="story" id="story">
                 <div class="select-story">
-                    <splide :options="options" class="slider" v-if="this.story[0]==[]">
+                    <splide :options="options" class="slider">
                         <splide-slide class="splide-slide" v-for="stories in this.story" :key="stories">
                             <div class="one-slide" v-for="oneStory in stories" :key="oneStory">
                                 <div :class="`story-element-container-${oneStory.storySeq} isRead_${oneStory.isRead} story-element-container`"
@@ -23,9 +23,9 @@
                             </div>
                         </splide-slide>
                     </splide>
-                    <div v-else style="line-height: 15vh">
+                    <!-- <div v-else style="line-height: 15vh">
                         조회할 스토리가 없습니다
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -166,7 +166,9 @@ export default {
                 }
             }
             this.story.push(temp);
-            console.log(this.story)
+            if(this.story[0].length == 0) {
+                document.querySelector('#story').style.display = 'none';
+            }
         }, (error) => {
             console.log(error);
         })
