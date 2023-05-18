@@ -44,6 +44,7 @@ const headers = {
 
 const title = ref('');
 const content = ref('');
+const imgUrl = ref('');
 const category = ref(0);
 const handleUpload = (file) => {
     return new Promise((resolve, reject) => {
@@ -89,6 +90,7 @@ const handleUpload = (file) => {
                     })
                     .then(response => {
                         const fileUrl = response.data;
+                        imgUrl.value = fileUrl;
                         resolve(fileUrl);
                     })
                     .catch(error => {
@@ -99,19 +101,6 @@ const handleUpload = (file) => {
             img.src = event.target.result;
         };
         reader.readAsDataURL(file);
-        // axios.post(`${baseUrl}/board/upload`, formData ,
-        // {headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //         Authorization: `Bearer ${localStorage.getItem("access-token")}`
-        //     }}
-        // )
-        //     .then(response => {
-        //         const fileUrl = response.data;
-        //         resolve(fileUrl);
-        //     })
-        //     .catch(error => {
-        //         reject(error);
-        //     });
     });
 };
 const route = useRoute();
@@ -125,7 +114,8 @@ const createBoard = () => {
             "content" : content.value,
             "title" : title.value,
             "categorySeq" : category.value,
-            "boardSeq" : boardSeq.value
+            "boardSeq" : boardSeq.value,
+            "imgUrl" : imgUrl.value
         };
         axios.patch(`${baseUrl}/board`, requestDto, {headers})
             .then(response => {
@@ -144,6 +134,7 @@ const createBoard = () => {
             "title" : title.value,
             "categorySeq" : category.value,
             "userSeq" : userSeq,
+            "imgUrl" : imgUrl.value,
         };
         console.log(requestDto);
         axios.post(`${baseUrl}/board`, requestDto, {headers})
@@ -166,6 +157,7 @@ onBeforeMount(() => {
             title.value = response.data.title;
             content.value = response.data.content;
             category.value = response.data.categorySeq;
+            imgUrl.value = response.data.imgUrl;
         })
         .catch((error) => {
             console.error(error);
