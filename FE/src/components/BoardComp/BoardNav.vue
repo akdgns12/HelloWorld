@@ -41,7 +41,7 @@ export default {
             {id : 3, name : 'Project'},
             {id : 4, name : 'Language'},
             {id : 5, name : 'Etc'},
-            {id : 6, name : 'Share'},
+            {id : 6, name : 'Scrap'},
         ];
         const emits = getCurrentInstance().emit;
 

@@ -174,7 +174,7 @@ const shareBoard = (boardSeq) => {
         .then(response => {
             console.log(response.data);
             if(confirm("북마크로 이동하시겠습니까?")) {
-                router.push(`/board/${userSeq}/boardlist/Share`);
+                router.push(`/board/${userSeq}/boardlist/Scrap`);
             }
         })
         .catch(error => {

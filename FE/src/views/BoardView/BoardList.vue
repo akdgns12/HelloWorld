@@ -31,7 +31,7 @@ export default {
         const route = useRoute();
         const categoryName = computed(() => route.params.category);
         const category = categoryName.value;
-        const categoryList = ["all", "CS", "Algorithm", "Project", "Language", "Etc", "Share"];
+        const categoryList = ["all", "CS", "Algorithm", "Project", "Language", "Etc", "Scrap"];
         const categoryNameIndex = computed(() => {
             return categoryList.findIndex((item) => item === categoryName.value);
         });
