@@ -232,6 +232,7 @@ public class BoardServiceImpl implements BoardService{
             // 전달받은 내용과 제목으로 BoardDocument 수정
             boardDocument.setTitle(boardModifyBody.getTitle());
             boardDocument.setContent(boardModifyBody.getContent());
+            boardDocument.setImageUrl(boardModifyBody.getImgUrl());
 
             // 수정된 BoardDocument 저장
             boardDocumentRepository.save(boardDocument);
