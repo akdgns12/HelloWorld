@@ -18,14 +18,15 @@ public class BoardCreateBody {
 
     Integer categorySeq;
 
-
+    String imgUrl;
 
     @Builder
-    public BoardCreateBody(Long userSeq, String title, String content, Integer categorySeq) {
+    public BoardCreateBody(Long userSeq, String title, String content, Integer categorySeq, String imgUrl) {
         this.userSeq = userSeq;
         this.title = title;
         this.content = content;
         this.categorySeq = categorySeq;
+        this.imgUrl = imgUrl;
 
     }
 }

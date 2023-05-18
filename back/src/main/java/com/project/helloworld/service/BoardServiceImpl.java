@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import com.project.helloworld.util.S3Uploader;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,7 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -67,9 +70,17 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public MessageResponse createBoard(BoardCreateBody boardCreateBody) throws Exception {
         User user = userRepository.findById(boardCreateBody.getUserSeq()).orElseThrow(()-> new Exception("not exist user : "+boardCreateBody.getUserSeq()));
-        Board board = Board.builder().title(boardCreateBody.getTitle()).content(boardCreateBody.getContent())
-                .categorySeq(boardCreateBody.getCategorySeq()).imgUrl("").likeCnt(0).helpfulCnt(0).commentCnt(0).understandCnt(0)
-                .user(user).build();
+        Board board = Board.builder()
+                .title(boardCreateBody.getTitle())
+                .content(boardCreateBody.getContent())
+                .categorySeq(boardCreateBody.getCategorySeq())
+                .imgUrl(boardCreateBody.getImgUrl())
+                .likeCnt(0)
+                .helpfulCnt(0)
+                .commentCnt(0)
+                .understandCnt(0)
+                .user(user)
+                .build();
         Board newBoardSaved = boardRepository.save(board);
         String content = newBoardSaved.getContent();
 
@@ -187,9 +198,16 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public MessageResponse modifyBoard(BoardModifyBody boardModifyBody) throws Exception {
         Board board = boardRepository.findById(boardModifyBody.getBoardSeq()).orElseThrow(()-> new Exception("not exist board : "+boardModifyBody.getBoardSeq()));
-        Board newBoard = Board.builder().boardSeq(board.getBoardSeq()).title(boardModifyBody.getTitle()).content(boardModifyBody.getContent())
-                .imgUrl(board.getImgUrl()).likeCnt(board.getLikeCnt()).helpfulCnt(board.getHelpfulCnt())
-                .understandCnt(board.getUnderstandCnt()).user(board.getUser()).build();
+        Board newBoard = Board.builder()
+                .boardSeq(board.getBoardSeq())
+                .title(boardModifyBody.getTitle())
+                .content(boardModifyBody.getContent())
+                .imgUrl(boardModifyBody.getImgUrl())
+                .categorySeq(boardModifyBody.getCategorySeq())
+                .likeCnt(board.getLikeCnt())
+                .helpfulCnt(board.getHelpfulCnt())
+                .understandCnt(board.getUnderstandCnt())
+                .user(board.getUser()).build();
         Board newBoardSaved = boardRepository.save(newBoard);
 
         // Elasticsearch에서 boardSeq를 가지고 있는 BoardDocument 찾기
@@ -207,12 +225,10 @@ public class BoardServiceImpl implements BoardService{
             boardDocumentRepository.save(boardDocument);
         }
 
-
-
-
         MessageResponse messageResponse = MessageResponse.builder().type(-1).typeSeq(newBoardSaved.getBoardSeq())
                 .title(newBoardSaved.getUser().getName()+"님이 게시글을 수정했습니다.")
                 .content("게시글 수정").build();
+
         return messageResponse;
     }
 

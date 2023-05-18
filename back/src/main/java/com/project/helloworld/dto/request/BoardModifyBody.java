@@ -16,13 +16,16 @@ public class BoardModifyBody {
 
     private String content;
 
+    private int categorySeq;
 
+    private String imgUrl ;
 
     @Builder
-    public BoardModifyBody(Long boardSeq, String title, String content) {
+    public BoardModifyBody(Long boardSeq, String title, String content, int categorySeq, String imgUrl) {
         this.boardSeq = boardSeq;
         this.title = title;
         this.content = content;
-
+        this.categorySeq = categorySeq;
+        this.imgUrl = imgUrl;
     }
 }
