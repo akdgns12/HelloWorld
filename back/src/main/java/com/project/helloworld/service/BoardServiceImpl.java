@@ -165,7 +165,7 @@ public class BoardServiceImpl implements BoardService{
     public HashMap<String,Object> getBoardsByUser(Long userSeq,Integer categorySeq, int start, int size) throws Exception {
         // 제목, 작성자, 작성일, 조회수 , 카테고리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : "+userSeq));
-        PageRequest pageRequest = PageRequest.of(start,size);
+        PageRequest pageRequest = PageRequest.of(start,size,Sort.by("createTime").descending());
 
         ExampleMatcher matcher;
         Board board;
@@ -368,6 +368,20 @@ public class BoardServiceImpl implements BoardService{
                         .grasses(board.getGrasses()).stickers(board.getStickers())
                         .bookMarks(board.getBookMarks()).build();
                 boardRepository.save(newBoard1);
+                User newUser1 = User.builder()
+                        .userSeq(user.getUserSeq()).password(user.getPassword()).email(user.getEmail())
+                        .nickname(user.getNickname()).name(user.getName()).comment(user.getComment())
+                        .phoneNumber(user.getPhoneNumber()).likeCnt(user.getLikeCnt()+1)
+                        .helpfulCnt(user.getHelpfulCnt()).understandCnt(user.getUnderstandCnt())
+                        .authProvider(user.getAuthProvider()).providerId(user.getProviderId())
+                        .total(user.getTotal()).backgroundUrl(user.getBackgroundUrl())
+                        .boards(user.getBoards()).guestbooks(user.getGuestbooks())
+                        .families(user.getFamilies()).avatar(user.getAvatar())
+                        .grasses(user.getGrasses()).badges(user.getBadges())
+                        .bookMarks(user.getBookMarks()).stickers(user.getStickers())
+                        .todayVisits(user.getTodayVisits()).roles(user.getRoles())
+                .build();
+                userRepository.save(newUser1);
                 break;
             case 2:
                 Board newBoard2 = Board.builder()
@@ -380,6 +394,20 @@ public class BoardServiceImpl implements BoardService{
                         .grasses(board.getGrasses()).stickers(board.getStickers())
                         .bookMarks(board.getBookMarks()).build();
                 boardRepository.save(newBoard2);
+                User newUser2 = User.builder()
+                        .userSeq(user.getUserSeq()).password(user.getPassword()).email(user.getEmail())
+                        .nickname(user.getNickname()).name(user.getName()).comment(user.getComment())
+                        .phoneNumber(user.getPhoneNumber()).likeCnt(user.getLikeCnt())
+                        .helpfulCnt(user.getHelpfulCnt()+1).understandCnt(user.getUnderstandCnt())
+                        .authProvider(user.getAuthProvider()).providerId(user.getProviderId())
+                        .total(user.getTotal()).backgroundUrl(user.getBackgroundUrl())
+                        .boards(user.getBoards()).guestbooks(user.getGuestbooks())
+                        .families(user.getFamilies()).avatar(user.getAvatar())
+                        .grasses(user.getGrasses()).badges(user.getBadges())
+                        .bookMarks(user.getBookMarks()).stickers(user.getStickers())
+                        .todayVisits(user.getTodayVisits()).roles(user.getRoles())
+                        .build();
+                userRepository.save(newUser2);
                 break;
             case 3:
                 Board newBoard3 = Board.builder()
@@ -392,6 +420,20 @@ public class BoardServiceImpl implements BoardService{
                         .grasses(board.getGrasses()).stickers(board.getStickers())
                         .bookMarks(board.getBookMarks()).build();
                 boardRepository.save(newBoard3);
+                User newUser3 = User.builder()
+                        .userSeq(user.getUserSeq()).password(user.getPassword()).email(user.getEmail())
+                        .nickname(user.getNickname()).name(user.getName()).comment(user.getComment())
+                        .phoneNumber(user.getPhoneNumber()).likeCnt(user.getLikeCnt())
+                        .helpfulCnt(user.getHelpfulCnt()).understandCnt(user.getUnderstandCnt()+1)
+                        .authProvider(user.getAuthProvider()).providerId(user.getProviderId())
+                        .total(user.getTotal()).backgroundUrl(user.getBackgroundUrl())
+                        .boards(user.getBoards()).guestbooks(user.getGuestbooks())
+                        .families(user.getFamilies()).avatar(user.getAvatar())
+                        .grasses(user.getGrasses()).badges(user.getBadges())
+                        .bookMarks(user.getBookMarks()).stickers(user.getStickers())
+                        .todayVisits(user.getTodayVisits()).roles(user.getRoles())
+                        .build();
+                userRepository.save(newUser3);
                 break;
             default:
                 break;
