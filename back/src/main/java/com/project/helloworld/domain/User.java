@@ -111,6 +111,10 @@ public class User extends BaseTimeEntity implements UserDetails {
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   List<TodayVisit> todayVisits = new ArrayList<>();
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  List<Comment> commentList = new ArrayList<>();
+
   /**
    * Security 관련 메소드
    */
