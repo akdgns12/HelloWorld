@@ -6,7 +6,7 @@
             <div class="community-notice">
                 <div class="search-container">
                     <form class="search-form">
-                        <input type="search-input" class="search-input" name="search" required v-model="searchKeyword">
+                        <input type="search-input" class="search-input" name="search" required v-model="searchKeyword" @keyup.enter="searchWithKeyword">
                     </form>
                     <button class="search-button" @click="searchWithKeyword">검색</button>
                 </div>
