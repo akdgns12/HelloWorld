@@ -96,10 +96,10 @@
                         :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard">
                         <div class="represent-img-container" :boardSeq="`${article.boardSeq}`"
                             :authorSeq="`${article.writerSeq}`" @click="mvBoard">
-                            <img class="represent-img" v-if="article.imgUrl == ''"
+                            <img class="represent-img" v-if="article.imgUrl == '' || article.imgUrl == null"
                                 src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="대표이미지"
                                 :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard" />
-                            <img class="represent-img" v-if="article.imgUrl != ''" :src="`${article.imgUrl}`" alt="대표이미지"
+                            <img class="represent-img" v-if="article.imgUrl != '' && article.imgUrl!=null" :src="`${article.imgUrl}`" alt="대표이미지"
                                 :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`" @click="mvBoard" />
                         </div>
                         <div class="title" :boardSeq="`${article.boardSeq}`" :authorSeq="`${article.writerSeq}`"

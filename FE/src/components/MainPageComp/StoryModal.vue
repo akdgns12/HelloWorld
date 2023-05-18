@@ -29,8 +29,8 @@ export default {
                 </div>
                 <div class="modal-body">
                     <div class="thumbnail">
-                        <img :src="`${imgUrl}`" class="thumbnail-img" alt="썸네일" v-if="imgUrl!=''"/>
-                        <img src="@/assets/KakaoTalk_20230116_110321475_05.jpg" class="thumbnail-img" alt="썸네일" v-if="imgUrl==''"/>
+                        <img :src="`${imgUrl}`" class="thumbnail-img" alt="썸네일" v-if="imgUrl!='' && imgUrl!=null"/>
+                        <img src="@/assets/KakaoTalk_20230116_110321475_05.jpg" class="thumbnail-img" alt="썸네일" v-if="imgUrl=='' || imgUrl==null"/>
                     </div>
                     <div class="title-container">
                         <div class="msg">

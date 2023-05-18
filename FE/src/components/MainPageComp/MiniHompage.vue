@@ -11,9 +11,9 @@
                                 <div :class="`story-element-container-${oneStory.storySeq} isRead_${oneStory.isRead} story-element-container`"
                                     @click="showStoryInfo" :id="`${oneStory.storySeq}`">
                                     <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
-                                        v-if="oneStory.imgUrl == ''" :id="`${oneStory.storySeq}`" />
+                                        v-if="oneStory.imgUrl == '' || oneStory.imgUrl == null" :id="`${oneStory.storySeq}`" />
                                     <img class="story-element" :src="`${oneStory.imgUrl}`" alt="스토리"
-                                        v-if="oneStory.imgUrl != ''" :id="`${oneStory.storySeq}`" />
+                                        v-if="oneStory.imgUrl != '' && oneStory.imgUrl != null" :id="`${oneStory.storySeq}`" />
                                 </div>
                                 <!-- <div class="story-element-container" v-for="i in (10 - stories.length)" :key="i">
                                     <img class="story-element" src="@/assets/KakaoTalk_20230116_110321475_05.jpg" alt="스토리"
