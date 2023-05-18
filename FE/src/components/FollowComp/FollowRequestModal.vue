@@ -36,8 +36,8 @@ export default {
             http.post(`/family`, JSON.stringify(info)).then((response) => {
                 const requestDto = {
                     "type" : 3,
-                    "typeSeq" : this.masterSeq,
-                    "title" : `${this.myNickname}님이 일촌신청을 했습니다`,
+                    "typeSeq" : this.userSeq,
+                    "title" : `${this.myNickname}님이 일촌신청을 했습니다.`,
                     "content" : "일촌신청",
                     "receiveUserSeq" : this.masterSeq
                 }
