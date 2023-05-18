@@ -2,7 +2,7 @@
     <div class="wrap">
         <UserTitleComp />
         <div class="right-body">
-            <div class="story" v-if="this.story[0].length > 0">
+            <div class="story">
                 <div class="select-story">
                     <!-- {{ this.story }} -->
                     <splide :options="options" class="slider">
