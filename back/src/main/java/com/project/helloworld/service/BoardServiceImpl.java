@@ -165,21 +165,21 @@ public class BoardServiceImpl implements BoardService{
     public HashMap<String,Object> getBoardsByUser(Long userSeq,Integer categorySeq, int start, int size) throws Exception {
         // 제목, 작성자, 작성일, 조회수 , 카테고리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new Exception("not exist user : "+userSeq));
-        PageRequest pageRequest = PageRequest.of(start,size);
+        PageRequest pageRequest = PageRequest.of(start,size,Sort.by("createTime").descending());
 
         ExampleMatcher matcher;
         Board board;
         User newUser;
         if(categorySeq == null){
             newUser = User.builder().userSeq(userSeq).build();
-            board = Board.builder().user(user).build();
+            board = Board.builder().user(newUser).build();
             matcher = ExampleMatcher.matching().withMatcher("user.userSeq",ExampleMatcher.GenericPropertyMatchers.exact())
 
                     .withIgnorePaths("boardSeq","title","categorySeq","content","commentCnt","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
                             ,"grasses","stickers","bookMarks");
         }else{
             newUser = User.builder().userSeq(userSeq).build();
-            board = Board.builder().user(user).categorySeq(categorySeq).build();
+            board = Board.builder().user(newUser).categorySeq(categorySeq).build();
             matcher = ExampleMatcher.matching().withMatcher("user.userSeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withMatcher("categorySeq",ExampleMatcher.GenericPropertyMatchers.exact())
                     .withIgnorePaths("boardSeq","title","content","commentCnt","imgUrl","viewCnt","likeCnt","helpfulCnt","understandCnt","comments"
