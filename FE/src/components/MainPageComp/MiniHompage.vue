@@ -166,6 +166,7 @@ export default {
                 }
             }
             this.story.push(temp);
+            console.log(result.data);
             if(this.story[0].length == 0) {
                 document.querySelector('#story').style.display = 'none';
             }

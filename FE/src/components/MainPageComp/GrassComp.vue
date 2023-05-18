@@ -42,6 +42,7 @@ export default {
             e.preventDefault();
             this.date = e.target.id;
             this.detailBoardList = await e.target.getAttribute("boardList").split(",");
+            this.boardInfo = [];
             if(this.detailBoardList[0].length !=0) {
             for(var i = 0; i < this.detailBoardList.length; i++) {
                 

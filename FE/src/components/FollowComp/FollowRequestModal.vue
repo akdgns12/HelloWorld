@@ -37,7 +37,7 @@ export default {
                 const requestDto = {
                     "type" : 3,
                     "typeSeq" : this.userSeq,
-                    "title" : `${this.myNickname}님이 일촌신청을 했습니다.`,
+                    "title" : `${this.myNickname}님이 일촌신청을 했습니다`,
                     "content" : "일촌신청",
                     "receiveUserSeq" : this.masterSeq
                 }
