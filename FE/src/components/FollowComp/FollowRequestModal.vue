@@ -94,18 +94,18 @@ export default {
                         <div class="request-msg">&nbsp;님께 일촌을 신청합니다</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.otherNickname }}</div>
-                        <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.myNickname }} (나)</div>
-                        <div class="request-msg">&nbsp;님의</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 30%;">{{ this.otherNickname }}</div>
+                        <div class="request-msg" style="width: 15%;">&nbsp;님을&nbsp;</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 30%;">{{ this.myNickname }} (나)</div>
+                        <div class="request-msg" style="width: 15%">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.toRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
                     </div>
                     <div class="select-name">
-                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.myNickname }} (나)</div>
-                        <div class="request-msg">&nbsp;님을&nbsp;</div>
-                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ this.otherNickname }}</div>
-                        <div class="request-msg">&nbsp;님의</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 30%;">{{ this.myNickname }} (나)</div>
+                        <div class="request-msg" style="width: 15%;">&nbsp;님을&nbsp;</div>
+                        <div class="user-name" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 30%;">{{ this.otherNickname }}</div>
+                        <div class="request-msg" style="width: 15%;">&nbsp;님의</div>
                         <input class="family-name-input" placeholder="일촌명" v-model="this.fromRelationName" />
                         <div class="request-msg">&nbsp;로,</div>
                     </div>
@@ -177,7 +177,7 @@ export default {
 }
 
 .family-name-input {
-    width: 8vw;
+    width: 6vw;
     height: 12px;
     font-size: 12px;
     /* zoom: 0.8; */
