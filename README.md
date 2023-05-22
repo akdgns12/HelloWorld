@@ -110,7 +110,7 @@ HelloWorld는 Github와 SNS 각각의 장점을 가져온 개발자 커뮤니티
 - Spring Boot Starter Test
 - Spring Security Test
 - Spring Data Redis
-- Jedis (Redis client library)
+- Lettuce (Redis client library)
 - Spring Boot Starter AOP
 
 **Frontend**
