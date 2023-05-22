@@ -149,7 +149,7 @@ HelloWorld는 Github와 SNS 각각의 장점을 가져온 개발자 커뮤니티
 
 ### 🎨시스템 아키텍처
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a8b6b8a-00b3-4ccf-be6d-12184a059d31/Untitled.png)
+<img src="./img/sysemarchitecture.png" width="700">
 
 ### 💾프로젝트 파일 구조
 
@@ -231,113 +231,129 @@ FE
 ### 👨🏻‍🤝‍👨🏻협업 환경
 
 - Gitlab
-    - 코드의 버전 관리
-    - MR시, 팀원이 코드 리뷰를 진행하고 피드백 게시
+  - 코드의 버전 관리
+  - MR시, 팀원이 코드 리뷰를 진행하고 피드백 게시
 - JIRA
-    - 매주 목표량을 설정하여 Sprint 진행
-    - 업무의 할당량을 정하여 Story Point를 설정하고, In-Progress -> Done 순으로 작업
+  - 매주 목표량을 설정하여 Sprint 진행
+  - 업무의 할당량을 정하여 Story Point를 설정하고, In-Progress -> Done 순으로 작업
 - Notion
-    - 회의가 있을때마다 회의록을 기록하여 보관
-    - 기술 확보 시, 다른 팀원들도 추후 따라할 수 있도록 보기 쉽게 작업 순서대로 정리
-    - 컨벤션 정리
-    - 간트차트 활용한 개발 계획 관리
-    - 스토리 보드, 시퀀스 다이어그램, 기능 명세서 등 팀원 모두가 공유해야 하는 문서 관리
+  - 회의가 있을때마다 회의록을 기록하여 보관
+  - 기술 확보 시, 다른 팀원들도 추후 따라할 수 있도록 보기 쉽게 작업 순서대로 정리
+  - 컨벤션 정리
+  - 간트차트 활용한 개발 계획 관리
+  - 스토리 보드, 시퀀스 다이어그램, 기능 명세서 등 팀원 모두가 공유해야 하는 문서 관리
 
 ### 😎팀원 역할
 
 - 조현동
-    - 팀장
-    - Backend
+  - 팀장
+  - Backend
 - 변유정
-    - UI/UX 디자인
-    - Frontend
+  - UI/UX 디자인
+  - Frontend
 - 배정현
-    - CI/CD
-    - Backend
+  - CI/CD
+  - Backend
 - 원송희
-    - UI/UX 디자인
-    - Frontend
+  - UI/UX 디자인
+  - Frontend
 - 안영훈
-    - Backend
+  - Backend
 - 서주광
-    - Backend
-    
+  - Backend
 
 ### 🎞기능 소개 및 화면
 
 ### 로그인 이전
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/92e9a8ed-2cd9-4441-af04-5686d6508a0c/Untitled.png)
+<img src="./img/before_login.png" width="800">
 
 - 일반 로그인, github로그인, 회원가입 등을 선택할 수 있는 화면
 
 ### 회원가입 및 아바타 생성
 
-![회원가입.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5092ebbe-d623-438f-a92f-f2bb8a372269/%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85.gif)
+<img src="./img/sign_up.gif" width="800">
 
 - 회원가입에 필요한 유저 정보 모두 기입 후, 아바타 디자인 가능
 
 ### 일반 로그인
 
-![일반 로그인.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/29932686-7354-4fd5-8fc3-a4036dfeb975/%EC%9D%BC%EB%B0%98_%EB%A1%9C%EA%B7%B8%EC%9D%B8.gif)
+<img src="./img/normal_login.gif" width="800">
 
 - 회원가입한 아이디, 비밀번호로 로그인
 
 ### 소셜 로그인
 
-![소셜로그인.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/be67bab9-f796-42ce-9e59-70a56a29f895/%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8.gif)
+<img src="./img/social_login.gif" width="800">
 
 - github 계정으로 로그인
 
 ### 회원 정보 수정
 
-![회원 정보 수정.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f04d7096-59c0-433d-8c69-d9aed24ed78c/%ED%9A%8C%EC%9B%90_%EC%A0%95%EB%B3%B4_%EC%88%98%EC%A0%95.gif)
+<img src="./img/modify_use.gif" width="800">
 
 - 회원가입 시 입력한 정보를 수정(이메일은 수정 불가) 하거나 확인 가능
 
 ### 회원 아바타 수정
 
-![회원 아바타 수정.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/27b5b6a7-d1d4-4165-a2bc-a6412beca82d/%ED%9A%8C%EC%9B%90_%EC%95%84%EB%B0%94%ED%83%80_%EC%88%98%EC%A0%95.gif)
+<img src="./img/modify_avatar.gif" width="800">
 
 - 회원가입 시 생성한 아바타를 수정하거나, github로그인 시 기본 아바타가 제공되는데 이를 수정 가능
 
 ### 메인 페이지
 
-![메인 페이지.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3c291a9b-321e-4bf0-86b1-4e6c427659bb/%EB%A9%94%EC%9D%B8_%ED%8E%98%EC%9D%B4%EC%A7%80.gif)
+<img src="./img/mainPage.gif" width="800">
 
 - 해당 홈페이지 주인의 아바타, 닉네임, 잔디, 일촌평, 미니룸 등을 확인 가능
 - 로그인된 사용자의 스토리 확인 가능
 
 ### 메인 세부 - 스토리
 
-![스토리2.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6d29a653-b24f-474b-9268-c69676601f24/%EC%8A%A4%ED%86%A0%EB%A6%AC2.gif)
+<img src="./img/story.gif" width="800">
 
 - 로그인된 사용자와 일촌인 다른 사용자가 게시글을 작성하게 되면, 해당 시간으로부터 24시간 동안 게시글이 노출됨
 
 ### 메인 세부 - 파도타기
 
-![파도타기.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/398ead46-28ce-4c8f-96f9-9a98439c3a69/%ED%8C%8C%EB%8F%84%ED%83%80%EA%B8%B0.gif)
+<img src="./img/surffing.gif" width="800">
 
 - 랜덤으로 추천되는 사용자의 페이지로 이동 가능
 
 ### 메인 세부 - 잔디
 
-![잔디.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9783a335-babc-496e-8875-ff59c110feeb/%EC%9E%94%EB%94%94.gif)
+<img src="./img/grass.gif" width="800">
 
 - 글을 많이 작성하면 작성할 수록 잔디의 색깔이 진해짐
 - 잔디를 눌러 그 날 작성한 게시글을 확인할 수 있고, 제목 클릭 시 해당 게시글로 이동 가능
 
 ### 메인 세부 - 일촌평
 
-![일촌평.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/01b05bc6-d1a0-4817-8e58-7a6ae38bc72b/%EC%9D%BC%EC%B4%8C%ED%8F%89.gif)
+<img src="./img/family_comment.gif" width="800">
 
 - 홈페이지 주인과 일촌인 사람만이 일촌평을 작성 가능
 
-### 게시글 (CRUD 나눠서 보여줘야되나? C랑 R만???)
+### 게시글 조회
+
+<img src="./img/board_read.gif" width="800">
+
+- 카테고리 별 게시글 조회 및 전체 게시글 조회 가능
+
+### 게시글 작성
+
+<img src="./img/boardCreate.gif" width="800">
+
+- 마크다운 형식으로 게시글 작성 가능
+
+### Scrap
+
+<img src="./img/scrap.gif" width="800">
+
+- 모든 유저들이 작성한 게시글 scrap 가능
+- scrap한 게시글은 scrap 페이지 에서 조회 및 삭제 가능
 
 ### 커뮤니티
 
-![커뮤니티.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7557ff44-6c6f-479a-a078-7cc649b6dd13/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.gif)
+<img src="./img/community.gif" width="800">
 
 - 실시간 인기 검색어 10위를 확인 가능
 - 검색 이전에는 다른 사용자들이 작성한 모든 글들을 최신순으로 조회 가능
@@ -345,7 +361,7 @@ FE
 
 ### 방명록
 
-![방명록.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/283a7ac8-180b-4bf4-b9a7-9306a0964058/%EB%B0%A9%EB%AA%85%EB%A1%9D.gif)
+<img src="./img/guest_book.gif" width="800">
 
 - 누구나 작성 가능 (홈페이지 주인 제외)
 - 공개글/비밀글 설정 가능
@@ -353,26 +369,26 @@ FE
 
 ### 통계
 
-![통계.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2cbe9262-7a8c-4d0f-bbf4-203ed17045e8/%ED%86%B5%EA%B3%84.gif)
+<img src="./img/statistic.gif" width="800">
 
 - 주간 투데이 수, 포스팅한 게시글의 카테고리 별 퍼센트, 업적(좋아요 개수, 투데이 수, 포스팅 개수 등에 따라 달성 가능) 을 확인 가능
 
 ### 일촌 목록
 
-![일촌 목록.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/565a677d-d917-4f5b-bcf3-945b5c1a6852/%EC%9D%BC%EC%B4%8C_%EB%AA%A9%EB%A1%9D.gif)
+<img src="./img/family_list.gif" width="800">
 
 - 현재 홈페이지의 주인과 일촌인 사용자들의 목록을 조회 가능
 
 ### 유저 검색
 
-![유저 검색.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f19d22d6-0967-4c31-a505-474ce8e78567/%EC%9C%A0%EC%A0%80_%EA%B2%80%EC%83%89.gif)
+<img src="./img/user_search.gif" width="800">
 
 - 사용자를 검색 가능
 - 이메일, 닉네임, 이름 중 필터링을 선택하여 검색 가능
 
 ### 알림
 
-![알림.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f48ced2c-6260-481f-90a5-432af617da9f/%EC%95%8C%EB%A6%BC.gif)
+<img src="./img/alaram.gif" width="800">
 
 - 일촌 요청이 오거나, 일촌 수락이 되거나, 내 게시물에 누가 댓글을 달거나, 내 방명록에 누가 글을 남기면 알림 도착
 - 댓글이나 방명록 관련 알림의 경우 클릭 시 해당 게시글이나 방명록으로 이동 가능
