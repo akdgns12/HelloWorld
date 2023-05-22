@@ -36,12 +36,12 @@ public class UserUpdate {
         for (Long userSeq : userSeqList){
             Long todayVisitors = visitorService.getTodayVisitors(String.valueOf(userSeq));
             TodayVisit todayVisit = new TodayVisit();
-            LocalDate today = LocalDate.now();
+            LocalDate yesterday = LocalDate.now().minusDays(1);
 
             // Today DB로 업데이트
             User user = userRepository.findByUserSeq(userSeq).orElseThrow(()-> new Exception("해당하는 유저가 없습니다." + userSeq));
             todayVisit.setTodayCnt(todayVisitors);
-            todayVisit.setDate(today);
+            todayVisit.setDate(yesterday);
             todayVisit.setUser(user);
             todayVisitRepository.save(todayVisit);
 
